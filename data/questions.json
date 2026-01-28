@@ -693,7 +693,7 @@
     "autonomy",
     "license"
   ],
-  "id_associe": ["contact"]
+  "id_associe": ["contact", "CV"]
 },
 {
   "id": "contact",
@@ -723,7 +723,7 @@
     "conversation",
     "user"
   ],
-  "id_associe": []
+  "id_associe": ["CV"]
 },
   {
     "id": "alternanceGOC",
@@ -1062,5 +1062,35 @@
     "interactive"
   ],
   "id_associe": []
+},
+{
+  "id": "CV",
+  "title_fr": "Peux tu me donner ton CV ?",
+  "title_en": "Can you give me your CV?",
+  "tags_fr": [
+    "CV",
+    "curriculum",
+    "vitae",
+    "document",
+    "profil",
+    "téléchargement",
+    "compétences",
+    "formation",
+    "expériences",
+    "portfolio"
+  ],
+  "tags_en": [
+    "CV",
+    "curriculum",
+    "vitae",
+    "document",
+    "profile",
+    "download",
+    "skills",
+    "education",
+    "experience",
+    "portfolio"
+  ],
+  "id_associe": ["contact"]
 }
 ]
