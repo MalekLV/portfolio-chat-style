@@ -1,0 +1,3 @@
+Je souhaite m'orienter vers le domaine de la donnée, en particulier dans l'exploitation et l'analyse de données. J'aime manipuler et transformer les données, notamment avec SQL ou Excel, tout en me projetant vers des postes tels que consultant Microsoft 365 ou spécialiste Power Platform. Ce sont des outils que j'utilise avec plaisir et dont je souhaite approfondir les compétences pour concevoir des solutions réellement adaptées aux besoins des clients.
+%
+Je reste toutefois très ouvert à explorer d'autres opportunités dans le domaine de la donnée, afin de continuer à développer mon expertise et mes connaissances techniques.

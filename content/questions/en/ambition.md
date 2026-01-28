@@ -1,0 +1,3 @@
+I want to focus on the data field, particularly in data management and analysis. I enjoy manipulating and transforming data, especially with SQL or Excel, while aiming for positions such as Microsoft 365 consultant or Power Platform specialist. These are tools I enjoy using and wish to deepen my expertise in, to design solutions that truly meet clients' needs.  
+%
+I remain very open to exploring other opportunities in the data field, in order to continue developing my expertise and technical knowledge.

@@ -1,0 +1,772 @@
+/* app/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ========================================
+   PALETTE DE COULEURS BEIGE-MARRON-VERT
+   ======================================== */
+
+@layer base {
+  :root {
+    /* Couleurs principales - Plus de contraste */
+    --color-bg-main: #AFA394;           /* Fond beige-taupe doux */
+    --color-bg-panel: #8A7968;          /* Fond volet PLUS FONCÉ pour contraste */
+    --color-accent: #7D6B5C;            /* Accent marron */
+    --color-accent-hover: #6A5A4D;      /* Accent hover */
+    
+    /* ChatInput - Encore plus de contraste */
+    --color-chatinput-bg: #75665A;      /* Fond ChatInput très distinct */
+    
+    /* Messages - Contrastes améliorés */
+    --color-user-message: #697254;      /* Messages utilisateur (forest green) */
+    --color-user-message-hover: #5A6147; /* Hover utilisateur */
+    --color-bot-message: #C4B5A4;       /* Messages bot PLUS CLAIR pour contraste */
+    --color-bot-message-text: #2D2620;  /* Texte dans messages bot */
+    
+    /* Variantes de vert pour accents - Palette forêt/nature */
+    --color-green-forest-dark: #3D4A33;    /* Vert forêt très foncé (header) */
+    --color-green-forest: #4A5A3D;         /* Vert forêt moyen (corps principal) */
+    --color-green-moss: #5A6B4C;           /* Vert mousse (barre de recherche) */
+    --color-green-hover: #52634A;          /* Vert hover */
+    --color-green-selected: #5F7050;       /* Vert sélectionné */
+    --color-green-text-dark: #1F2619;      /* Texte vert très foncé */
+    --color-green-text-light: #E8EBE0;     /* Texte clair sur vert */
+    --color-green-placeholder: #768566;    /* Placeholder sur fond vert */
+    
+    /* Variantes de marron foncé pour ContactModal + Sidebar */
+    --color-brown-darkest: #1A1410;        /* Marron presque noir (ContactModal header, Sidebar LinkedIn) */
+    --color-brown-dark: #2D2419;           /* Marron très foncé (ContactModal corps, Sidebar fond) */
+    --color-brown-field: #4A3F32;          /* Marron clair (ContactModal champs) */
+    --color-brown-text-light: #E8E3DC;     /* Texte clair sur marron (ContactModal + Sidebar texte) */
+    --color-brown-text-field: #3A2F24;     /* Texte dans les champs */
+    --color-brown-placeholder: #8A7A68;    /* Placeholder dans les champs */
+    --color-brown-ring: #6B5A47;           /* Ring de focus marron (ContactModal champs focus, Sidebar séparateur) */
+    --color-brown-error: #D87C6F;          /* Rouge-marron pour erreurs */
+    --color-brown-error-ring: #C05F52;     /* Ring d'erreur */
+    --color-blue-dark: #3B5F7C;            /* Bleu foncé pour bouton envoyer */
+    --color-blue-dark-hover: #2D4A60;      /* Bleu foncé hover */
+    --color-green-success: #5A7F5A;        /* Vert discret pour succès */
+    --color-green-success-bg: #3D5A3D;     /* Fond vert pour succès */
+    
+    /* Sidebar - États d'interaction */
+    --color-sidebar-selected: #3A2F24;     /* Fond de l'onglet sélectionné (Sidebar) */
+    --color-sidebar-hover: #3A2F24;        /* Fond au survol (Sidebar) */
+    --color-sidebar-hover-opacity: 0.5;    /* Opacité du hover */
+    --color-linkedin-hover: #100D0A;       /* LinkedIn hover (encore plus foncé) */
+    
+    /* ChatInput - Barre de recherche */
+    --color-chatinput-bg: #4D443A;         /* Fond barre recherche (version plus claire de #2D2419 sidebar) */
+    --color-chatinput-focus: #3D342A;      /* Fond barre au focus */
+    --color-chatinput-text: #E8E3DC;       /* Texte dans la barre (clair) */
+    --color-chatinput-placeholder: #9A8A78; /* Placeholder barre recherche */
+    --color-chatinput-button-plus: #4A5A3D; /* Bouton + (vert forêt moyen QuestionBrowser) */
+    --color-chatinput-button-plus-hover: #3D4A33; /* Bouton + hover (vert foncé QuestionBrowser) */
+    --color-chatinput-send-disabled: #5A5A5A; /* Bouton envoyer désactivé */
+    --color-chatinput-suggestions-bg: #4D443A; /* Fond des suggestions (même que barre) */
+    --color-chatinput-suggestions-hover: #5D544A; /* Hover suggestions */
+    
+    /* Headers - PageHeader et MobileHeader */
+    --color-header-title: #1A1410;         /* Titre MalekGPT (marron très foncé LinkedIn) */
+    --color-toggle-bg: #4D443A;            /* Fond toggle button (marron moyen) */
+    --color-toggle-active: #6B5A47;        /* Toggle actif (marron clair) */
+    --color-toggle-hover: #5D544A;         /* Toggle hover */
+    
+    /* ChatWindow - Bulles de messages et interactions */
+    --color-user-bubble: #4A5A3D;          /* Bulle utilisateur (vert forêt - bouton + ChatInput) */
+    --color-bot-bubble: #A89888;           /* Bulle bot (marron encore plus clair) */
+    --color-suggestion-border: #3B5F7C;    /* Bordure suggestions (bleu bouton envoyer) */
+    --color-suggestion-text: #3B5F7C;      /* Texte suggestions (bleu) */
+    --color-suggestion-hover-bg: #3B5F7C;  /* Fond hover suggestions */
+    --color-delete-cross: #2D2419;         /* Croix suppression (marron sidebar) */
+    --color-delete-cross-hover: #8B3A3A;   /* Croix suppression hover (rouge foncé) */
+    --color-delete-button: #8B3A3A;        /* Bouton supprimer (rouge foncé) */
+    --color-delete-button-hover: #6B2D2D;  /* Bouton supprimer hover */
+    
+    /* Texte */
+    --color-text-primary: #2D2620;      /* Texte principal (marron très foncé) */
+    --color-text-secondary: #4A4037;    /* Texte secondaire */
+    --color-text-muted: #8A7968;        /* Texte atténué - PLUS FONCÉ pour meilleure visibilité */
+    --color-text-light: #F5F3F0;        /* Texte sur fond foncé */
+    
+    /* Bordures - Utilisées avec parcimonie */
+    --color-border: #6B5D4F;            /* Bordures principales */
+    --color-border-light: #7D6B5C;      /* Bordures légères */
+    --color-border-strong: #4A4037;     /* Bordures fortes pour popup */
+    
+    /* Actions - Suggestions bleues plus visibles */
+    --color-action-blue: #6B8FAA;       /* Bleu PLUS CLAIR pour meilleure visibilité */
+    --color-action-blue-hover: #5A7C94; /* Hover bleu */
+    --color-action-blue-bg: #E8EEF2;    /* Fond des suggestions bleues */
+    --color-action-red: #C86D6D;        /* Rouge plus visible */
+    --color-action-red-hover: #B55555;  /* Hover rouge */
+    
+    /* Survols et interactions */
+    --color-hover-overlay: rgba(125, 107, 92, 0.15);
+    --color-active-overlay: rgba(125, 107, 92, 0.25);
+    
+    /* Ombres - Plus prononcées */
+    --shadow-sm: 0 1px 3px rgba(29, 26, 23, 0.12);
+    --shadow-md: 0 4px 8px rgba(29, 26, 23, 0.15);
+    --shadow-lg: 0 10px 20px rgba(29, 26, 23, 0.2);
+    --shadow-xl: 0 15px 30px rgba(29, 26, 23, 0.25);
+  }
+}
+
+/* ========================================
+   STYLES DE BASE
+   ======================================== */
+
+html, body {
+  height: 100%;
+  background-color: var(--color-bg-main);
+  color: var(--color-text-primary);
+}
+
+/* ========================================
+   CLASSES UTILITAIRES PERSONNALISÉES
+   ======================================== */
+
+@layer utilities {
+  .bg-main {
+    background-color: var(--color-bg-main);
+  }
+  
+  .bg-panel {
+    background-color: var(--color-bg-panel);
+  }
+  
+  .bg-chatinput {
+    background-color: var(--color-chatinput-bg);
+  }
+  
+  .bg-accent {
+    background-color: var(--color-accent);
+  }
+  
+  .bg-user-message {
+    background-color: var(--color-user-message);
+  }
+  
+  .bg-bot-message {
+    background-color: var(--color-bot-message);
+  }
+  
+  .bg-green-primary {
+    background-color: var(--color-green-primary);
+  }
+  
+  .bg-green-light {
+    background-color: var(--color-green-light);
+  }
+  
+  .bg-green-forest-dark {
+    background-color: var(--color-green-forest-dark);
+  }
+  
+  .bg-green-forest {
+    background-color: var(--color-green-forest);
+  }
+  
+  .bg-green-moss {
+    background-color: var(--color-green-moss);
+  }
+  
+  .bg-green-hover {
+    background-color: var(--color-green-hover);
+  }
+  
+  .bg-green-selected {
+    background-color: var(--color-green-selected);
+  }
+  
+  .text-green-dark {
+    color: var(--color-green-text-dark);
+  }
+  
+  .text-green-light {
+    color: var(--color-green-text-light);
+  }
+  
+  .placeholder-green {
+    color: var(--color-green-placeholder);
+  }
+  
+  .ring-green-selected {
+    --tw-ring-color: var(--color-green-selected);
+  }
+  
+  .bg-brown-darkest {
+    background-color: var(--color-brown-darkest);
+  }
+  
+  .bg-brown-dark {
+    background-color: var(--color-brown-dark);
+  }
+  
+  .bg-brown-field {
+    background-color: var(--color-brown-field);
+  }
+  
+  .text-brown-light {
+    color: var(--color-brown-text-light);
+  }
+  
+  .text-brown-field {
+    color: var(--color-brown-text-field);
+  }
+  
+  .placeholder-brown {
+    color: var(--color-brown-placeholder);
+  }
+  
+  .ring-brown {
+    --tw-ring-color: var(--color-brown-ring);
+  }
+  
+  .text-brown-error {
+    color: var(--color-brown-error);
+  }
+  
+  .ring-brown-error {
+    --tw-ring-color: var(--color-brown-error-ring);
+  }
+  
+  .border-brown-error {
+    border-color: var(--color-brown-error-ring);
+  }
+  
+  .bg-blue-dark {
+    background-color: var(--color-blue-dark);
+  }
+  
+  .bg-blue-dark-hover:hover {
+    background-color: var(--color-blue-dark-hover);
+  }
+  
+  .bg-green-success {
+    background-color: var(--color-green-success-bg);
+  }
+  
+  .text-green-success {
+    color: var(--color-green-success);
+  }
+  
+  /* Classes Sidebar - Réutilisables */
+  .bg-sidebar {
+    background-color: var(--color-brown-dark);
+  }
+  
+  .text-sidebar {
+    color: var(--color-brown-text-light);
+  }
+  
+  .bg-sidebar-selected {
+    background-color: var(--color-sidebar-selected);
+  }
+  
+  .hover-sidebar:hover {
+    background-color: var(--color-sidebar-hover);
+    opacity: var(--color-sidebar-hover-opacity);
+  }
+  
+  .border-sidebar {
+    border-color: var(--color-brown-ring);
+  }
+  
+  .bg-linkedin {
+    background-color: var(--color-brown-darkest);
+  }
+  
+  .bg-linkedin-hover:hover {
+    background-color: var(--color-linkedin-hover);
+  }
+  
+  /* Classes ChatInput - Réutilisables */
+  .bg-chatinput {
+    background-color: var(--color-chatinput-bg);
+  }
+  
+  .text-chatinput {
+    color: var(--color-chatinput-text);
+  }
+  
+  .placeholder-chatinput::placeholder {
+    color: var(--color-chatinput-placeholder);
+  }
+  
+  .bg-button-plus {
+    background-color: var(--color-chatinput-button-plus);
+  }
+  
+  .bg-button-plus-hover:hover {
+    background-color: var(--color-chatinput-button-plus-hover);
+  }
+  
+  .bg-send-disabled:disabled {
+    background-color: var(--color-chatinput-send-disabled);
+  }
+  
+  .bg-suggestions {
+    background-color: var(--color-chatinput-suggestions-bg);
+  }
+  
+  .bg-suggestions-hover:hover {
+    background-color: var(--color-chatinput-suggestions-hover);
+  }
+  
+  /* Classes Headers - Réutilisables */
+  .text-header-title {
+    color: var(--color-header-title);
+  }
+  
+  .bg-toggle {
+    background-color: var(--color-toggle-bg);
+  }
+  
+  .bg-toggle-active {
+    background-color: var(--color-toggle-active);
+  }
+  
+  .bg-toggle-hover:hover {
+    background-color: var(--color-toggle-hover);
+  }
+  
+  /* Effet de fondu vers le bas (PageHeader) */
+  .fade-to-bottom::after {
+    content: '';
+    position: absolute;
+    bottom: -30px;
+    left: 0;
+    right: 0;
+    height: 30px;
+    background: linear-gradient(to bottom, var(--color-bg-main), transparent);
+    pointer-events: none;
+    z-index: 10;
+  }
+  
+  /* Effet de fondu vers le haut (ChatInput) */
+  .fade-to-top::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    background: linear-gradient(to top, var(--color-bg-main), transparent);
+    pointer-events: none;
+    z-index: 1;
+  }
+  
+  /* Classes ChatWindow - Réutilisables */
+  .bg-user-bubble {
+    background-color: var(--color-user-bubble);
+  }
+  
+  .bg-bot-bubble {
+    background-color: var(--color-bot-bubble);
+  }
+  
+  .border-suggestion {
+    border-color: var(--color-suggestion-border);
+  }
+  
+  .text-suggestion {
+    color: var(--color-suggestion-text);
+  }
+  
+  .hover-suggestion:hover {
+    background-color: var(--color-suggestion-hover-bg);
+    color: white;
+  }
+  
+  .text-delete-cross {
+    color: var(--color-delete-cross);
+  }
+  
+  .hover-delete-cross:hover {
+    color: var(--color-delete-cross-hover);
+  }
+  
+  .bg-delete-button {
+    background-color: var(--color-delete-button);
+  }
+  
+  .bg-delete-button-hover:hover {
+    background-color: var(--color-delete-button-hover);
+  }
+  
+  .text-primary {
+    color: var(--color-text-primary);
+  }
+  
+  .text-secondary {
+    color: var(--color-text-secondary);
+  }
+  
+  .text-muted {
+    color: var(--color-text-muted);
+  }
+  
+  .text-on-dark {
+    color: var(--color-text-light);
+  }
+  
+  .border-main {
+    border-color: var(--color-border);
+  }
+  
+  .border-light {
+    border-color: var(--color-border-light);
+  }
+  
+  .border-strong {
+    border-color: var(--color-border-strong);
+  }
+  
+  .hover-overlay:hover {
+    background-color: var(--color-hover-overlay);
+  }
+  
+  .shadow-custom-sm {
+    box-shadow: var(--shadow-sm);
+  }
+  
+  .shadow-custom-md {
+    box-shadow: var(--shadow-md);
+  }
+  
+  .shadow-custom-lg {
+    box-shadow: var(--shadow-lg);
+  }
+  
+  .shadow-custom-xl {
+    box-shadow: var(--shadow-xl);
+  }
+  
+  /* Effet de fondu pour le header */
+  .header-fade {
+    position: relative;
+  }
+  
+  .header-fade::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background: linear-gradient(to bottom, var(--color-bg-main), transparent);
+    pointer-events: none;
+  }
+}
+
+/* ========================================
+   MARKDOWN - STYLE PROSE
+   ======================================== */
+
+.prose-custom {
+  color: var(--color-bot-message-text);
+}
+
+.prose-custom strong {
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+.prose-custom a {
+  color: var(--color-action-blue);
+  text-decoration: underline;
+}
+
+.prose-custom a:hover {
+  color: var(--color-action-blue-hover);
+}
+
+.prose-custom code {
+  background-color: var(--color-bg-panel);
+  color: var(--color-text-primary);
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+}
+
+.prose-custom pre {
+  background-color: var(--color-bg-panel);
+  border: 1px solid var(--color-border);
+}
+
+.prose-custom ul, .prose-custom ol {
+  color: var(--color-bot-message-text);
+}
+
+.prose-custom h1, .prose-custom h2, .prose-custom h3, .prose-custom h4 {
+  color: var(--color-text-primary);
+}
+
+/* ========================================
+   SCROLLBAR PERSONNALISÉE
+   ======================================== */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-panel);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-accent);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent-hover);
+}
+
+/* ========================================
+   SCROLLBAR QUESTION BROWSER (Vert)
+   ======================================== */
+
+.question-browser-scroll::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.question-browser-scroll::-webkit-scrollbar-track {
+  background: var(--color-green-forest);
+}
+
+.question-browser-scroll::-webkit-scrollbar-thumb {
+  background: var(--color-green-moss);
+  border-radius: 4px;
+}
+
+.question-browser-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--color-green-forest-dark);
+}
+
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* ========================================
+   FOCUS STATES (Accessibilité)
+   ======================================== */
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Pas d'outline sur les inputs pour éviter les conflits */
+input:focus-visible,
+textarea:focus-visible {
+  outline: none;
+}
+
+/* Forcer les bordures vertes sur QuestionBrowser uniquement */
+input.question-browser-input:focus {
+  box-shadow: 0 0 0 2px #4A5A3D, 0 0 0 4px #3D4A33 !important;
+}
+
+/* Ajouter ces styles à la fin de app/globals.css */
+
+/* ========================================
+   MARKDOWN - STYLE PROSE POUR BULLES BOT
+   ======================================== */
+
+/* Liens dans les bulles bot - Couleur adaptée au fond beige */
+.prose-bot-bubble a {
+  color: #3B5F7C !important; /* Bleu plus foncé pour contraste sur fond beige */
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.prose-bot-bubble a:hover {
+  color: #2D4A60 !important; /* Bleu encore plus foncé au survol */
+  text-decoration: none;
+}
+
+/* Ajouter ces styles à la fin de app/globals.css */
+
+/* ========================================
+   MARKDOWN - STYLE PROSE POUR BULLES BOT
+   ======================================== */
+
+/* Liens dans les bulles bot - Couleur adaptée au fond beige */
+.prose-bot-bubble a {
+  color: #3B5F7C !important; /* Bleu plus foncé pour contraste sur fond beige */
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.prose-bot-bubble a:hover {
+  color: #2D4A60 !important; /* Bleu encore plus foncé au survol */
+  text-decoration: none;
+}
+
+/* Styles markdown pour les bulles bot */
+.prose-bot-bubble {
+  color: #2D2620; /* Texte principal */
+}
+
+.prose-bot-bubble h1,
+.prose-bot-bubble h2,
+.prose-bot-bubble h3,
+.prose-bot-bubble h4,
+.prose-bot-bubble h5,
+.prose-bot-bubble h6 {
+  color: #1A1410;
+  font-weight: 700;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  line-height: 1.3;
+}
+
+.prose-bot-bubble h1 { font-size: 1.5em; }
+.prose-bot-bubble h2 { font-size: 1.3em; }
+.prose-bot-bubble h3 { font-size: 1.15em; }
+.prose-bot-bubble h4 { font-size: 1em; }
+
+.prose-bot-bubble strong,
+.prose-bot-bubble b {
+  color: #1A1410;
+  font-weight: 600;
+}
+
+.prose-bot-bubble em,
+.prose-bot-bubble i {
+  font-style: italic;
+}
+
+.prose-bot-bubble ul,
+.prose-bot-bubble ol {
+  margin-top: 0.75em;
+  margin-bottom: 0.75em;
+  padding-left: 1.5em;
+}
+
+.prose-bot-bubble li {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+.prose-bot-bubble ul > li {
+  list-style-type: disc;
+}
+
+.prose-bot-bubble ol > li {
+  list-style-type: decimal;
+}
+
+.prose-bot-bubble p {
+  margin-top: 0.75em;
+  margin-bottom: 0.75em;
+}
+
+.prose-bot-bubble p:first-child {
+  margin-top: 0;
+}
+
+.prose-bot-bubble p:last-child {
+  margin-bottom: 0;
+}
+
+.prose-bot-bubble code {
+  background-color: #8A7968;
+  color: #1A1410;
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.prose-bot-bubble pre {
+  background-color: #8A7968;
+  color: #F5F3F0;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.prose-bot-bubble pre code {
+  background-color: transparent;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+}
+
+.prose-bot-bubble blockquote {
+  border-left: 4px solid #7D6B5C;
+  padding-left: 1em;
+  font-style: italic;
+  color: #4A4037;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.prose-bot-bubble hr {
+  border: none;
+  border-top: 2px solid #7D6B5C;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+
+.prose-bot-bubble table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.prose-bot-bubble th,
+.prose-bot-bubble td {
+  border: 1px solid #7D6B5C;
+  padding: 0.5em;
+  text-align: left;
+}
+
+.prose-bot-bubble th {
+  background-color: #8A7968;
+  font-weight: 600;
+  color: #1A1410;
+}
+
+/* ========================================
+   BULLES MULTIPLES - ESPACEMENT
+   ======================================== */
+
+/* Conteneur pour les bulles multiples d'un même message */
+.bot-message-bubbles {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; /* 8px d'espace entre les bulles */
+  max-width: 48rem; /* max-w-3xl */
+}
+
+/* Chaque bulle individuelle */
+.bot-bubble-part {
+  width: fit-content;
+  max-width: 100%;
+}
