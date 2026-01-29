@@ -267,7 +267,10 @@ export default function ChatInput({ pageId }: Props) {
 
   return (
     <>
-      <div className="p-4 md:p-6 bg-main relative fade-to-top">
+      <div 
+        className="p-4 md:p-6 bg-main relative fade-to-top chat-input-wrapper" 
+        style={{ paddingBottom: 'max(1rem, env(safe-area-inset-bottom))' }}
+      >
         <div className="max-w-3xl mx-auto relative" style={{ zIndex: 2 }}>
           {suggestions.length > 0 && (
             <div className="absolute bottom-full left-0 right-0 mb-2 bg-suggestions rounded-2xl shadow-custom-xl overflow-hidden">

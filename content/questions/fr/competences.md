@@ -20,3 +20,8 @@ Des compétences variées, orientées **data**, **développement** et **travail 
 - Curiosité, autonomie et esprit d’initiative
 - Adaptation, patience et persévérance 
 - Communication et vulgarisation technique
+%
+**Compétences linguistiques :**  
+- Français : langue maternelle  
+- Anglais : niveau B2  
+- Espagnol : niveau A1  

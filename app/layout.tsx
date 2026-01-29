@@ -47,8 +47,9 @@ export default function RootLayout({
       <head>
         <title>Portfolio</title>
         <meta name="description" content="Portfolio interactif" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
       </head>
-      <body className="h-screen overflow-hidden bg-main text-primary">
+      <body className="h-dvh overflow-hidden bg-main text-primary" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
         <LayoutContent>{children}</LayoutContent>
       </body>
     </html>

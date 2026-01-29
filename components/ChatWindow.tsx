@@ -110,7 +110,21 @@ export default function ChatWindow({ pageId }: Props) {
 
   useEffect(() => {
     if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight
+      // Sur mobile, laisser un espace pour que l'input reste visible
+      const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
+      const offset = isMobile ? 150 : 0 // 150px d'espace sur mobile pour l'input
+      
+      requestAnimationFrame(() => {
+        if (scrollRef.current) {
+          const maxScroll = scrollRef.current.scrollHeight - scrollRef.current.clientHeight
+          const targetScroll = maxScroll - offset
+          
+          scrollRef.current.scrollTo({
+            top: Math.max(0, targetScroll),
+            behavior: 'smooth'
+          })
+        }
+      })
     }
   }, [messages, typingMessage])
 

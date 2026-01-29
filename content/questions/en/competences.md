@@ -20,3 +20,8 @@ A range of skills focused on **data**, **development**, and **teamwork**.
 - Curiosity, autonomy, and initiative  
 - Adaptability, patience, and perseverance  
 - Communication and technical explanation
+%
+**Language skills:**  
+- French: native speaker  
+- English: B2 level  
+- Spanish: A1 level

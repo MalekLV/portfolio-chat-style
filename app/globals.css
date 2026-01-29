@@ -770,3 +770,24 @@ input.question-browser-input:focus {
   width: fit-content;
   max-width: 100%;
 }
+
+.h-dvh {
+  height: 100dvh;
+}
+
+.min-h-dvh {
+  min-height: 100dvh;
+}
+
+/* Ajuster l'input pour mobile - éviter qu'il soit caché */
+.chat-input-wrapper {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Sur mobile, empêcher le scroll de cacher complètement l'input */
+@media (max-width: 768px) {
+  .chat-window-scroll {
+    /* Ajouter un padding en bas pour laisser de l'espace pour l'input */
+    padding-bottom: 120px;
+  }
+}
