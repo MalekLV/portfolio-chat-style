@@ -1,4 +1,4 @@
-/* app/globals.css */
+/* app/globals.css - VERSION CONSOLIDÉE */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -121,6 +121,27 @@ html, body {
   height: 100%;
   background-color: var(--color-bg-main);
   color: var(--color-text-primary);
+}
+
+/* Support des hauteurs dynamiques viewport pour mobile */
+.h-dvh {
+  height: 100dvh;
+}
+
+.min-h-dvh {
+  min-height: 100dvh;
+}
+
+/* Ajuster l'input pour mobile - éviter qu'il soit caché */
+.chat-input-wrapper {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Sur mobile, empêcher le scroll de cacher complètement l'input */
+@media (max-width: 768px) {
+  .chat-window-scroll {
+    padding-bottom: 120px;
+  }
 }
 
 /* ========================================
@@ -567,6 +588,67 @@ html, body {
   animation: fadeIn 0.3s ease-out;
 }
 
+/* Animation pour les bulles d'explosion (ChatWindow) */
+@keyframes bubble-fly {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--tx), var(--ty)) scale(0);
+    opacity: 0;
+  }
+}
+
+.bubble-particle {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: bubble-fly 0.7s ease-out forwards;
+  z-index: 100;
+}
+
+/* ========================================
+   CHAT WINDOW - STYLES DE SUPPRESSION
+   ======================================== */
+
+.user-message-wrapper {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  padding-right: 40px;
+}
+
+.user-message-wrapper.can-delete:hover .user-message-container,
+.user-message-wrapper.swiped .user-message-container {
+  transform: translateX(-40px);
+}
+
+.user-message-container {
+  transition: transform 0.2s ease-out;
+  position: relative;
+}
+
+.delete-button-wrapper {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease-out;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-message-wrapper.can-delete:hover .delete-button-wrapper,
+.user-message-wrapper.swiped .delete-button-wrapper {
+  opacity: 1;
+  pointer-events: auto;
+}
+
 /* ========================================
    FOCUS STATES (Accessibilité)
    ======================================== */
@@ -587,26 +669,6 @@ textarea:focus-visible {
 input.question-browser-input:focus {
   box-shadow: 0 0 0 2px #4A5A3D, 0 0 0 4px #3D4A33 !important;
 }
-
-/* Ajouter ces styles à la fin de app/globals.css */
-
-/* ========================================
-   MARKDOWN - STYLE PROSE POUR BULLES BOT
-   ======================================== */
-
-/* Liens dans les bulles bot - Couleur adaptée au fond beige */
-.prose-bot-bubble a {
-  color: #3B5F7C !important; /* Bleu plus foncé pour contraste sur fond beige */
-  text-decoration: underline;
-  font-weight: 500;
-}
-
-.prose-bot-bubble a:hover {
-  color: #2D4A60 !important; /* Bleu encore plus foncé au survol */
-  text-decoration: none;
-}
-
-/* Ajouter ces styles à la fin de app/globals.css */
 
 /* ========================================
    MARKDOWN - STYLE PROSE POUR BULLES BOT
@@ -769,25 +831,4 @@ input.question-browser-input:focus {
 .bot-bubble-part {
   width: fit-content;
   max-width: 100%;
-}
-
-.h-dvh {
-  height: 100dvh;
-}
-
-.min-h-dvh {
-  min-height: 100dvh;
-}
-
-/* Ajuster l'input pour mobile - éviter qu'il soit caché */
-.chat-input-wrapper {
-  padding-bottom: env(safe-area-inset-bottom, 0px);
-}
-
-/* Sur mobile, empêcher le scroll de cacher complètement l'input */
-@media (max-width: 768px) {
-  .chat-window-scroll {
-    /* Ajouter un padding en bas pour laisser de l'espace pour l'input */
-    padding-bottom: 120px;
-  }
 }

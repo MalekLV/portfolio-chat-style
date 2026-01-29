@@ -336,8 +336,8 @@ export default function ChatWindow({ pageId }: Props) {
       return
     }
     
-    // Sélectionner TOUTES les bulles du message bot (pour gérer les %)
-    const botBubbles = botContainer.querySelectorAll('.message-bubble')
+    // Sélectionner TOUTES les bulles du message bot (chercher dans tout le container, pas juste les enfants directs)
+    const botBubbles = botContainer.querySelectorAll('.bot-bubble-part')
     
     const newBubbles: Array<{
       initialX: number, 
@@ -438,64 +438,6 @@ export default function ChatWindow({ pageId }: Props) {
 
   return (
     <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-6 space-y-6 relative">
-      <style jsx global>{`
-        @keyframes bubble-fly {
-          0% {
-            transform: translate(0, 0) scale(1);
-            opacity: 1;
-          }
-          100% {
-            transform: translate(var(--tx), var(--ty)) scale(0);
-            opacity: 0;
-          }
-        }
-
-        .bubble-particle {
-          position: fixed;
-          border-radius: 50%;
-          pointer-events: none;
-          animation: bubble-fly 0.7s ease-out forwards;
-          z-index: 100;
-        }
-
-        .user-message-wrapper {
-          position: relative;
-          display: inline-block;
-          max-width: 100%;
-          padding-right: 40px;
-        }
-
-        .user-message-wrapper.can-delete:hover .user-message-container,
-        .user-message-wrapper.swiped .user-message-container {
-          transform: translateX(-40px);
-        }
-
-        .user-message-container {
-          transition: transform 0.2s ease-out;
-          position: relative;
-        }
-
-        .delete-button-wrapper {
-          position: absolute;
-          right: 0;
-          top: 50%;
-          transform: translateY(-50%);
-          opacity: 0;
-          pointer-events: none;
-          transition: opacity 0.2s ease-out;
-          width: 40px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .user-message-wrapper.can-delete:hover .delete-button-wrapper,
-        .user-message-wrapper.swiped .delete-button-wrapper {
-          opacity: 1;
-          pointer-events: auto;
-        }
-      `}</style>
-
       {deletingIndex !== null && bubbles.map((bubble, i) => (
         <div
           key={i}
