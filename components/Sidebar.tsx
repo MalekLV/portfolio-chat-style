@@ -5,7 +5,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import Image from "next/image"
-import { Zap, ZapOff } from "lucide-react"
+import { Zap, ZapOff, FileText } from "lucide-react"
 import { useLanguageStore } from "../lib/languageStore"
 import { useSettingsStore } from "../lib/settingsStore"
 import ContactModal from "./ContactModal"
@@ -16,6 +16,8 @@ export default function Sidebar() {
   const [showContactModal, setShowContactModal] = useState(false)
   const [showLinkedInTooltip, setShowLinkedInTooltip] = useState(false)
   const [showAnimationTooltip, setShowAnimationTooltip] = useState(false)
+  const [showCVTooltip, setShowCVTooltip] = useState(false)
+  const [showGitHubTooltip, setShowGitHubTooltip] = useState(false)
 
   const animationsEnabled = useSettingsStore(s => s.animationsEnabled)
   const toggleAnimations = useSettingsStore(s => s.toggleAnimations)
@@ -34,6 +36,14 @@ export default function Sidebar() {
   function handleLinkedInClick(e: React.MouseEvent) {
     e.stopPropagation()
     window.open("https://www.linkedin.com/in/malek-le-velly/", "_blank")
+  }
+
+  function handleCVClick() {
+    window.open("/LE-VELLY_Malek_CV.pdf", "_blank")
+  }
+
+  function handleGitHubClick() {
+    window.open("https://github.com/MalekLV", "_blank")
   }
 
   return (
@@ -86,11 +96,97 @@ export default function Sidebar() {
             )}
           </div>
 
-          {/* Bouton Contact avec LinkedIn */}
-          <div className="relative">
+          {/* Section Liens - CV, LinkedIn, GitHub */}
+          <div className="space-y-2 pt-2">
+            {/* Bouton CV */}
+            <div className="relative">
+              <button
+                onClick={handleCVClick}
+                onMouseEnter={() => setShowCVTooltip(true)}
+                onMouseLeave={() => setShowCVTooltip(false)}
+                className="w-full px-4 py-3 rounded-lg bg-brown-ring hover:bg-opacity-80 transition-colors flex items-center gap-3 shadow-custom-sm"
+              >
+                <span className="flex-1 text-left font-bold text-sidebar text-lg">
+                  CV
+                </span>
+                <div className="w-8 h-8 flex items-center justify-center">
+                  <FileText size={20} className="text-sidebar" />
+                </div>
+              </button>
+
+              {showCVTooltip && (
+                <div className="absolute left-full ml-2 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-accent text-on-dark text-xs rounded whitespace-nowrap shadow-custom-lg z-20 pointer-events-none">
+                  {t("sidebar.cv")}
+                </div>
+              )}
+            </div>
+
+            {/* Bouton LinkedIn */}
+            <div className="relative">
+              <button
+                onClick={handleLinkedInClick}
+                onMouseEnter={() => setShowLinkedInTooltip(true)}
+                onMouseLeave={() => setShowLinkedInTooltip(false)}
+                className="w-full px-4 py-3 rounded-lg bg-brown-ring hover:bg-opacity-80 transition-colors flex items-center gap-3 shadow-custom-sm"
+              >
+                <span className="flex-1 text-left font-bold text-sidebar text-lg">
+                  LinkedIn
+                </span>
+                <div className="w-8 h-8 rounded-full bg-linkedin flex items-center justify-center shadow-custom-sm">
+                  <Image
+                    src="/linkedin.jpg"
+                    alt="LinkedIn"
+                    width={20}
+                    height={20}
+                    className="w-5 h-5"
+                    unoptimized
+                  />
+                </div>
+              </button>
+
+              {showLinkedInTooltip && (
+                <div className="absolute left-full ml-2 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-accent text-on-dark text-xs rounded whitespace-nowrap shadow-custom-lg z-20 pointer-events-none">
+                  {t("sidebar.linkedin")}
+                </div>
+              )}
+            </div>
+
+            {/* Bouton GitHub */}
+            <div className="relative">
+              <button
+                onClick={handleGitHubClick}
+                onMouseEnter={() => setShowGitHubTooltip(true)}
+                onMouseLeave={() => setShowGitHubTooltip(false)}
+                className="w-full px-4 py-3 rounded-lg bg-brown-ring hover:bg-opacity-80 transition-colors flex items-center gap-3 shadow-custom-sm"
+              >
+                <span className="flex-1 text-left font-bold text-sidebar text-lg">
+                  GitHub
+                </span>
+                <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-custom-sm overflow-hidden">
+                  <Image
+                    src="/github.png"
+                    alt="GitHub"
+                    width={32}
+                    height={32}
+                    className="w-full h-full object-cover"
+                    unoptimized
+                  />
+                </div>
+              </button>
+
+              {showGitHubTooltip && (
+                <div className="absolute left-full ml-2 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-accent text-on-dark text-xs rounded whitespace-nowrap shadow-custom-lg z-20 pointer-events-none">
+                  {t("sidebar.github")}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Bouton Contact */}
+          <div className="relative pt-2">
             <div
               onClick={() => setShowContactModal(true)}
-              className="w-full px-4 py-3 pr-16 rounded-lg text-xl hover:bg-sidebar-selected hover:bg-opacity-50 transition-colors flex items-center gap-3 cursor-pointer"
+              className="w-full px-4 py-3 rounded-lg text-xl hover:bg-sidebar-selected hover:bg-opacity-50 transition-colors flex items-center gap-3 cursor-pointer"
             >
               <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 border-2 border-sidebar shadow-custom-sm">
                 <Image
@@ -104,33 +200,6 @@ export default function Sidebar() {
               </div>
               
               <span className="flex-1 font-bold text-sidebar">{t("sidebar.contact")}</span>
-            </div>
-
-            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-              <div
-                onClick={handleLinkedInClick}
-                onMouseEnter={() => setShowLinkedInTooltip(true)}
-                onMouseLeave={() => setShowLinkedInTooltip(false)}
-                className="w-10 h-10 rounded-full bg-linkedin hover:bg-linkedin-hover transition-all flex items-center justify-center flex-shrink-0 cursor-pointer shadow-custom-md z-10 relative pointer-events-auto"
-                role="button"
-                tabIndex={0}
-                aria-label={t("sidebar.linkedin")}
-              >
-                <Image
-                  src="/linkedin.jpg"
-                  alt="LinkedIn"
-                  width={20}
-                  height={20}
-                  className="w-5 h-5"
-                  unoptimized
-                />
-              </div>
-
-              {showLinkedInTooltip && (
-                <div className="absolute bottom-full right-0 mb-2 px-3 py-1.5 bg-linkedin text-brown-light text-xs rounded whitespace-nowrap shadow-custom-lg z-20 pointer-events-none">
-                  {t("sidebar.linkedin")}
-                </div>
-              )}
             </div>
           </div>
         </div>
