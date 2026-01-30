@@ -82,7 +82,7 @@ export default function MobileSidebar() {
 
         <div className="mt-auto space-y-3">
           {/* Bouton Animation */}
-          <div className="pt-4 border-t-2 border-sidebar">
+          <div>
             <button
               onClick={toggleAnimations}
               className="w-full px-4 py-3 rounded-lg text-lg hover:bg-sidebar-selected hover:bg-opacity-50 transition-colors flex items-center gap-3"

@@ -32,6 +32,7 @@
     --color-green-selected: #5F7050;       /* Vert sélectionné */
     --color-green-text-dark: #1F2619;      /* Texte vert très foncé */
     --color-green-text-light: #E8EBE0;     /* Texte clair sur vert */
+    --color-green-text-input: #F5FAF0;     /* Texte saisi par l'utilisateur dans QuestionBrowser (très clair) */
     --color-green-placeholder: #768566;    /* Placeholder sur fond vert */
     
     /* Variantes de marron foncé pour ContactModal + Sidebar */
@@ -40,6 +41,7 @@
     --color-brown-field: #4A3F32;          /* Marron clair (ContactModal champs) */
     --color-brown-text-light: #E8E3DC;     /* Texte clair sur marron (ContactModal + Sidebar texte) */
     --color-brown-text-field: #3A2F24;     /* Texte dans les champs */
+    --color-brown-text-input: #F5F0E8;     /* Texte saisi par l'utilisateur dans ContactModal (très clair) */
     --color-brown-placeholder: #8A7A68;    /* Placeholder dans les champs */
     --color-brown-ring: #6B5A47;           /* Ring de focus marron (ContactModal champs focus, Sidebar séparateur) */
     --color-brown-error: #D87C6F;          /* Rouge-marron pour erreurs */
@@ -209,6 +211,10 @@ html, body {
     color: var(--color-green-text-light);
   }
   
+  .text-green-input {
+    color: var(--color-green-text-input);
+  }
+  
   .placeholder-green {
     color: var(--color-green-placeholder);
   }
@@ -235,6 +241,10 @@ html, body {
   
   .text-brown-field {
     color: var(--color-brown-text-field);
+  }
+  
+  .text-brown-input {
+    color: var(--color-brown-text-input);
   }
   
   .placeholder-brown {

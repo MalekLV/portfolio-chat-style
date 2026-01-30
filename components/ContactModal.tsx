@@ -180,7 +180,7 @@ export default function ContactModal({ isOpen, onClose }: Props) {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className="w-full rounded-lg bg-brown-field px-4 py-2.5 outline-none transition-all text-brown-light placeholder-brown font-medium focus:shadow-[0_0_0_2px_#2D2419,0_0_0_4px_#6B5A47]"
+                className="w-full rounded-lg bg-brown-field px-4 py-2.5 outline-none transition-all text-brown-input placeholder-brown font-medium focus:shadow-[0_0_0_2px_#2D2419,0_0_0_4px_#6B5A47]"
                 placeholder={t("contact.namePlaceholder")}
               />
               {errors.name && (
@@ -198,7 +198,7 @@ export default function ContactModal({ isOpen, onClose }: Props) {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full rounded-lg bg-brown-field px-4 py-2.5 outline-none transition-all text-brown-light placeholder-brown font-medium focus:shadow-[0_0_0_2px_#2D2419,0_0_0_4px_#6B5A47]"
+                className="w-full rounded-lg bg-brown-field px-4 py-2.5 outline-none transition-all text-brown-input placeholder-brown font-medium focus:shadow-[0_0_0_2px_#2D2419,0_0_0_4px_#6B5A47]"
                 placeholder={t("contact.emailPlaceholder")}
               />
               {errors.email && (
@@ -216,7 +216,7 @@ export default function ContactModal({ isOpen, onClose }: Props) {
                 name="subject"
                 value={formData.subject}
                 onChange={handleChange}
-                className="w-full rounded-lg bg-brown-field px-4 py-2.5 outline-none transition-all text-brown-light placeholder-brown font-medium focus:shadow-[0_0_0_2px_#2D2419,0_0_0_4px_#6B5A47]"
+                className="w-full rounded-lg bg-brown-field px-4 py-2.5 outline-none transition-all text-brown-input placeholder-brown font-medium focus:shadow-[0_0_0_2px_#2D2419,0_0_0_4px_#6B5A47]"
                 placeholder={t("contact.subjectPlaceholder")}
               />
               {errors.subject && (
@@ -234,7 +234,7 @@ export default function ContactModal({ isOpen, onClose }: Props) {
                 value={formData.message}
                 onChange={handleChange}
                 rows={6}
-                className="w-full rounded-lg bg-brown-field px-4 py-2.5 outline-none transition-all resize-none text-brown-light placeholder-brown font-medium focus:shadow-[0_0_0_2px_#2D2419,0_0_0_4px_#6B5A47]"
+                className="w-full rounded-lg bg-brown-field px-4 py-2.5 outline-none transition-all resize-none text-brown-input placeholder-brown font-medium focus:shadow-[0_0_0_2px_#2D2419,0_0_0_4px_#6B5A47]"
                 placeholder={t("contact.messagePlaceholder")}
               />
               {errors.message && (

@@ -69,7 +69,7 @@ export default function Sidebar() {
 
         <div className="mt-auto space-y-3">
           {/* Bouton Animation */}
-          <div className="relative pt-4 border-t-2 border-sidebar">
+          <div className="relative">
             <button
               onClick={toggleAnimations}
               onMouseEnter={() => setShowAnimationTooltip(true)}
