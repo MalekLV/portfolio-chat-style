@@ -109,7 +109,7 @@ export default function Sidebar() {
                   onMouseLeave={() => setShowCVTooltip(false)}
                   className="w-12 h-12 rounded-full bg-brown-ring hover:bg-opacity-70 transition-all flex items-center justify-center shadow-custom-sm"
                 >
-                  <div className="w-10 h-10 rounded-full bg-brown-ring flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-full bg-brown-link flex items-center justify-center">
                     <FileText size={20} className="text-on-dark" />
                   </div>
                 </button>
@@ -131,7 +131,7 @@ export default function Sidebar() {
                 onMouseLeave={() => setShowLinkedInTooltip(false)}
                 className="w-12 h-12 rounded-full bg-brown-ring hover:bg-opacity-70 transition-all flex items-center justify-center shadow-custom-sm"
               >
-                <div className="w-10 h-10 rounded-full bg-brown-ring flex items-center justify-center">
+                <div className="w-10 h-10 rounded-full bg-brown-link flex items-center justify-center">
                   <Linkedin size={20} className="text-on-dark" />
                 </div>
               </button>
@@ -151,7 +151,7 @@ export default function Sidebar() {
                 onMouseLeave={() => setShowGitHubTooltip(false)}
                 className="w-12 h-12 rounded-full bg-brown-ring hover:bg-opacity-70 transition-all flex items-center justify-center shadow-custom-sm"
               >
-                <div className="w-10 h-10 rounded-full bg-brown-ring flex items-center justify-center">
+                <div className="w-10 h-10 rounded-full bg-brown-link flex items-center justify-center">
                   <Github size={20} className="text-on-dark" />
                 </div>
               </button>
