@@ -6,7 +6,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { motion } from "framer-motion"
 import Image from "next/image"
-import { Zap, ZapOff, FileText } from "lucide-react"
+import { Zap, ZapOff } from "lucide-react"
 import { useUIStore } from "../lib/uiStore"
 import { useLanguageStore } from "../lib/languageStore"
 import { useSettingsStore } from "../lib/settingsStore"
@@ -102,64 +102,59 @@ export default function MobileSidebar() {
             </span>
           </button>
 
-          {/* Section Liens - CV, LinkedIn, GitHub */}
-          <div className="space-y-2 pt-2">
-            {/* Bouton CV */}
-            <button
-              onClick={handleCVClick}
-              className="w-full px-4 py-3 rounded-lg bg-brown-ring hover:bg-opacity-80 transition-colors flex items-center gap-3 shadow-custom-sm"
-            >
-              <span className="flex-1 text-left font-bold text-sidebar">
-                CV
-              </span>
-              <div className="w-8 h-8 flex items-center justify-center">
-                <FileText size={20} className="text-sidebar" />
-              </div>
-            </button>
+          {/* Section Liens - CV, LinkedIn, GitHub (3 cercles horizontaux) */}
+          <div className="flex items-center gap-3 px-4 py-2">
+            {/* Bouton CV avec texte */}
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleCVClick}
+                className="w-12 h-12 rounded-full bg-brown-ring hover:bg-opacity-70 transition-all flex items-center justify-center shadow-custom-sm"
+              >
+                <Image
+                  src="/upload.png"
+                  alt="CV"
+                  width={24}
+                  height={24}
+                  className="w-6 h-6"
+                  unoptimized
+                />
+              </button>
+              <span className="text-sidebar font-bold text-base">CV</span>
+            </div>
 
             {/* Bouton LinkedIn */}
             <button
               onClick={handleLinkedInClick}
-              className="w-full px-4 py-3 rounded-lg bg-brown-ring hover:bg-opacity-80 transition-colors flex items-center gap-3 shadow-custom-sm"
+              className="w-12 h-12 rounded-full bg-brown-ring hover:bg-opacity-70 transition-all flex items-center justify-center shadow-custom-sm"
             >
-              <span className="flex-1 text-left font-bold text-sidebar">
-                LinkedIn
-              </span>
-              <div className="w-8 h-8 rounded-full bg-linkedin flex items-center justify-center shadow-custom-sm">
-                <Image
-                  src="/linkedin.jpg"
-                  alt="LinkedIn"
-                  width={20}
-                  height={20}
-                  className="w-5 h-5"
-                  unoptimized
-                />
-              </div>
+              <Image
+                src="/linkedin.png"
+                alt="LinkedIn"
+                width={24}
+                height={24}
+                className="w-6 h-6"
+                unoptimized
+              />
             </button>
 
             {/* Bouton GitHub */}
             <button
               onClick={handleGitHubClick}
-              className="w-full px-4 py-3 rounded-lg bg-brown-ring hover:bg-opacity-80 transition-colors flex items-center gap-3 shadow-custom-sm"
+              className="w-12 h-12 rounded-full bg-brown-ring hover:bg-opacity-70 transition-all flex items-center justify-center shadow-custom-sm"
             >
-              <span className="flex-1 text-left font-bold text-sidebar">
-                GitHub
-              </span>
-              <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-custom-sm overflow-hidden">
-                <Image
-                  src="/github.png"
-                  alt="GitHub"
-                  width={32}
-                  height={32}
-                  className="w-full h-full object-cover"
-                  unoptimized
-                />
-              </div>
+              <Image
+                src="/github.png"
+                alt="GitHub"
+                width={24}
+                height={24}
+                className="w-6 h-6"
+                unoptimized
+              />
             </button>
           </div>
 
           {/* Bouton Contact */}
-          <div className="relative pt-2">
+          <div className="relative">
             <div
               onClick={handleContactClick}
               className="w-full px-4 py-3 rounded-lg text-lg hover:bg-sidebar-selected hover:bg-opacity-50 transition-colors flex items-center gap-3 cursor-pointer"
