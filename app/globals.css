@@ -219,6 +219,10 @@ html, body {
     color: var(--color-green-placeholder);
   }
   
+  .placeholder-green::placeholder {
+    color: var(--color-green-placeholder);
+  }
+  
   .ring-green-selected {
     --tw-ring-color: var(--color-green-selected);
   }
@@ -249,6 +253,26 @@ html, body {
   
   .placeholder-brown {
     color: var(--color-brown-placeholder);
+  }
+  
+  /* Règles spécifiques pour forcer la couleur du texte saisi */
+  input.text-brown-input,
+  textarea.text-brown-input {
+    color: var(--color-brown-text-input) !important;
+  }
+  
+  input.text-green-input {
+    color: var(--color-green-text-input) !important;
+  }
+  
+  /* Placeholders avec spécificité plus élevée */
+  input.text-brown-input::placeholder,
+  textarea.text-brown-input::placeholder {
+    color: var(--color-brown-placeholder) !important;
+  }
+  
+  input.text-green-input::placeholder {
+    color: var(--color-green-placeholder) !important;
   }
   
   .ring-brown {

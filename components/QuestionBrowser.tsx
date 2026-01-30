@@ -239,7 +239,7 @@ export default function QuestionBrowser({ isOpen, onClose, onSelectQuestion }: P
                 onChange={e => setSearchText(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder={t("browser.search")}
-                className="question-browser-input w-full rounded-lg bg-green-moss px-4 py-2.5 outline-none transition-all text-green-input placeholder-green font-medium"
+                className="question-browser-input w-full rounded-lg bg-green-moss px-4 py-2.5 outline-none transition-all text-green-input font-medium"
                 autoFocus
               />
             </div>
