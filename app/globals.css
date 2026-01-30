@@ -326,11 +326,11 @@ html, body {
   
   /* Fond marron pour les boutons de liens (CV, LinkedIn, GitHub) */
   .bg-brown-link {
-    background-color: #6B5A47;
+    background-color: #5A4A38;
   }
   
-  .bg-brown-link-hover:hover {
-    background-color: #5A4A38;
+  .bg-brown-link:hover {
+    background-color: #4A3A28;
   }
   
   .bg-send-disabled:disabled {

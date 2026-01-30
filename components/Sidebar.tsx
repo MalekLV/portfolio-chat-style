@@ -107,9 +107,9 @@ export default function Sidebar() {
                   onClick={handleCVClick}
                   onMouseEnter={() => setShowCVTooltip(true)}
                   onMouseLeave={() => setShowCVTooltip(false)}
-                  className="w-12 h-12 rounded-full bg-brown-ring hover:bg-opacity-70 transition-all flex items-center justify-center shadow-custom-sm"
+                  className="w-12 h-12 rounded-full bg-brown-ring hover:bg-opacity-70 transition-all flex items-center justify-center shadow-custom-sm group"
                 >
-                  <div className="w-10 h-10 rounded-full bg-brown-link flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-full bg-brown-link group-hover:bg-[#4A3A28] transition-colors flex items-center justify-center">
                     <FileText size={20} className="text-on-dark" />
                   </div>
                 </button>
@@ -129,9 +129,9 @@ export default function Sidebar() {
                 onClick={handleLinkedInClick}
                 onMouseEnter={() => setShowLinkedInTooltip(true)}
                 onMouseLeave={() => setShowLinkedInTooltip(false)}
-                className="w-12 h-12 rounded-full bg-brown-ring hover:bg-opacity-70 transition-all flex items-center justify-center shadow-custom-sm"
+                className="w-12 h-12 rounded-full bg-brown-ring hover:bg-opacity-70 transition-all flex items-center justify-center shadow-custom-sm group"
               >
-                <div className="w-10 h-10 rounded-full bg-brown-link flex items-center justify-center">
+                <div className="w-10 h-10 rounded-full bg-brown-link group-hover:bg-[#4A3A28] transition-colors flex items-center justify-center">
                   <Linkedin size={20} className="text-on-dark" />
                 </div>
               </button>
@@ -149,9 +149,9 @@ export default function Sidebar() {
                 onClick={handleGitHubClick}
                 onMouseEnter={() => setShowGitHubTooltip(true)}
                 onMouseLeave={() => setShowGitHubTooltip(false)}
-                className="w-12 h-12 rounded-full bg-brown-ring hover:bg-opacity-70 transition-all flex items-center justify-center shadow-custom-sm"
+                className="w-12 h-12 rounded-full bg-brown-ring hover:bg-opacity-70 transition-all flex items-center justify-center shadow-custom-sm group"
               >
-                <div className="w-10 h-10 rounded-full bg-brown-link flex items-center justify-center">
+                <div className="w-10 h-10 rounded-full bg-brown-link group-hover:bg-[#4A3A28] transition-colors flex items-center justify-center">
                   <Github size={20} className="text-on-dark" />
                 </div>
               </button>
