@@ -6,7 +6,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { motion } from "framer-motion"
 import Image from "next/image"
-import { Zap, ZapOff } from "lucide-react"
+import { Zap, ZapOff, FileText, Linkedin, Github } from "lucide-react"
 import { useUIStore } from "../lib/uiStore"
 import { useLanguageStore } from "../lib/languageStore"
 import { useSettingsStore } from "../lib/settingsStore"
@@ -18,9 +18,6 @@ export default function MobileSidebar() {
   const pathname = usePathname()
   const t = useLanguageStore(s => s.t)
   const [showContactModal, setShowContactModal] = useState(false)
-  const [showLinkedInTooltip, setShowLinkedInTooltip] = useState(false)
-  const [showCVTooltip, setShowCVTooltip] = useState(false)
-  const [showGitHubTooltip, setShowGitHubTooltip] = useState(false)
 
   const animationsEnabled = useSettingsStore(s => s.animationsEnabled)
   const toggleAnimations = useSettingsStore(s => s.toggleAnimations)
@@ -83,13 +80,13 @@ export default function MobileSidebar() {
           ))}
         </nav>
 
-        <div className="mt-auto pt-4 border-t-2 border-sidebar space-y-2">
+        <div className="mt-auto pt-4 border-t-2 border-sidebar space-y-3">
           {/* Bouton Animation */}
           <button
             onClick={toggleAnimations}
             className="w-full px-4 py-3 rounded-lg text-lg hover:bg-sidebar-selected hover:bg-opacity-50 transition-colors flex items-center gap-3"
           >
-            <div className="w-10 h-10 rounded-full bg-button-plus flex items-center justify-center flex-shrink-0 shadow-custom-sm">
+            <div className="w-10 h-10 rounded-full bg-brown-ring flex items-center justify-center flex-shrink-0 shadow-custom-sm hover:bg-opacity-80 transition-all">
               {animationsEnabled ? (
                 <Zap size={20} className="text-on-dark" />
               ) : (
@@ -102,60 +99,33 @@ export default function MobileSidebar() {
             </span>
           </button>
 
-          {/* Section Liens - CV, LinkedIn, GitHub (3 cercles horizontaux) */}
-          <div className="flex items-center gap-3 px-4 py-2">
+          {/* Section Liens - CV, LinkedIn, GitHub */}
+          <div className="flex items-center justify-between gap-2 px-4 py-2">
             {/* Bouton CV avec texte */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-1">
               <button
                 onClick={handleCVClick}
-                className="w-12 h-12 rounded-full bg-brown-ring hover:bg-opacity-70 transition-all flex items-center justify-center shadow-custom-sm"
+                className="w-10 h-10 rounded-full bg-brown-ring hover:bg-opacity-70 transition-all flex items-center justify-center shadow-custom-sm"
               >
-                <div className="w-10 h-10 rounded-full bg-brown-ring flex items-center justify-center">
-                  <Image
-                    src="/upload.png"
-                    alt="CV"
-                    width={24}
-                    height={24}
-                    className="w-6 h-6"
-                    unoptimized
-                  />
-                </div>
+                <FileText size={20} className="text-on-dark" />
               </button>
-              <span className="text-sidebar font-bold text-base">CV</span>
+              <span className="text-sidebar font-bold text-base whitespace-nowrap">CV</span>
             </div>
 
             {/* Bouton LinkedIn */}
             <button
               onClick={handleLinkedInClick}
-              className="w-12 h-12 rounded-full bg-brown-ring hover:bg-opacity-70 transition-all flex items-center justify-center shadow-custom-sm"
+              className="w-10 h-10 rounded-full bg-brown-ring hover:bg-opacity-70 transition-all flex items-center justify-center shadow-custom-sm"
             >
-              <div className="w-10 h-10 rounded-full bg-brown-ring flex items-center justify-center">
-                <Image
-                  src="/linkedin.jpg"
-                  alt="LinkedIn"
-                  width={24}
-                  height={24}
-                  className="w-6 h-6"
-                  unoptimized
-                />
-              </div>
+              <Linkedin size={20} className="text-on-dark" />
             </button>
 
             {/* Bouton GitHub */}
             <button
               onClick={handleGitHubClick}
-              className="w-12 h-12 rounded-full bg-brown-ring hover:bg-opacity-70 transition-all flex items-center justify-center shadow-custom-sm"
+              className="w-10 h-10 rounded-full bg-brown-ring hover:bg-opacity-70 transition-all flex items-center justify-center shadow-custom-sm"
             >
-              <div className="w-10 h-10 rounded-full bg-brown-ring flex items-center justify-center">
-                <Image
-                  src="/github.png"
-                  alt="GitHub"
-                  width={24}
-                  height={24}
-                  className="w-6 h-6"
-                  unoptimized
-                />
-              </div>
+              <Github size={20} className="text-on-dark" />
             </button>
           </div>
 
