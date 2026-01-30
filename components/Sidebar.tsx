@@ -67,9 +67,9 @@ export default function Sidebar() {
           ))}
         </nav>
 
-        <div className="mt-auto pt-4 border-t-2 border-sidebar space-y-3">
+        <div className="mt-auto space-y-3">
           {/* Bouton Animation */}
-          <div className="relative">
+          <div className="relative pt-4 border-t-2 border-sidebar">
             <button
               onClick={toggleAnimations}
               onMouseEnter={() => setShowAnimationTooltip(true)}
@@ -97,6 +97,9 @@ export default function Sidebar() {
               </div>
             )}
           </div>
+
+          {/* Ligne de démarcation */}
+          <div className="border-t-2 border-sidebar"></div>
 
           {/* Section Liens - CV, LinkedIn, GitHub */}
           <div className="flex items-center justify-between gap-2 px-4 py-2">

@@ -80,26 +80,31 @@ export default function MobileSidebar() {
           ))}
         </nav>
 
-        <div className="mt-auto pt-4 border-t-2 border-sidebar space-y-3">
+        <div className="mt-auto space-y-3">
           {/* Bouton Animation */}
-          <button
-            onClick={toggleAnimations}
-            className="w-full px-4 py-3 rounded-lg text-lg hover:bg-sidebar-selected hover:bg-opacity-50 transition-colors flex items-center gap-3"
-          >
-            <div className="w-12 h-12 rounded-full bg-brown-ring hover:bg-opacity-70 transition-all flex items-center justify-center flex-shrink-0 shadow-custom-sm">
-              <div className="w-10 h-10 rounded-full bg-button-plus flex items-center justify-center">
-                {animationsEnabled ? (
-                  <Zap size={20} className="text-on-dark" />
-                ) : (
-                  <ZapOff size={20} className="text-on-dark" />
-                )}
+          <div className="pt-4 border-t-2 border-sidebar">
+            <button
+              onClick={toggleAnimations}
+              className="w-full px-4 py-3 rounded-lg text-lg hover:bg-sidebar-selected hover:bg-opacity-50 transition-colors flex items-center gap-3"
+            >
+              <div className="w-12 h-12 rounded-full bg-brown-ring hover:bg-opacity-70 transition-all flex items-center justify-center flex-shrink-0 shadow-custom-sm">
+                <div className="w-10 h-10 rounded-full bg-button-plus flex items-center justify-center">
+                  {animationsEnabled ? (
+                    <Zap size={20} className="text-on-dark" />
+                  ) : (
+                    <ZapOff size={20} className="text-on-dark" />
+                  )}
+                </div>
               </div>
-            </div>
-            
-            <span className="flex-1 text-left font-bold text-sidebar">
-              {t("sidebar.animations")}
-            </span>
-          </button>
+              
+              <span className="flex-1 text-left font-bold text-sidebar">
+                {t("sidebar.animations")}
+              </span>
+            </button>
+          </div>
+
+          {/* Ligne de démarcation */}
+          <div className="border-t-2 border-sidebar"></div>
 
           {/* Section Liens - CV, LinkedIn, GitHub */}
           <div className="flex items-center justify-between gap-2 px-4 py-2">
