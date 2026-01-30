@@ -107,14 +107,16 @@ export default function Sidebar() {
                   onMouseLeave={() => setShowCVTooltip(false)}
                   className="w-12 h-12 rounded-full bg-brown-ring hover:bg-opacity-70 transition-all flex items-center justify-center shadow-custom-sm"
                 >
-                  <Image
-                    src="/upload.png"
-                    alt="CV"
-                    width={24}
-                    height={24}
-                    className="w-6 h-6"
-                    unoptimized
-                  />
+                  <div className="w-10 h-10 rounded-full bg-brown-ring flex items-center justify-center">
+                    <Image
+                      src="/upload.png"
+                      alt="CV"
+                      width={24}
+                      height={24}
+                      className="w-6 h-6"
+                      unoptimized
+                    />
+                  </div>
                 </button>
 
                 {showCVTooltip && (
@@ -134,14 +136,16 @@ export default function Sidebar() {
                 onMouseLeave={() => setShowLinkedInTooltip(false)}
                 className="w-12 h-12 rounded-full bg-brown-ring hover:bg-opacity-70 transition-all flex items-center justify-center shadow-custom-sm"
               >
-                <Image
-                  src="/linkedin.png"
-                  alt="LinkedIn"
-                  width={24}
-                  height={24}
-                  className="w-6 h-6"
-                  unoptimized
-                />
+                <div className="w-10 h-10 rounded-full bg-brown-ring flex items-center justify-center">
+                  <Image
+                    src="/linkedin.jpg"
+                    alt="LinkedIn"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6"
+                    unoptimized
+                  />
+                </div>
               </button>
 
               {showLinkedInTooltip && (
@@ -159,14 +163,16 @@ export default function Sidebar() {
                 onMouseLeave={() => setShowGitHubTooltip(false)}
                 className="w-12 h-12 rounded-full bg-brown-ring hover:bg-opacity-70 transition-all flex items-center justify-center shadow-custom-sm"
               >
-                <Image
-                  src="/github.png"
-                  alt="GitHub"
-                  width={24}
-                  height={24}
-                  className="w-6 h-6"
-                  unoptimized
-                />
+                <div className="w-10 h-10 rounded-full bg-brown-ring flex items-center justify-center">
+                  <Image
+                    src="/github.png"
+                    alt="GitHub"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6"
+                    unoptimized
+                  />
+                </div>
               </button>
 
               {showGitHubTooltip && (

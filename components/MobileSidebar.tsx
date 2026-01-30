@@ -110,14 +110,16 @@ export default function MobileSidebar() {
                 onClick={handleCVClick}
                 className="w-12 h-12 rounded-full bg-brown-ring hover:bg-opacity-70 transition-all flex items-center justify-center shadow-custom-sm"
               >
-                <Image
-                  src="/upload.png"
-                  alt="CV"
-                  width={24}
-                  height={24}
-                  className="w-6 h-6"
-                  unoptimized
-                />
+                <div className="w-10 h-10 rounded-full bg-brown-ring flex items-center justify-center">
+                  <Image
+                    src="/upload.png"
+                    alt="CV"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6"
+                    unoptimized
+                  />
+                </div>
               </button>
               <span className="text-sidebar font-bold text-base">CV</span>
             </div>
@@ -127,14 +129,16 @@ export default function MobileSidebar() {
               onClick={handleLinkedInClick}
               className="w-12 h-12 rounded-full bg-brown-ring hover:bg-opacity-70 transition-all flex items-center justify-center shadow-custom-sm"
             >
-              <Image
-                src="/linkedin.png"
-                alt="LinkedIn"
-                width={24}
-                height={24}
-                className="w-6 h-6"
-                unoptimized
-              />
+              <div className="w-10 h-10 rounded-full bg-brown-ring flex items-center justify-center">
+                <Image
+                  src="/linkedin.jpg"
+                  alt="LinkedIn"
+                  width={24}
+                  height={24}
+                  className="w-6 h-6"
+                  unoptimized
+                />
+              </div>
             </button>
 
             {/* Bouton GitHub */}
@@ -142,14 +146,16 @@ export default function MobileSidebar() {
               onClick={handleGitHubClick}
               className="w-12 h-12 rounded-full bg-brown-ring hover:bg-opacity-70 transition-all flex items-center justify-center shadow-custom-sm"
             >
-              <Image
-                src="/github.png"
-                alt="GitHub"
-                width={24}
-                height={24}
-                className="w-6 h-6"
-                unoptimized
-              />
+              <div className="w-10 h-10 rounded-full bg-brown-ring flex items-center justify-center">
+                <Image
+                  src="/github.png"
+                  alt="GitHub"
+                  width={24}
+                  height={24}
+                  className="w-6 h-6"
+                  unoptimized
+                />
+              </div>
             </button>
           </div>
 
