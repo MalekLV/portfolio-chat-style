@@ -73,14 +73,30 @@ export default function ContactModal({ isOpen, onClose }: Props) {
     setIsSubmitting(true)
 
     try {
+      // Récupérer la clé API depuis les variables d'environnement
+      const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY
+      
+      if (!accessKey) {
+        console.error("Web3Forms access key not found!")
+        setErrors({ submit: "Configuration error. Please contact the administrator." })
+        setIsSubmitting(false)
+        return
+      }
+
+      // Préparer les données pour Web3Forms
       const data = {
-        access_key: "YOUR_ACCESS_KEY_HERE",
+        access_key: accessKey,
         name: formData.name,
         email: formData.email,
         subject: formData.subject,
-        message: formData.message
+        message: formData.message,
+        // Champs additionnels utiles
+        from_name: "Portfolio Contact Form",
+        // Honeypot pour protection anti-spam (champ caché)
+        botcheck: "",
       }
 
+      // Envoyer à Web3Forms
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: {
@@ -93,7 +109,10 @@ export default function ContactModal({ isOpen, onClose }: Props) {
       const result = await response.json()
 
       if (result.success) {
+        // Succès !
         setShowSuccess(true)
+        
+        // Réinitialiser le formulaire après 2 secondes et fermer
         setTimeout(() => {
           setShowSuccess(false)
           onClose()
@@ -105,11 +124,18 @@ export default function ContactModal({ isOpen, onClose }: Props) {
           })
         }, 2000)
       } else {
-        setErrors({ submit: t("contact.sendError") })
+        // Erreur de l'API
+        console.error("Web3Forms error:", result)
+        setErrors({ 
+          submit: t("contact.sendError") || "Une erreur est survenue. Veuillez réessayer." 
+        })
       }
     } catch (error) {
+      // Erreur réseau ou autre
       console.error("Erreur lors de l'envoi:", error)
-      setErrors({ submit: t("contact.sendError") })
+      setErrors({ 
+        submit: t("contact.sendError") || "Erreur réseau. Veuillez vérifier votre connexion." 
+      })
     } finally {
       setIsSubmitting(false)
     }
@@ -124,6 +150,7 @@ export default function ContactModal({ isOpen, onClose }: Props) {
       message: ""
     })
     setErrors({})
+    setShowSuccess(false)
   }
 
   function handleKeyPress(e: React.KeyboardEvent) {
@@ -182,6 +209,7 @@ export default function ContactModal({ isOpen, onClose }: Props) {
                 onChange={handleChange}
                 className="w-full rounded-lg bg-brown-field px-4 py-2.5 outline-none transition-all text-brown-input font-medium focus:shadow-[0_0_0_2px_#2D2419,0_0_0_4px_#6B5A47]"
                 placeholder={t("contact.namePlaceholder")}
+                disabled={isSubmitting}
               />
               {errors.name && (
                 <p className="text-brown-error text-sm mt-1 font-medium">{errors.name}</p>
@@ -200,6 +228,7 @@ export default function ContactModal({ isOpen, onClose }: Props) {
                 onChange={handleChange}
                 className="w-full rounded-lg bg-brown-field px-4 py-2.5 outline-none transition-all text-brown-input font-medium focus:shadow-[0_0_0_2px_#2D2419,0_0_0_4px_#6B5A47]"
                 placeholder={t("contact.emailPlaceholder")}
+                disabled={isSubmitting}
               />
               {errors.email && (
                 <p className="text-brown-error text-sm mt-1 font-medium">{errors.email}</p>
@@ -218,6 +247,7 @@ export default function ContactModal({ isOpen, onClose }: Props) {
                 onChange={handleChange}
                 className="w-full rounded-lg bg-brown-field px-4 py-2.5 outline-none transition-all text-brown-input font-medium focus:shadow-[0_0_0_2px_#2D2419,0_0_0_4px_#6B5A47]"
                 placeholder={t("contact.subjectPlaceholder")}
+                disabled={isSubmitting}
               />
               {errors.subject && (
                 <p className="text-brown-error text-sm mt-1 font-medium">{errors.subject}</p>
@@ -236,11 +266,20 @@ export default function ContactModal({ isOpen, onClose }: Props) {
                 rows={6}
                 className="w-full rounded-lg bg-brown-field px-4 py-2.5 outline-none transition-all resize-none text-brown-input font-medium focus:shadow-[0_0_0_2px_#2D2419,0_0_0_4px_#6B5A47]"
                 placeholder={t("contact.messagePlaceholder")}
+                disabled={isSubmitting}
               />
               {errors.message && (
                 <p className="text-brown-error text-sm mt-1 font-medium">{errors.message}</p>
               )}
             </div>
+
+            {/* Honeypot anti-spam - Champ invisible pour les bots */}
+            <input 
+              type="checkbox" 
+              name="botcheck" 
+              className="hidden" 
+              style={{ display: 'none' }}
+            />
 
             {errors.submit && (
               <div className="p-3 bg-brown-error bg-opacity-20 rounded-lg text-brown-error text-sm font-medium shadow-custom-sm">
