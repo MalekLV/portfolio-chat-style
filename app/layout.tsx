@@ -37,6 +37,17 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
   )
 }
 
+// Metadata pour Next.js 13+ (méthode recommandée)
+export const metadata = {
+  title: "Le Velly Malek Portfolio",
+  description: "Portfolio interactif",
+  icons: {
+    icon: '/logo_portfolio.png',
+    shortcut: '/logo_portfolio.png',
+    apple: '/logo_portfolio.png',
+  },
+}
+
 export default function RootLayout({
   children
 }: {
@@ -45,19 +56,11 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <head>
-        <title>Le Velly Malek Portfolio</title>
-        <meta name="description" content="Portfolio interactif" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
         
-        {/* Favicon - Ton logo personnalisé */}
-        <link rel="icon" type="image/png" href="/logo_portfolio.png" />
-        
-        {/* Différentes tailles pour une meilleure compatibilité */}
-        <link rel="icon" type="image/png" sizes="16x16" href="/logo_portfolio.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/logo_portfolio.png" />
-        <link rel="icon" type="image/png" sizes="192x192" href="/logo_portfolio.png" />
-        
-        {/* Apple Touch Icon pour iOS */}
+        {/* Méthode alternative si metadata ne fonctionne pas */}
+        <link rel="icon" href="/logo_portfolio.png" type="image/png" />
+        <link rel="shortcut icon" href="/logo_portfolio.png" type="image/png" />
         <link rel="apple-touch-icon" href="/logo_portfolio.png" />
         
         {/* Pour Android Chrome */}
