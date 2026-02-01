@@ -238,22 +238,13 @@ export default function ChatWindow({ pageId }: Props) {
         .filter((q): q is Question => q !== null && q !== undefined)
     } 
     else if (lastBotMessage?.questionId === "fallback") {
-      const botMessages = messages.filter(m => m.role === "bot")
-      const previousBot = botMessages[botMessages.length - 2]
-
+      // Pour fallback, uniquement les 2 suggestions par défaut
       const fallbackQuestion = questions.find(q => q.id === "fallback question")
       const englishQuestion = questions.find(q => q.id === "changement langue")
 
-      const previousQuestion = previousBot?.questionId
-        ? questions.find(q => q.id === previousBot.questionId)
-        : null
-
       suggestions = [
         fallbackQuestion,
-        englishQuestion,
-        ...(previousQuestion?.id_associe
-          ?.map(id => questions.find(q => q.id === id))
-          .filter((q): q is Question => q !== null && q !== undefined) || [])
+        englishQuestion
       ].filter((q): q is Question => q !== null && q !== undefined)
     } 
     else if (lastBotMessage?.questionId) {

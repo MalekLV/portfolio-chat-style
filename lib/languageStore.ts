@@ -10,7 +10,7 @@ type Translations = {
 
 const translations: Record<Language, Translations> = {
   fr: {
-    "app.title": "Portfolio Malek LE VELLY",
+    "app.title": "MalekGPT",
     "sidebar.title": "Portfolio",
     "sidebar.home": "Accueil",
     "sidebar.formation": "Formation",
@@ -82,7 +82,7 @@ const translations: Record<Language, Translations> = {
     "onboarding.animations.description": "Activez ou désactivez les animations d'écriture selon vos préférences."
   },
   en: {
-    "app.title": "Malek LE VELLY Portfolio",
+    "app.title": "MalekGPT",
     "sidebar.title": "Portfolio",
     "sidebar.home": "Home",
     "sidebar.formation": "Education",
