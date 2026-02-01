@@ -1,11 +1,6 @@
 // lib/chatStore.ts
 import { create } from "zustand"
-
-export type Message = {
-  role: "user" | "bot"
-  content: string
-  questionId?: string
-}
+import { Message } from "./types"
 
 type ChatStore = {
   conversations: Record<string, Message[]>
@@ -17,13 +12,18 @@ type ChatStore = {
   skipDeleteConfirm: boolean
   setSkipDeleteConfirm: (value: boolean) => void
   
-  addMessage: (pageId: string, message: Message) => void
+  addMessage: (pageId: string, message: Omit<Message, "id">) => void
   
   // Animation
   isTyping: boolean
   setIsTyping: (value: boolean) => void
   skipTyping: () => void
   shouldSkip: boolean
+}
+
+// Fonction helper pour générer des IDs uniques
+function generateMessageId(): string {
+  return `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
 }
 
 export const useChatStore = create<ChatStore>((set) => ({
@@ -34,15 +34,22 @@ export const useChatStore = create<ChatStore>((set) => ({
     set({ skipDeleteConfirm: value }),
   
   addMessage: (pageId, message) =>
-    set((state) => ({
-      conversations: {
-        ...state.conversations,
-        [pageId]: [
-          ...(state.conversations[pageId] || []),
-          message
-        ]
+    set((state) => {
+      const messageWithId: Message = {
+        id: generateMessageId(),
+        ...message
       }
-    })),
+      
+      return {
+        conversations: {
+          ...state.conversations,
+          [pageId]: [
+            ...(state.conversations[pageId] || []),
+            messageWithId
+          ]
+        }
+      }
+    }),
   
   deletePairAt: (pageId, index) =>
     set((state) => {

@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react"
 import { useLanguageStore } from "./languageStore"
 import { useChatStore } from "./chatStore"
 import { getQuestionById, getQuestionTitle } from "./questionHelper"
+import type { Question } from "./types"
 
 /**
  * Hook qui synchronise les conversations avec la langue actuelle
@@ -51,7 +52,8 @@ export function useLanguageSync() {
             
             // Message texte libre, chercher la question correspondante
             const allQuestions = await import("../data/questions.json")
-            const question = allQuestions.default.find((q: any) => {
+            // Cast correct des données JSON en Question[]
+            const question = (allQuestions.default as Question[]).find((q: Question) => {
               const titleFr = q.title_fr?.toLowerCase()
               const titleEn = q.title_en?.toLowerCase()
               const msgContent = message.content.toLowerCase()
@@ -70,16 +72,23 @@ export function useLanguageSync() {
           } else {
             // Pour les messages bot, recharger le contenu dans la nouvelle langue
             if (message.questionId && message.questionId !== "fallback") {
-              try {
-                const res = await fetch(`/api/content?id=${message.questionId}&lang=${language}`)
-                const content = await res.text()
-                newMessages.push({
-                  ...message,
-                  content
-                })
-              } catch (error) {
-                console.error(`Erreur lors du rechargement de ${message.questionId}:`, error)
+              // Si c'est un message interactif, pas besoin de recharger le contenu
+              if (message.type === "interactive") {
+                // Les composants interactifs gèrent leur propre traduction
                 newMessages.push(message)
+              } else {
+                // Message textuel classique - recharger le contenu
+                try {
+                  const res = await fetch(`/api/content?id=${message.questionId}&lang=${language}`)
+                  const content = await res.text()
+                  newMessages.push({
+                    ...message,
+                    content
+                  })
+                } catch (error) {
+                  console.error(`Erreur lors du rechargement de ${message.questionId}:`, error)
+                  newMessages.push(message)
+                }
               }
             } else if (message.questionId === "introduction") {
               // Message d'introduction

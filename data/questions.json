@@ -450,6 +450,8 @@
 },
 {
   "id": "languages",
+  "type": "interactive",
+  "component": "LanguagesGrid",
   "title_fr": "Quels langages maîtrises-tu ?",
   "title_en": "What programming languages do you master?",
   "tags_fr": [

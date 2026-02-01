@@ -6,10 +6,11 @@ import { useChatStore } from "../lib/chatStore"
 import { useLanguageStore } from "../lib/languageStore"
 import { useSettingsStore } from "../lib/settingsStore"
 import { getQuestions, getQuestionTitle, getQuestionById } from "../lib/questionHelper"
-import type { Question } from "../lib/questionHelper"
+import { Question } from "../lib/types"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 import Image from "next/image"
+import { InteractiveComponent } from "./interactive"
 
 type Props = {
   pageId: string
@@ -151,6 +152,13 @@ export default function ChatWindow({ pageId }: Props) {
     const botMessage = messages[lastBotIndex]
     if (!botMessage) return
 
+    // Si c'est un message interactif, pas d'animation de typing
+    if (botMessage.type === "interactive") {
+      setCurrentAnimatingIndex(lastBotIndex)
+      setIsTyping(false)
+      return
+    }
+
     const fullText = botMessage.content.trim()
 
     setCurrentAnimatingIndex(lastBotIndex)
@@ -197,7 +205,7 @@ export default function ChatWindow({ pageId }: Props) {
   useEffect(() => {
     if (shouldSkip && lastBotIndex >= 0) {
       const botMessage = messages[lastBotIndex]
-      if (botMessage) {
+      if (botMessage && botMessage.type !== "interactive") {
         setTypingMessage(botMessage.content.trim())
         setIsTyping(false)
         
@@ -254,7 +262,7 @@ export default function ChatWindow({ pageId }: Props) {
 
       if (currentQuestion?.id_associe) {
         // Récupérer les indices utilisés dans les bulles
-        const messageBubbles = splitIntoBubblesWithSuggestions(lastBotMessage.content)
+        const messageBubbles = splitIntoBubblesWithSuggestions(lastBotMessage.content || "")
         messageBubbles.forEach(bubble => {
           if (bubble.suggestionsAfter) {
             bubble.suggestionsAfter.forEach(indexStr => {
@@ -295,14 +303,29 @@ export default function ChatWindow({ pageId }: Props) {
       questionId: questionId
     })
 
-    const res = await fetch(`/api/content?id=${questionId}&lang=${language}`)
-    const markdown = await res.text()
+    // Vérifier si c'est une question interactive
+    if (question.type === "interactive" && question.component) {
+      // Pour les questions interactives, on crée directement le message avec le composant
+      addMessage(pageId, {
+        role: "bot",
+        content: "", // Pas de contenu textuel pour les composants interactifs
+        questionId: questionId,
+        type: "interactive",
+        componentName: question.component,
+        data: {} // Les données seront gérées par le composant
+      })
+    } else {
+      // Question textuelle classique
+      const res = await fetch(`/api/content?id=${questionId}&lang=${language}`)
+      const markdown = await res.text()
 
-    addMessage(pageId, {
-      role: "bot",
-      content: markdown,
-      questionId
-    })
+      addMessage(pageId, {
+        role: "bot",
+        content: markdown,
+        questionId,
+        type: "text"
+      })
+    }
   }, [pageId, addMessage, questions, language])
 
   const requestDelete = useCallback((index: number) => {
@@ -328,7 +351,7 @@ export default function ChatWindow({ pageId }: Props) {
     }
     
     // Sélectionner TOUTES les bulles du message bot (chercher dans tout le container, pas juste les enfants directs)
-    const botBubbles = botContainer.querySelectorAll('.bot-bubble-part')
+    const botBubbles = botContainer.querySelectorAll('.bot-bubble-part, .interactive-component')
     
     const newBubbles: Array<{
       initialX: number, 
@@ -471,13 +494,13 @@ export default function ChatWindow({ pageId }: Props) {
         const canDelete = message.role === "user" && !isFirstAutoMessage(index)
         
         const isLastBotMessage = message.role === "bot" && index === lastBotIndex
-        const displayContent = isLastBotMessage && index === currentAnimatingIndex
+        const displayContent = isLastBotMessage && index === currentAnimatingIndex && message.type !== "interactive"
           ? typingMessage
           : message.content.trim()
 
         return (
           <div
-            key={index}
+            key={message.id}
             className={`message-container ${
               message.role === "user"
                 ? "w-full"
@@ -542,59 +565,70 @@ export default function ChatWindow({ pageId }: Props) {
                 </div>
 
                 <div className="bot-message-bubbles flex-1">
-                  {splitIntoBubblesWithSuggestions(displayContent).map((bubble, bubbleIndex) => {
-                    // Récupérer les suggestions pour cette bulle (uniquement si c'est le dernier message bot)
-                    const currentQuestion = message.questionId 
-                      ? questions.find(q => q.id === message.questionId)
-                      : null
-                    
-                    const intermediateSuggestions = isLastBotMessage && bubble.suggestionsAfter
-                      ? bubble.suggestionsAfter
-                          .map(indexStr => {
-                            const index = parseInt(indexStr, 10)
-                            if (isNaN(index) || !currentQuestion?.id_associe) return null
-                            const questionId = currentQuestion.id_associe[index]
-                            return questions.find(q => q.id === questionId)
-                          })
-                          .filter((q): q is Question => q !== null && q !== undefined)
-                      : []
+                  {/* Si c'est un message interactif, afficher le composant */}
+                  {message.type === "interactive" && message.componentName ? (
+                    <div className="interactive-component">
+                      <InteractiveComponent 
+                        name={message.componentName}
+                        data={message.data}
+                      />
+                    </div>
+                  ) : (
+                    /* Sinon, afficher les bulles de texte normalement */
+                    splitIntoBubblesWithSuggestions(displayContent).map((bubble, bubbleIndex) => {
+                      // Récupérer les suggestions pour cette bulle (uniquement si c'est le dernier message bot)
+                      const currentQuestion = message.questionId 
+                        ? questions.find(q => q.id === message.questionId)
+                        : null
+                      
+                      const intermediateSuggestions = isLastBotMessage && bubble.suggestionsAfter
+                        ? bubble.suggestionsAfter
+                            .map(indexStr => {
+                              const index = parseInt(indexStr, 10)
+                              if (isNaN(index) || !currentQuestion?.id_associe) return null
+                              const questionId = currentQuestion.id_associe[index]
+                              return questions.find(q => q.id === questionId)
+                            })
+                            .filter((q): q is Question => q !== null && q !== undefined)
+                        : []
 
-                    return (
-                      <div key={bubbleIndex} className="mb-2 last:mb-0">
-                        {/* Bulle de message */}
-                        <div className="rounded-xl px-4 py-3 bg-bot-bubble text-primary message-bubble shadow-custom-md bot-bubble-part">
-                          <div className="prose prose-bot-bubble max-w-none text-base md:text-xl">
-                            <ReactMarkdown 
-                              remarkPlugins={[remarkGfm]}
-                              components={{
-                                a: ({ node, ...props }) => <a {...props} target="_blank" rel="noopener noreferrer" />,
-                              }}
-                            >
-                              {bubble.content.trim()}
-                            </ReactMarkdown>
+                      return (
+                        <div key={bubbleIndex} className="mb-2 last:mb-0">
+                          {/* Bulle de message */}
+                          <div className="rounded-xl px-4 py-3 bg-bot-bubble text-primary message-bubble shadow-custom-md bot-bubble-part">
+                            <div className="prose prose-bot-bubble max-w-none text-base md:text-xl">
+                              <ReactMarkdown 
+                                remarkPlugins={[remarkGfm]}
+                                components={{
+                                  a: ({ node, ...props }) => <a {...props} target="_blank" rel="noopener noreferrer" />,
+                                }}
+                              >
+                                {bubble.content.trim()}
+                              </ReactMarkdown>
+                            </div>
                           </div>
+
+                          {/* Suggestions intermédiaires (uniquement pour le dernier message bot) */}
+                          {intermediateSuggestions.length > 0 && (
+                            <div className="flex flex-col gap-2 items-start mt-3 mb-2">
+                              {intermediateSuggestions.map(q => {
+                                const questionTitle = getQuestionTitle(q, language)
+                                return (
+                                  <button
+                                    key={q.id}
+                                    onClick={() => handleSuggestionClick(q.id)}
+                                    className="text-sm md:text-base px-4 py-2.5 rounded-lg border-2 border-suggestion text-suggestion font-semibold hover-suggestion transition-all shadow-custom-sm hover:shadow-custom-md bg-transparent"
+                                  >
+                                    {questionTitle}
+                                  </button>
+                                )
+                              })}
+                            </div>
+                          )}
                         </div>
-
-                        {/* Suggestions intermédiaires (uniquement pour le dernier message bot) */}
-                        {intermediateSuggestions.length > 0 && (
-                          <div className="flex flex-col gap-2 items-start mt-3 mb-2">
-                            {intermediateSuggestions.map(q => {
-                              const questionTitle = getQuestionTitle(q, language)
-                              return (
-                                <button
-                                  key={q.id}
-                                  onClick={() => handleSuggestionClick(q.id)}
-                                  className="text-sm md:text-base px-4 py-2.5 rounded-lg border-2 border-suggestion text-suggestion font-semibold hover-suggestion transition-all shadow-custom-sm hover:shadow-custom-md bg-transparent"
-                                >
-                                  {questionTitle}
-                                </button>
-                              )
-                            })}
-                          </div>
-                        )}
-                      </div>
-                    )
-                  })}
+                      )
+                    })
+                  )}
                 </div>
               </div>
             )}

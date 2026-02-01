@@ -7,7 +7,7 @@ import { useChatStore } from "../lib/chatStore"
 import { useLanguageStore } from "../lib/languageStore"
 import { useSettingsStore } from "../lib/settingsStore"
 import { getQuestions, getQuestionTitle, getQuestionTags } from "../lib/questionHelper"
-import type { Question } from "../lib/questionHelper"
+import { Question } from "../lib/types"
 import QuestionBrowser from "./QuestionBrowser"
 
 type Props = {
@@ -204,7 +204,8 @@ export default function ChatInput({ pageId }: Props) {
       addMessage(pageId, {
         role: "bot",
         content: t("chat.fallback"),
-        questionId: "fallback"
+        questionId: "fallback",
+        type: "text"
       })
       reset()
       return
@@ -216,17 +217,32 @@ export default function ChatInput({ pageId }: Props) {
     addMessage(pageId, { 
       role: "user", 
       content: questionTitle,
-      questionId: match.id // Stocker l'ID pour la traduction future
-    })
-
-    const res = await fetch(`/api/content?id=${match.id}&lang=${language}`)
-    const content = await res.text()
-
-    addMessage(pageId, {
-      role: "bot",
-      content,
       questionId: match.id
     })
+
+    // Vérifier si c'est une question interactive
+    if (match.type === "interactive" && match.component) {
+      // Pour les questions interactives, on crée directement le message avec le composant
+      addMessage(pageId, {
+        role: "bot",
+        content: "", // Pas de contenu textuel pour les composants interactifs
+        questionId: match.id,
+        type: "interactive",
+        componentName: match.component,
+        data: {} // Les données seront gérées par le composant
+      })
+    } else {
+      // Question textuelle classique
+      const res = await fetch(`/api/content?id=${match.id}&lang=${language}`)
+      const content = await res.text()
+
+      addMessage(pageId, {
+        role: "bot",
+        content,
+        questionId: match.id,
+        type: "text"
+      })
+    }
 
     reset()
   }
