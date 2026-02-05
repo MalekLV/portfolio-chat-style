@@ -9,8 +9,7 @@ J’ai également **beaucoup pratiqué et manipulé** :
 - **Java** (tests avec JUnit, interfaces graphiques avec JavaFX)
 - **PHP** (notamment pour la réalisation d’API)
 - **Power Automate** (avec le langage Power Fx pour expressions et automatisations)
-- **Bases de données NoSQL**
-- **Cypher** (requêtage de bases de données orientées graphes)
+- **Bases de données NoSQL** et **Cypher**
 %
 J’ai appris à développer en **technologies web** :
 - **HTML et CSS**

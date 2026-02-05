@@ -1,9 +1,17 @@
 Pour retracer mon parcours académique :
-%
-**2022** : Baccalauréat général, spécialités **NSI (Numérique et Sciences Informatiques)** et **Mathématiques**, obtenu au lycée Jules Guesde (Montpellier)
-%
-**2022 – 2023** : BUT Informatique à l’IUT de Montpellier
-%
-**2023 – 2025** : BUT Informatique à l’IUT de Toulouse Paul Sabatier, avec une spécialisation en **Administration, Gestion et Exploitation des Données**, dont la **troisième année réalisée en alternance**
-%
-**Aujourd’hui** : recherche d’un **Master en alternance** dans le domaine de la **donnée**
+%0
+__2022__
+**Baccalauréat général, spécialités NSI et Mathématiques, avec mention Bien**
+Obtenu au lycée Jules Guesde (Montpellier)
+%1
+__2022 – 2023__
+**BUT Informatique à l'IUT de Montpellier**
+Première année du Bachelor Universitaire de Technologie
+%2
+__2023 – 2025__
+**BUT Informatique à l'IUT de Toulouse Paul Sabatier**
+Spécialisation en Administration, Gestion et Exploitation des Données, dont la troisième année réalisée en alternance
+%3
+__Aujourd'hui__
+**Recherche d'un Master en alternance**
+Spécialisée dans le domaine de la donnée

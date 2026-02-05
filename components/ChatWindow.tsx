@@ -504,7 +504,9 @@ export default function ChatWindow({ pageId }: Props) {
             className={`message-container ${
               message.role === "user"
                 ? "w-full"
-                : "max-w-3xl"
+                : message.type === "interactive"
+                  ? "w-full"
+                  : "max-w-3xl"
             }`}
             style={{
               opacity: isDeleting ? 0 : 1,
@@ -551,8 +553,15 @@ export default function ChatWindow({ pageId }: Props) {
                   )}
                 </div>
               </div>
+            ) : message.type === "interactive" ? (
+              <div className="w-full">
+                <InteractiveComponent 
+                  name={message.componentName!}
+                  data={message.data}
+                />
+              </div>
             ) : (
-              <div className="flex items-end gap-2">
+              <div className="flex items-start gap-2">
                 <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 border-2 border-sidebar">
                   <Image
                     src="/photoprofile.jpg"
@@ -565,76 +574,61 @@ export default function ChatWindow({ pageId }: Props) {
                 </div>
 
                 <div className="bot-message-bubbles flex-1">
-                  {/* Si c'est un message interactif, afficher le composant */}
-                  {message.type === "interactive" && message.componentName ? (
-                    <div className="interactive-component">
-                      <InteractiveComponent 
-                        name={message.componentName}
-                        data={message.data}
-                      />
-                    </div>
-                  ) : (
-                    /* Sinon, afficher les bulles de texte normalement */
-                    splitIntoBubblesWithSuggestions(displayContent).map((bubble, bubbleIndex) => {
-                      // Récupérer les suggestions pour cette bulle (uniquement si c'est le dernier message bot)
-                      const currentQuestion = message.questionId 
-                        ? questions.find(q => q.id === message.questionId)
-                        : null
-                      
-                      const intermediateSuggestions = isLastBotMessage && bubble.suggestionsAfter
-                        ? bubble.suggestionsAfter
-                            .map(indexStr => {
-                              const index = parseInt(indexStr, 10)
-                              if (isNaN(index) || !currentQuestion?.id_associe) return null
-                              const questionId = currentQuestion.id_associe[index]
-                              return questions.find(q => q.id === questionId)
-                            })
-                            .filter((q): q is Question => q !== null && q !== undefined)
-                        : []
+                  {splitIntoBubblesWithSuggestions(displayContent).map((bubble, bubbleIndex) => {
+                    const currentQuestion = message.questionId 
+                      ? questions.find(q => q.id === message.questionId)
+                      : null
+                    
+                    const intermediateSuggestions = isLastBotMessage && bubble.suggestionsAfter
+                      ? bubble.suggestionsAfter
+                          .map(indexStr => {
+                            const index = parseInt(indexStr, 10)
+                            if (isNaN(index) || !currentQuestion?.id_associe) return null
+                            const questionId = currentQuestion.id_associe[index]
+                            return questions.find(q => q.id === questionId)
+                          })
+                          .filter((q): q is Question => q !== null && q !== undefined)
+                      : []
 
-                      return (
-                        <div key={bubbleIndex} className="mb-2 last:mb-0">
-                          {/* Bulle de message */}
-                          <div className="rounded-xl px-4 py-3 bg-bot-bubble text-primary message-bubble shadow-custom-md bot-bubble-part">
-                            <div className="prose prose-bot-bubble max-w-none text-base md:text-xl">
-                              <ReactMarkdown 
-                                remarkPlugins={[remarkGfm]}
-                                components={{
-                                  a: ({ node, ...props }) => <a {...props} target="_blank" rel="noopener noreferrer" />,
-                                }}
-                              >
-                                {bubble.content.trim()}
-                              </ReactMarkdown>
-                            </div>
+                    return (
+                      <div key={bubbleIndex} className="mb-2 last:mb-0">
+                        <div className="rounded-xl px-4 py-3 bg-bot-bubble text-primary message-bubble shadow-custom-md bot-bubble-part">
+                          <div className="prose prose-bot-bubble max-w-none text-base md:text-xl">
+                            <ReactMarkdown 
+                              remarkPlugins={[remarkGfm]}
+                              components={{
+                                a: ({ node, ...props }) => <a {...props} target="_blank" rel="noopener noreferrer" />,
+                              }}
+                            >
+                              {bubble.content.trim()}
+                            </ReactMarkdown>
                           </div>
-
-                          {/* Suggestions intermédiaires (uniquement pour le dernier message bot) */}
-                          {intermediateSuggestions.length > 0 && (
-                            <div className="flex flex-col gap-2 items-start mt-3 mb-2">
-                              {intermediateSuggestions.map(q => {
-                                const questionTitle = getQuestionTitle(q, language)
-                                return (
-                                  <button
-                                    key={q.id}
-                                    onClick={() => handleSuggestionClick(q.id)}
-                                    className="text-sm md:text-base px-4 py-2.5 rounded-lg border-2 border-suggestion text-suggestion font-semibold hover-suggestion transition-all shadow-custom-sm hover:shadow-custom-md bg-transparent"
-                                  >
-                                    {questionTitle}
-                                  </button>
-                                )
-                              })}
-                            </div>
-                          )}
                         </div>
-                      )
-                    })
-                  )}
+
+                        {intermediateSuggestions.length > 0 && (
+                          <div className="flex flex-col gap-2 items-start mt-3 mb-2">
+                            {intermediateSuggestions.map(q => {
+                              const questionTitle = getQuestionTitle(q, language)
+                              return (
+                                <button
+                                  key={q.id}
+                                  onClick={() => handleSuggestionClick(q.id)}
+                                  className="text-sm md:text-base px-4 py-2.5 rounded-lg border-2 border-suggestion text-suggestion font-semibold hover-suggestion transition-all shadow-custom-sm hover:shadow-custom-md bg-transparent"
+                                >
+                                  {questionTitle}
+                                </button>
+                              )
+                            })}
+                          </div>
+                        )}
+                      </div>
+                    )
+                  })}
                 </div>
               </div>
             )}
 
-            {/* Suggestions finales (uniquement pour le dernier message bot ET animation terminée) */}
-            {message === lastBotMessage && finalSuggestedQuestions.length > 0 && !isTyping && (
+            {message === lastBotMessage && message.type !== "interactive" && finalSuggestedQuestions.length > 0 && !isTyping && (
               <div className="mt-3 ml-10 flex flex-col gap-2 items-start">
                 {finalSuggestedQuestions.map(q => {
                   const questionTitle = getQuestionTitle(q, language)

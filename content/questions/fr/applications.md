@@ -7,12 +7,12 @@ J’ai eu l’occasion de manipuler une large variété d’applications et d’
 - Word, PowerPoint
 %
 **Autres Outils orientés data & bases de données :**
-- Oracle SQL Developer
-- Studio 3T, Neo4j
+- Oracle SQL Developer, MySQL
+- Studio 3T, Neo4j, MongoDB
 - KNIME, Talend
 %
 **Environnements de développement & outils collaboratifs :**
-- Suite JetBrains, Visual Studio Code
+- Suite JetBrains, Visual Studio Code, Eclipse IDE
 - Git, Trello
 - Canva, Figma
 - Oracle VirtualBox

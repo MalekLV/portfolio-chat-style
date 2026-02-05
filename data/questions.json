@@ -285,6 +285,8 @@
 },
 {
   "id": "formation",
+  "type": "interactive",
+  "component": "FormationTimeline",
   "title_fr": "Quelle est ta formation académique ?",
   "title_en": "What is your academic background?",
   "tags_fr": [
@@ -319,8 +321,33 @@
     "data",
     "AGED"
   ],
-  "id_associe": ["projets", "competences"]
-},{
+  "id_associe": ["BAC", "BUT mtp", "BUT tlse", "ambition"]
+},
+{
+  "id": "BAC",
+  "title_fr": "Parle-moi de ton BAC",
+  "title_en": "Tell me about your high school diploma",
+  "tags_fr": [],
+  "tags_en": [],
+  "id_associe": []
+},
+{
+  "id": "BUT mtp",
+  "title_fr": "Comment s'est passée ta première année de BUT à Montpellier ?",
+  "title_en": "How was your first year of BSc in Montpellier?",
+  "tags_fr": [],
+  "tags_en": [],
+  "id_associe": ["projet Trains"]
+},
+{
+  "id": "BUT tlse",
+  "title_fr": "Raconte-moi ton BUT à Toulouse",
+  "title_en": "Tell me about your BSc in Toulouse",
+  "tags_fr": [],
+  "tags_en": [],
+  "id_associe": ["alternanceGOC", "stageCHU", "projet IA séries", "projet OpenFF", "projet site volley", "projet immobilier"]
+},
+{
   "id": "projets",
   "title_fr": "Quels projets as-tu réalisés ?",
   "title_en": "What projects have you completed?",
@@ -397,7 +424,8 @@
     "swimming"
   ],
   "id_associe": ["alternanceGOC", "stageCHU","jobGrandBleu","ambition"]
-},{
+},
+{
   "id": "competences",
   "title_fr": "Quelles sont tes compétences ?",
   "title_en": "What are your skills?",
@@ -499,7 +527,8 @@
     "programming"
   ],
   "id_associe": ["applications", "competences"]
-},{
+},
+{
   "id": "applications",
   "title_fr": "Quelles applications as-tu eu l'occasion d'utiliser ?",
   "title_en": "What applications have you had the opportunity to use?",
@@ -556,7 +585,8 @@
     "collaboration"
   ],
   "id_associe": ["languages", "competences"]
-},{
+},
+{
   "id": "personnel",
   "title_fr": "Parle-moi de toi",
   "title_en": "Tell me about yourself",
@@ -727,60 +757,59 @@
   ],
   "id_associe": ["CV"]
 },
-  {
-    "id": "alternanceGOC",
-    "title_fr": "En quoi consistait ton alternance chez Groupama d'Oc ?",
-    "title_en": "What did your apprenticeship at Groupama d'Oc consist of?",
-    "tags_fr": [
-      "alternance",
-      "apprentissage",
-      "Groupama",
-      "assurance",
-      "mutuelle",
-      "data",
-      "analyse",
-      "projet",
-      "Excel",
-      "VBA",
-      "automatisation",
-      "PowerAutomate",
-      "dashboard",
-      "reporting",
-      "formation",
-      "documentation",
-      "Office",
-      "Teams",
-      "SharePoint",
-      "Outlook",
-      "autonomie",
-      "initiative"
-    ],
-    "tags_en": [
-      "apprenticeship",
-      "internship",
-      "Groupama",
-      "insurance",
-      "data",
-      "analysis",
-      "project",
-      "Excel",
-      "VBA",
-      "automation",
-      "PowerAutomate",
-      "dashboard",
-      "reporting",
-      "training",
-      "documentation",
-      "Office",
-      "Teams",
-      "SharePoint",
-      "Outlook",
-      "autonomy",
-      "initiative"
-    ],
-    "id_associe": []
-  }
-  ,
+{
+  "id": "alternanceGOC",
+  "title_fr": "En quoi consistait ton alternance chez Groupama d'Oc ?",
+  "title_en": "What did your apprenticeship at Groupama d'Oc consist of?",
+  "tags_fr": [
+    "alternance",
+    "apprentissage",
+    "Groupama",
+    "assurance",
+    "mutuelle",
+    "data",
+    "analyse",
+    "projet",
+    "Excel",
+    "VBA",
+    "automatisation",
+    "PowerAutomate",
+    "dashboard",
+    "reporting",
+    "formation",
+    "documentation",
+    "Office",
+    "Teams",
+    "SharePoint",
+    "Outlook",
+    "autonomie",
+    "initiative"
+  ],
+  "tags_en": [
+    "apprenticeship",
+    "internship",
+    "Groupama",
+    "insurance",
+    "data",
+    "analysis",
+    "project",
+    "Excel",
+    "VBA",
+    "automation",
+    "PowerAutomate",
+    "dashboard",
+    "reporting",
+    "training",
+    "documentation",
+    "Office",
+    "Teams",
+    "SharePoint",
+    "Outlook",
+    "autonomy",
+    "initiative"
+  ],
+  "id_associe": []
+},
 {
   "id": "stageCHU",
   "title_fr": "Que faisais-tu lors de ton stage au CHU ?",
