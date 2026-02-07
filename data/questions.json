@@ -389,6 +389,8 @@
 },
 {
   "id": "experiences",
+  "type": "interactive",
+  "component": "ExperiencesTimeline",
   "title_fr": "Parle-moi de ton parcours professionnel",
   "title_en": "Tell me about your professional experiences",
   "tags_fr": [
@@ -405,7 +407,8 @@
     "projet",
     "gestion",
     "nageur",
-    "sauveteur"
+    "sauveteur",
+    "expériences"
   ],
   "tags_en": [
     "professional",
@@ -421,7 +424,8 @@
     "project",
     "management",
     "lifeguard",
-    "swimming"
+    "swimming",
+    "experiences"
   ],
   "id_associe": ["alternanceGOC", "stageCHU","jobGrandBleu","ambition"]
 },

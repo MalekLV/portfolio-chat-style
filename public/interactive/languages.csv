@@ -1,0 +1,22 @@
+langage	commentaire	images	groupe	id_associe
+SQL		sql.png	maitre	stageCHU, BUT tlse, projet immobilier, projet site volley, projet IA séries, BUT mtp, BAC
+PL/SQL		plsql.png	maitre	stageCHU, BUT tlse, projet immobilier
+Excel	Excel avancé (Power Query, Tableaux croisés dynamiques, fonctions avancés, mise en forme conditionnelle)	excel.png	maitre	alternanceGOC, projet OpenFF, BUT tlse, projet immobilier
+Visual Basic for Applications	Language interne à Excel, permettant de réaliser des automatisations (macros) avancés et des outils de formulaire	vba.png	maitre	alternanceGOC
+Python	Notamment pour le développement de modèle d’IA avec les bibliothèques Scikit-learn (Machine Learning), TensorFlow et PyTorch (Deep Learning) ainsi que Keras (Réseaux de neurones)	python.png	connaissance	projet IA séries, BUT tlse, BAC
+Java	Programmation orientée objet et autre techniques, tests avec JUnit, interfaces graphiques avec JavaFX 	java.png	connaissance	projet immobilier, projet Trains, BUT tlse, BUT mtp
+PHP	Notamment pour la réalisation d’API 	php.png	connaissance	projet site volley, BUT tlse
+Power Automate	Avec le langage Power Fx pour expressions et automatisations 	powerautomate.png	connaissance	alternanceGOC
+NoSQL	Notamment les langages de requêtes MQL (MongoDB),et Cypher (graphes sous Neo4j)	nosql.png	connaissance	BUT tlse
+HTML		html.png	web	projet site volley, fonctionnement, BUT tlse, BUT mtp, BAC
+CSS		css.png	web	projet site volley, fonctionnement, BUT tlse, BUT mtp, BAC
+JavaScript		js.png	web	fonctionnement, BUT tlse
+TypeScript	Langage utilisé pour le développement de ce site 	typescript.png	web	fonctionnement
+React.js	Langage utilisé pour le développement de ce site 	reactjs.png	web	fonctionnement
+Next.js	Langage utilisé pour le développement de ce site 	nextjs.png	web	fonctionnement
+Tailwind CSS	Langage utilisé pour le développement de ce site 	tailwindcss.png	web	fonctionnement
+Linux	Langage utilisé dans le terminal sous Linux	linux.png	notion	BUT tlse, BUT mtp
+C		c.png	notion	BUT tlse, BUT mtp
+CSV		csv.png	fichier	alternanceGOC, projet OpenFF, BUT tlse, projet immobilier
+JSON		json.png	fichier	BUT tlse
+XML		xml.png	fichier	BUT tlse

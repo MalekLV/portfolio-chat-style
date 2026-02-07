@@ -9,6 +9,7 @@ import { useLanguageStore } from "../../lib/languageStore"
 const componentMap: Record<string, any> = {
   "LanguagesGrid": dynamic(() => import("./LanguagesGrid")),
   "FormationTimeline": dynamic(() => import("./FormationTimeline")),
+  "ExperiencesTimeline": dynamic(() => import("./ExperiencesTimeline")),
   // Ajoutez vos autres composants ici
   // "TimelineParcours": dynamic(() => import("./TimelineParcours")),
   // "CompetencesRadar": dynamic(() => import("./CompetencesRadar")),

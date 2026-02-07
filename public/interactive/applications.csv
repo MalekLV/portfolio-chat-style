@@ -1,0 +1,28 @@
+application	images	groupe	id_associe
+Excel	excel.png	office	alternanceGOC, projet OpenFF, BUT tlse, projet immobilier
+Power BI	powerbi.png	office	projet OpenFF, BUT tlse
+Power Automate	powerautomate.png	office	alternanceGOC
+Power Apps	powerapps.png	office	alternanceGOC
+Teams	teams.png	office	alternanceGOC
+Outlook	outlook.png	office	alternanceGOC, BUT tlse, BUT mtp
+SharePoint	sharepoint.png	office	alternanceGOC
+Word	word.png	office	alternanceGOC, BUT tlse, BUT mtp, BAC
+PowerPoint	powerpoint.png	office	alternanceGOC, BUT tlse, BUT mtp, BAC
+Oracle SQL Developper	oraclesqldevelopper.png	data	projet immobilier
+MySQL	mysql.png	data	projet site volley
+MariaDB	mariadb.png	data	stageCHU
+SQLite	sqlite.png	data	projet IA séries
+Studio 3T	studio3t.png	data	BUT tlse
+MongoDB	mongodb.png	data	stageCHU
+Neo4j	neo4j.png	data	BUT tlse
+KNIME	knime.png	data	projet OpenFF
+Talend	talend.png	data	BUT tlse
+Suite JetBrains	jetbrains.png	dev	projet immobilier, projet Trains, BUT tlse, BUT mtp
+Visual Studio Code	vscode.png	dev	BUT tlse, projet IA séries, projet site volley, fonctionnement, BUT mtp
+Eclipse IDE	eclipseide.png	dev	BUT tlse
+Git	git.png	dev	projet IA séries, projet site volley, BUT tlse, BUT mtp
+Trello	trello.png	dev	projet immobilier, projet IA séries, BUT tlse
+Canva	canva.png	dev	alternanceGOC, BUT tlse, BUT mtp
+Figma	figma.png	dev	BUT tlse, BUT mtp
+Oracle Virtual Box	virtualbox.png	dev	projet IA séries, BUT tlse
+Postman (tests d’API)	postman.png	dev	projet site volley, BUT tlse

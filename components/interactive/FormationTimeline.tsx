@@ -6,8 +6,6 @@ import { useChatStore } from "../../lib/chatStore"
 import { getQuestionById, getQuestionTitle } from "../../lib/questionHelper"
 import { useLanguageStore } from "../../lib/languageStore"
 import { useSettingsStore } from "../../lib/settingsStore"
-import ReactMarkdown from "react-markdown"
-import remarkGfm from "remark-gfm"
 import Image from "next/image"
 
 type FormationItem = {
@@ -26,7 +24,6 @@ type Props = {
 
 export default function FormationTimeline({ language, pageId = "formation" }: Props) {
   const [formations, setFormations] = useState<FormationItem[]>([])
-  const [introText, setIntroText] = useState("")
   const [visibleCount, setVisibleCount] = useState(0)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const [isMobile, setIsMobile] = useState(false)
@@ -62,117 +59,107 @@ export default function FormationTimeline({ language, pageId = "formation" }: Pr
       const heights = formationRefs.current.map((ref, index) => {
         if (!ref) return 240
         const baseHeight = ref.offsetHeight
-        // Ajouter de l'espace supplémentaire si cette formation est survolée ET qu'on est sur mobile
-        const extraSpace = (hoveredIndex === index && isMobile) ? 200 : 0
-        return baseHeight + 60 + extraSpace
+        // Ne plus ajouter d'espace supplémentaire pour le hover
+        // Les questions liées seront en overlay (z-index supérieur)
+        return baseHeight + 60
       })
       setFormationHeights(heights)
     }
     
-    // Mesurer à chaque changement de hover
+    // Mesurer à chaque changement
     measureHeights()
     
     window.addEventListener('resize', measureHeights)
     return () => window.removeEventListener('resize', measureHeights)
-  }, [formations, visibleCount, hoveredIndex, isMobile])
+  }, [formations, visibleCount])
 
-  // Charger et parser le contenu markdown
+  // Charger et parser le CSV
   useEffect(() => {
     async function loadFormations() {
       try {
-        const res = await fetch(`/api/content?id=formation&lang=${language}`)
-        const markdown = await res.text()
+        console.log('🔍 Début du chargement du CSV...')
+        const res = await fetch('/interactive/formation.csv')
+        console.log('📡 Réponse fetch:', res.status, res.statusText)
         
-        // Récupérer la question formation pour obtenir les id_associe
-        const formationQuestion = getQuestionById("formation")
-        const associatedIds = formationQuestion?.id_associe || []
-        
-        // Séparer par % en gardant les chiffres
-        const sections = markdown.split('%')
-        
-        // Le premier élément est l'introduction (avant le premier %)
-        if (sections.length > 0) {
-          setIntroText(sections[0].trim())
+        if (!res.ok) {
+          throw new Error(`Erreur HTTP: ${res.status}`)
         }
         
-        // Parser les formations
+        const csvText = await res.text()
+        console.log('📄 Contenu CSV chargé, longueur:', csvText.length)
+        console.log('📄 Premières lignes:', csvText.substring(0, 200))
+        
+        // Parser le CSV (séparé par tabulations)
+        // Gérer les fins de ligne Windows (\r\n) et Unix (\n)
+        const lines = csvText.split(/\r?\n/).filter(line => line.trim().length > 0)
+        console.log('📋 Nombre de lignes:', lines.length)
+        
+        // Ignorer la ligne d'en-tête
+        const dataLines = lines.slice(1)
+        console.log('📊 Nombre de lignes de données:', dataLines.length)
+        
         const parsedFormations: FormationItem[] = []
         
-        for (let i = 1; i < sections.length; i++) {
-          const section = sections[i].trim()
-          if (section.length === 0) continue
+        for (const line of dataLines) {
+          // Séparer par tabulations et nettoyer chaque colonne
+          const columns = line.split('\t').map(col => col.trim())
+          console.log('🔢 Colonnes trouvées:', columns.length, 'pour la ligne:', line.substring(0, 50))
           
-          // Extraire le chiffre au début de la section (si présent)
-          const numberMatch = section.match(/^(\d+)\s*/)
-          let questionIndex = -1
-          let content = section
-          
-          if (numberMatch) {
-            questionIndex = parseInt(numberMatch[1], 10)
-            // Enlever le chiffre du contenu
-            content = section.substring(numberMatch[0].length).trim()
+          if (columns.length < 8) {
+            console.warn('⚠️ Ligne ignorée (pas assez de colonnes):', columns.length, line)
+            continue
           }
           
-          const questionId = questionIndex >= 0 && questionIndex < associatedIds.length 
-            ? associatedIds[questionIndex] 
-            : ""
+          const [
+            id_formation,
+            id_associe_raw,
+            fr_annee,
+            fr_titre,
+            fr_sous_titre,
+            en_annee,
+            en_titre,
+            en_sous_titre
+          ] = columns
           
-          // Parser le contenu de la formation
-          const lines = content.split('\n').map(l => l.trim()).filter(l => l.length > 0)
+          // Utiliser les colonnes selon la langue
+          const year = language === "fr" ? fr_annee : en_annee
+          const title = language === "fr" ? fr_titre : en_titre
+          const subtitle = language === "fr" ? fr_sous_titre : en_sous_titre
           
-          let year = ""
-          let title = ""
-          let subtitle = ""
-          
-          for (const line of lines) {
-            // Chercher l'année (texte entre __ __)
-            const yearMatch = line.match(/__(.*?)__/)
-            if (yearMatch) {
-              year = yearMatch[1].trim()
-              continue
-            }
-            
-            // Chercher le titre (texte entre ** **)
-            const titleMatch = line.match(/\*\*(.*?)\*\*/)
-            if (titleMatch) {
-              title = titleMatch[1].trim()
-              continue
-            }
-            
-            // Le reste est le sous-titre
-            if (!yearMatch && !titleMatch && line.length > 0) {
-              subtitle += (subtitle ? " " : "") + line
-            }
-          }
-          
-          // Récupérer les questions liées
+          // Parser les questions liées
           let relatedQuestions: string[] = []
           
-          if (questionId) {
-            // La première question liée est la question principale
-            relatedQuestions.push(questionId)
+          if (id_formation && id_formation.length > 0) {
+            // Ajouter la question principale
+            relatedQuestions.push(id_formation)
             
-            // Ajouter les questions associées à cette question
-            const mainQuestion = getQuestionById(questionId)
-            if (mainQuestion && mainQuestion.id_associe) {
-              relatedQuestions.push(...mainQuestion.id_associe)
+            // Ajouter les questions associées (séparées par des virgules dans le CSV)
+            if (id_associe_raw && id_associe_raw.length > 0) {
+              const associatedIds = id_associe_raw.split(',').map(id => id.trim()).filter(id => id.length > 0)
+              relatedQuestions.push(...associatedIds)
             }
           }
           
           if (year && title) {
-            parsedFormations.push({
+            const formation = {
               year,
               title,
-              subtitle,
-              questionId,
+              subtitle: subtitle || "",
+              questionId: id_formation,
               relatedQuestions
-            })
+            }
+            console.log('✅ Formation ajoutée:', formation)
+            parsedFormations.push(formation)
+          } else {
+            console.warn('⚠️ Formation ignorée (manque year ou title):', { year, title })
           }
         }
         
+        console.log('🎯 Total formations chargées:', parsedFormations.length)
+        console.log('📦 Formations complètes:', parsedFormations)
         setFormations(parsedFormations)
       } catch (error) {
-        console.error("Erreur lors du chargement des formations:", error)
+        console.error("❌ Erreur lors du chargement des formations:", error)
       }
     }
     
@@ -181,6 +168,7 @@ export default function FormationTimeline({ language, pageId = "formation" }: Pr
 
   // Animation progressive des formations
   useEffect(() => {
+    console.log('🎬 Animation: formations.length =', formations.length)
     if (formations.length === 0) return
     
     // Indiquer qu'une animation est en cours (pour le bouton d'accélération)
@@ -383,35 +371,30 @@ export default function FormationTimeline({ language, pageId = "formation" }: Pr
   return (
     <div className="w-full py-6" ref={containerRef}>
       {/* Introduction - Style message bot classique avec photo de profil */}
-      {introText && (
-        <div className="mb-8 px-4">
-          <div className="flex items-start gap-2">
-            <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 border-2 border-sidebar">
-              <Image
-                src="/photoprofile.jpg"
-                alt="Bot"
-                width={32}
-                height={32}
-                className="w-full h-full object-cover"
-                unoptimized
-              />
-            </div>
-            
-            <div className="rounded-xl px-4 py-3 bg-bot-bubble text-primary shadow-custom-md max-w-3xl">
-              <div className="prose prose-bot-bubble max-w-none text-base md:text-xl">
-                <ReactMarkdown 
-                  remarkPlugins={[remarkGfm]}
-                  components={{
-                    a: ({ node, ...props }) => <a {...props} target="_blank" rel="noopener noreferrer" />,
-                  }}
-                >
-                  {introText}
-                </ReactMarkdown>
-              </div>
+      <div className="mb-8 px-4">
+        <div className="flex items-start gap-2">
+          <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 border-2 border-sidebar">
+            <Image
+              src="/photoprofile.jpg"
+              alt="Bot"
+              width={32}
+              height={32}
+              className="w-full h-full object-cover"
+              unoptimized
+            />
+          </div>
+          
+          <div className="rounded-xl px-4 py-3 bg-bot-bubble text-primary shadow-custom-md max-w-3xl">
+            <div className="prose prose-bot-bubble max-w-none text-base md:text-xl">
+              <p>
+                {language === "fr" 
+                  ? "Pour retracer mon parcours académique :" 
+                  : "To trace my academic journey:"}
+              </p>
             </div>
           </div>
         </div>
-      )}
+      </div>
 
       {/* Timeline */}
       <div 
@@ -453,14 +436,15 @@ export default function FormationTimeline({ language, pageId = "formation" }: Pr
             return (
               <div
                 key={index}
-                className={`relative transition-all duration-500 ${
+                className={`relative ${
                   isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                 }`}
                 style={{
                   position: 'absolute',
                   top: `${yPosition}px`,
                   width: '100%',
-                  transitionDelay: animationsEnabled ? `${index * 100}ms` : '0ms'
+                  transition: isVisible ? `opacity 0.5s ease ${animationsEnabled ? `${index * 100}ms` : '0ms'}, transform 0.5s ease ${animationsEnabled ? `${index * 100}ms` : '0ms'}` : 'none',
+                  zIndex: isHovered ? 100 : 1 // Z-index instantané sans transition
                 }}
               >
                 {/* Point sur la timeline - centré sur la ligne */}
@@ -492,17 +476,12 @@ export default function FormationTimeline({ language, pageId = "formation" }: Pr
                     left: isMobile ? 'calc(1.5rem + 12px + 1.5rem)' : (isLeft ? 'auto' : 'calc(50% + 2rem)'),
                     right: isMobile ? 'auto' : (isLeft ? 'calc(50% + 2rem)' : 'auto')
                   }}
-                  onMouseEnter={() => setHoveredIndex(index)}
-                  onMouseLeave={() => {
-                    // Ne fermer que si on ne survole pas le popup
-                    setTimeout(() => {
-                      const popup = document.getElementById(`popup-${index}`)
-                      if (popup && !popup.matches(':hover')) {
-                        setHoveredIndex(null)
-                      }
-                    }, 50)
-                  }}
                 >
+                  {/* Zone de hover englobante */}
+                  <div
+                    onMouseEnter={() => setHoveredIndex(index)}
+                    onMouseLeave={() => setHoveredIndex(null)}
+                  >
                   {/* Année */}
                   <div 
                     className={`text-base md:text-lg font-bold text-accent mb-2 ${
@@ -532,17 +511,15 @@ export default function FormationTimeline({ language, pageId = "formation" }: Pr
                     )}
                   </div>
 
-                  {/* Questions liées (popup au hover) - Style suggestions bleues avec fond */}
+                  {/* Questions liées (popup au hover) */}
                   {isHovered && formation.relatedQuestions.length > 0 && (
                     <div 
                       id={`popup-${index}`}
-                      className="absolute z-50 mt-3 w-full bg-main rounded-xl p-4 shadow-custom-xl border border-accent border-opacity-30"
+                      className="relative mt-3 w-full bg-main rounded-xl p-4 shadow-custom-xl border border-accent border-opacity-30"
                       style={{
                         maxHeight: '250px',
                         overflowY: 'auto'
                       }}
-                      onMouseEnter={() => setHoveredIndex(index)}
-                      onMouseLeave={() => setHoveredIndex(null)}
                     >
                       <p className="text-sm font-bold text-primary mb-3 uppercase tracking-wide">
                         {language === "fr" ? "Questions liées" : "Related questions"}
@@ -568,6 +545,7 @@ export default function FormationTimeline({ language, pageId = "formation" }: Pr
                       </div>
                     </div>
                   )}
+                  </div>
                 </div>
               </div>
             )
