@@ -1,28 +1,28 @@
-application	images	groupe	id_associe
-Excel	excel.png	office	alternanceGOC, projet OpenFF, BUT tlse, projet immobilier
-Power BI	powerbi.png	office	projet OpenFF, BUT tlse
-Power Automate	powerautomate.png	office	alternanceGOC
-Power Apps	powerapps.png	office	alternanceGOC
-Teams	teams.png	office	alternanceGOC
-Outlook	outlook.png	office	alternanceGOC, BUT tlse, BUT mtp
-SharePoint	sharepoint.png	office	alternanceGOC
-Word	word.png	office	alternanceGOC, BUT tlse, BUT mtp, BAC
-PowerPoint	powerpoint.png	office	alternanceGOC, BUT tlse, BUT mtp, BAC
-Oracle SQL Developper	oraclesqldevelopper.png	data	projet immobilier
-MySQL	mysql.png	data	projet site volley
-MariaDB	mariadb.png	data	stageCHU
-SQLite	sqlite.png	data	projet IA séries
-Studio 3T	studio3t.png	data	BUT tlse
-MongoDB	mongodb.png	data	stageCHU
-Neo4j	neo4j.png	data	BUT tlse
-KNIME	knime.png	data	projet OpenFF
-Talend	talend.png	data	BUT tlse
-Suite JetBrains	jetbrains.png	dev	projet immobilier, projet Trains, BUT tlse, BUT mtp
-Visual Studio Code	vscode.png	dev	BUT tlse, projet IA séries, projet site volley, fonctionnement, BUT mtp
-Eclipse IDE	eclipseide.png	dev	BUT tlse
-Git	git.png	dev	projet IA séries, projet site volley, BUT tlse, BUT mtp
-Trello	trello.png	dev	projet immobilier, projet IA séries, BUT tlse
-Canva	canva.png	dev	alternanceGOC, BUT tlse, BUT mtp
-Figma	figma.png	dev	BUT tlse, BUT mtp
-Oracle Virtual Box	virtualbox.png	dev	projet IA séries, BUT tlse
-Postman (tests d’API)	postman.png	dev	projet site volley, BUT tlse
+application	commentaire_fr	commentaire_en	images	groupe	id_associe
+Excel	Maîtrise avancée pour l'analyse de données, création de tableaux de bord et automatisation avec VBA	Advanced proficiency in data analysis, dashboard creation and automation with VBA	excel.png	office	alternanceGOC,projet OpenFF,BUT tlse,projet immobilier
+Power BI	Création de rapports interactifs et visualisations de données complexes pour analyser les performances	Creating interactive reports and complex data visualizations to analyze performance	powerbi.png	office	projet OpenFF,BUT tlse
+Power Automate	Automatisation de processus métier et workflows, notamment avec Power Fx pour les expressions avancées	Business process and workflow automation, particularly using Power Fx for advanced expressions	powerautomate.png	office	alternanceGOC
+Power Apps	Développement d'applications métier personnalisées en low-code pour répondre aux besoins spécifiques	Custom low-code business application development to meet specific needs	powerapps.png	office	alternanceGOC
+Teams	Utilisation quotidienne pour la collaboration et la communication d'équipe	Daily use for team collaboration and communication	teams.png	office	alternanceGOC
+Outlook	Gestion quotidienne des emails et organisation professionnelle des tâches	Daily email management and professional task organization	outlook.png	office	alternanceGOC,BUT tlse,BUT mtp
+SharePoint	Organisation et gestion de documents d'équipe, création d'automatisations avec Power Automate	Team document organization and management, automation creation with Power Automate	sharepoint.png	office	alternanceGOC
+Word	Rédaction régulière de documents professionnels et techniques (rapports, documentation)	Regular writing of professional and technical documents (reports, documentation)	word.png	office	alternanceGOC,BUT tlse,BUT mtp,BAC
+PowerPoint	Création de présentations professionnelles adaptées aux différents publics	Creating professional presentations tailored to different audiences	powerpoint.png	office	alternanceGOC,BUT tlse,BUT mtp,BAC
+Oracle SQL Developer	Outil principal utilisé pour la gestion des bases Oracle et le développement PL/SQL	Main tool used for Oracle database management and PL/SQL development	oraclesqldevelopper.png	data	projet immobilier
+MySQL	Administration et requêtage de bases relationnelles, principalement pour les projets web	Relational database administration and querying, mainly for web projects	mysql.png	data	projet site volley
+MariaDB	Moteur SQL utilisé lors du stage au CHU pour la migration de données sensibles	SQL engine used during CHU internship for sensitive data migration	mariadb.png	data	stageCHU
+SQLite	Base de données légère intégrée dans les projets Python pour du stockage local	Lightweight database integrated into Python projects for local storage	sqlite.png	data	projet IA séries
+Studio 3T	Interface graphique utilisée pour gérer les bases MongoDB et explorer les documents	GUI used to manage MongoDB databases and explore documents	studio3t.png	data	BUT tlse
+MongoDB	Travail avec des bases NoSQL orientées documents, exploitation de la flexibilité JSON	Work with document-oriented NoSQL databases, leveraging JSON flexibility	mongodb.png	data	stageCHU
+Neo4j	Modélisation et interrogation de bases de graphes avec le langage Cypher	Graph database modeling and querying using Cypher language	neo4j.png	data	BUT tlse
+KNIME	Outil ETL utilisé pour analyser et transformer des données sans coder	ETL tool used to analyze and transform data without coding	knime.png	data	projet OpenFF
+Talend	Plateforme utilisée pour l'intégration et la qualité des données dans divers projets	Platform used for data integration and quality in various projects	talend.png	data	BUT tlse
+Suite JetBrains	IDEs utilisés régulièrement (IntelliJ IDEA pour Java, PyCharm pour Python, WebStorm pour le web)	IDEs regularly used (IntelliJ IDEA for Java, PyCharm for Python, WebStorm for web)	jetbrains.png	dev	projet immobilier,projet Trains,BUT tlse,BUT mtp
+Visual Studio Code	Éditeur de code polyvalent utilisé pour le développement web et Python	Versatile code editor used for web and Python development	vscode.png	dev	BUT tlse,projet IA séries,projet site volley,fonctionnement,BUT mtp
+Eclipse IDE	Environnement utilisé pour les premiers projets Java à l'IUT	Environment used for first Java projects at IUT	eclipseide.png	dev	BUT tlse
+Git	Utilisation systématique pour versionner les projets et collaborer en équipe	Systematic use for project versioning and team collaboration	git.png	dev	projet IA séries,projet site volley,BUT tlse,BUT mtp
+Trello	Gestion de projets en mode agile avec des tableaux Kanban pour suivre l'avancement	Agile project management with Kanban boards to track progress	trello.png	dev	projet immobilier,projet IA séries,BUT tlse
+Canva	Création de supports de communication visuels et attractifs	Creating visual and attractive communication materials	canva.png	dev	alternanceGOC,BUT tlse,BUT mtp
+Figma	Design d'interfaces utilisateur et création de prototypes collaboratifs en temps réel	UI design and real-time collaborative prototype creation	figma.png	dev	BUT tlse,BUT mtp
+Oracle Virtual Box	Utilisation principalement pour programmer sur Linux sans dual boot	Mainly used to program on Linux without dual boot	virtualbox.png	dev	projet IA séries,BUT tlse
+Postman	Test et documentation d'APIs REST pour assurer leur bon fonctionnement	REST API testing and documentation to ensure proper functioning	postman.png	dev	projet site volley,BUT tlse

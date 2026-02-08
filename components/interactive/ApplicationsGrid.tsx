@@ -1,4 +1,4 @@
-// components/interactive/LanguagesGrid.tsx
+// components/interactive/ApplicationsGrid.tsx
 "use client"
 
 import { useState, useEffect, useRef } from "react"
@@ -9,8 +9,8 @@ import { useSettingsStore } from "../../lib/settingsStore"
 import Image from "next/image"
 import { BookOpen } from "lucide-react"
 
-type LanguageItem = {
-  langage: string
+type ApplicationItem = {
+  application: string
   commentaire_fr: string
   commentaire_en: string
   images: string
@@ -18,7 +18,7 @@ type LanguageItem = {
   id_associe: string[]
 }
 
-type LanguageGroup = {
+type ApplicationGroup = {
   name: string
   titleFr: string
   titleEn: string
@@ -26,7 +26,7 @@ type LanguageGroup = {
   descriptionEn: string
   color: string
   bgColor: string
-  languages: LanguageItem[]
+  applications: ApplicationItem[]
 }
 
 type Props = {
@@ -35,62 +35,47 @@ type Props = {
   pageId?: string
 }
 
-// Configuration des groupes avec traductions et couleurs
-const GROUP_CONFIG: Record<string, Omit<LanguageGroup, "languages">> = {
-  maitre: {
-    name: "maitre",
-    titleFr: "Maîtrise avancée",
-    titleEn: "Advanced Mastery",
-    descriptionFr: "Langages que j'utilise quotidiennement et de manière approfondie",
-    descriptionEn: "Languages I use daily with deep expertise",
-    color: "#2D5F3F",
-    bgColor: "rgba(45, 95, 63, 0.1)"
+// Configuration des groupes avec traductions et couleurs (palette harmonieuse)
+const GROUP_CONFIG: Record<string, Omit<ApplicationGroup, "applications">> = {
+  office: {
+    name: "office",
+    titleFr: "Suite Microsoft Office",
+    titleEn: "Microsoft Office Suite",
+    descriptionFr: "Outils de productivité et de collaboration Microsoft",
+    descriptionEn: "Microsoft productivity and collaboration tools",
+    color: "#8B5A2B",
+    bgColor: "rgba(139, 90, 43, 0.1)"
   },
-  connaissance: {
-    name: "connaissance",
-    titleFr: "Connaissances solides",
-    titleEn: "Solid Knowledge",
-    descriptionFr: "Langages que je maîtrise et utilise régulièrement",
-    descriptionEn: "Languages I master and use regularly",
-    color: "#4A7C59",
-    bgColor: "rgba(74, 124, 89, 0.1)"
+  data: {
+    name: "data",
+    titleFr: "Gestion de données",
+    titleEn: "Data Management",
+    descriptionFr: "Outils de bases de données et d'analyse de données",
+    descriptionEn: "Database and data analysis tools",
+    color: "#4A5A6A",
+    bgColor: "rgba(74, 90, 106, 0.1)"
   },
-  web: {
-    name: "web",
-    titleFr: "Développement Web",
-    titleEn: "Web Development",
-    descriptionFr: "Technologies web modernes pour créer des interfaces",
-    descriptionEn: "Modern web technologies for building interfaces",
-    color: "#3B5F7C",
-    bgColor: "rgba(59, 95, 124, 0.1)"
-  },
-  notion: {
-    name: "notion",
-    titleFr: "Notions",
-    titleEn: "Basic Knowledge",
-    descriptionFr: "Langages que j'ai découverts et pratiqués",
-    descriptionEn: "Languages I've discovered and practiced",
-    color: "#7D6B5C",
-    bgColor: "rgba(125, 107, 92, 0.1)"
-  },
-  fichier: {
-    name: "fichier",
-    titleFr: "Formats de données",
-    titleEn: "Data Formats",
-    descriptionFr: "Formats de fichiers pour le traitement de données",
-    descriptionEn: "File formats for data processing",
-    color: "#8A7968",
-    bgColor: "rgba(138, 121, 104, 0.1)"
+  dev: {
+    name: "dev",
+    titleFr: "Développement",
+    titleEn: "Development",
+    descriptionFr: "Environnements de développement et outils de gestion de projet",
+    descriptionEn: "Development environments and project management tools",
+    color: "#5A4A3D",
+    bgColor: "rgba(90, 74, 61, 0.1)"
   }
 }
 
-export default function LanguagesGrid({ language, pageId = "competences" }: Props) {
-  const [languageGroups, setLanguageGroups] = useState<LanguageGroup[]>([])
+export default function ApplicationsGrid({ language, pageId = "competences" }: Props) {
+  console.log('🎨 ApplicationsGrid - Composant monté avec language:', language, 'pageId:', pageId)
+  
+  const [applicationGroups, setApplicationGroups] = useState<ApplicationGroup[]>([])
   const [visibleGroupCount, setVisibleGroupCount] = useState(0)
-  const [hoveredLanguage, setHoveredLanguage] = useState<string | null>(null)
+  const [hoveredApplication, setHoveredApplication] = useState<string | null>(null)
   const [isPopupHovered, setIsPopupHovered] = useState(false)
   const [hoveredGroupIndex, setHoveredGroupIndex] = useState<number | null>(null)
   const [popupPosition, setPopupPosition] = useState<{ left?: string, right?: string, transform?: string }>({})
+  const [loadingError, setLoadingError] = useState<string | null>(null)
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const cardRef = useRef<HTMLDivElement | null>(null)
   
@@ -112,110 +97,131 @@ export default function LanguagesGrid({ language, pageId = "competences" }: Prop
 
   // Charger et parser le CSV
   useEffect(() => {
-    async function loadLanguages() {
+    async function loadApplications() {
       try {
-        console.log('🔍 Début du chargement du CSV des langages...')
-        const res = await fetch('/interactive/languages.csv')
-        console.log('📡 Réponse fetch:', res.status, res.statusText)
+        console.log('🔍 ApplicationsGrid - Début du chargement du CSV des applications...')
+        const csvUrl = '/interactive/applications.csv'
+        console.log('🔍 ApplicationsGrid - URL du CSV:', csvUrl)
+        
+        const res = await fetch(csvUrl)
+        console.log('📡 ApplicationsGrid - Réponse fetch:', res.status, res.statusText, res.ok)
         
         if (!res.ok) {
-          throw new Error(`Erreur HTTP: ${res.status}`)
+          const errorMsg = `Erreur HTTP: ${res.status} - Assurez-vous que le fichier est dans /public/interactive/applications.csv`
+          console.error('❌ ApplicationsGrid -', errorMsg)
+          setLoadingError(errorMsg)
+          throw new Error(errorMsg)
         }
         
         const csvText = await res.text()
-        console.log('📄 Contenu CSV chargé, longueur:', csvText.length)
+        console.log('📄 ApplicationsGrid - Contenu CSV chargé, longueur:', csvText.length)
+        console.log('📄 ApplicationsGrid - Premières 300 caractères:', csvText.substring(0, 300))
         
         const lines = csvText.split(/\r?\n/).filter(line => line.trim().length > 0)
-        console.log('📋 Nombre de lignes:', lines.length)
+        console.log('📋 ApplicationsGrid - Nombre de lignes:', lines.length)
+        console.log('📋 ApplicationsGrid - Première ligne (header):', lines[0])
         
         const dataLines = lines.slice(1) // Ignorer l'en-tête
-        console.log('📊 Nombre de lignes de données:', dataLines.length)
+        console.log('📊 ApplicationsGrid - Nombre de lignes de données:', dataLines.length)
         
-        const parsedLanguages: LanguageItem[] = []
+        const parsedApplications: ApplicationItem[] = []
         
         for (const line of dataLines) {
           const columns = line.split('\t').map(col => col.trim())
-          console.log('🔢 Colonnes trouvées:', columns.length, 'pour la ligne:', line.substring(0, 50))
+          console.log(`🔢 ApplicationsGrid - Ligne ${parsedApplications.length + 1}: ${columns.length} colonnes -`, columns[0])
           
           if (columns.length < 6) {
-            console.warn('⚠️ Ligne ignorée (pas assez de colonnes):', columns.length, line)
+            console.warn('⚠️ ApplicationsGrid - Ligne ignorée (pas assez de colonnes):', columns.length, line.substring(0, 50))
             continue
           }
           
-          const [langage, commentaire_fr, commentaire_en, images, groupe, id_associe_raw] = columns
+          const [application, commentaire_fr, commentaire_en, images, groupe, id_associe_raw] = columns
           
           let id_associe: string[] = []
           if (id_associe_raw && id_associe_raw.length > 0) {
             id_associe = id_associe_raw.split(',').map(id => id.trim()).filter(id => id.length > 0)
           }
           
-          if (langage && images && groupe) {
-            const languageItem = {
-              langage,
+          if (application && images && groupe) {
+            const applicationItem = {
+              application,
               commentaire_fr: commentaire_fr || "",
               commentaire_en: commentaire_en || "",
               images,
               groupe,
               id_associe
             }
-            console.log('✅ Langage ajouté:', languageItem)
-            parsedLanguages.push(languageItem)
+            console.log('✅ ApplicationsGrid - Application ajoutée:', applicationItem.application, 'groupe:', applicationItem.groupe, 'questions:', applicationItem.id_associe.length)
+            parsedApplications.push(applicationItem)
           } else {
-            console.warn('⚠️ Langage ignoré (manque langage, images ou groupe):', { langage, images, groupe })
+            console.warn('⚠️ ApplicationsGrid - Application ignorée (données manquantes):', { application, images, groupe })
           }
         }
         
-        console.log('🎯 Total langages chargés:', parsedLanguages.length)
+        console.log('🎯 ApplicationsGrid - Total applications chargées:', parsedApplications.length)
         
         // Organiser par groupes
-        const groups: LanguageGroup[] = []
-        const groupOrder = ['maitre', 'connaissance', 'web', 'notion', 'fichier']
+        const groups: ApplicationGroup[] = []
+        const groupOrder = ['office', 'data', 'dev']
         
         groupOrder.forEach(groupKey => {
           const groupConfig = GROUP_CONFIG[groupKey]
-          if (!groupConfig) return
+          if (!groupConfig) {
+            console.warn('⚠️ ApplicationsGrid - Config de groupe manquante pour:', groupKey)
+            return
+          }
           
-          const languagesInGroup = parsedLanguages.filter(lang => lang.groupe === groupKey)
+          const applicationsInGroup = parsedApplications.filter(app => app.groupe === groupKey)
+          console.log(`📦 ApplicationsGrid - Groupe ${groupKey}: ${applicationsInGroup.length} applications`)
           
-          if (languagesInGroup.length > 0) {
+          if (applicationsInGroup.length > 0) {
             groups.push({
               ...groupConfig,
-              languages: languagesInGroup
+              applications: applicationsInGroup
             })
           }
         })
         
-        console.log('📦 Groupes créés:', groups.length)
-        setLanguageGroups(groups)
+        console.log('📦 ApplicationsGrid - Groupes créés:', groups.length)
+        console.log('📦 ApplicationsGrid - Détail des groupes:', groups.map(g => ({ name: g.name, count: g.applications.length })))
+        setApplicationGroups(groups)
+        setLoadingError(null)
       } catch (error) {
-        console.error("❌ Erreur lors du chargement des langages:", error)
+        const errorMsg = error instanceof Error ? error.message : 'Erreur inconnue'
+        console.error("❌ ApplicationsGrid - Erreur lors du chargement des applications:", errorMsg)
+        setLoadingError(errorMsg)
       }
     }
     
-    loadLanguages()
+    loadApplications()
   }, [])
 
   // Animation progressive des groupes
   useEffect(() => {
-    console.log('🎬 Animation: languageGroups.length =', languageGroups.length)
-    if (languageGroups.length === 0) return
+    console.log('🎬 ApplicationsGrid - Animation: applicationGroups.length =', applicationGroups.length)
+    if (applicationGroups.length === 0) return
     
     setIsTyping(true)
     
     if (!animationsEnabled) {
-      setVisibleGroupCount(languageGroups.length)
+      console.log('⚡ ApplicationsGrid - Animations désactivées, affichage immédiat')
+      setVisibleGroupCount(applicationGroups.length)
       setIsTyping(false)
       return
     }
     
+    console.log('🎬 ApplicationsGrid - Démarrage de l\'animation progressive')
     const timer = setInterval(() => {
       setVisibleGroupCount(prev => {
-        if (prev >= languageGroups.length) {
+        const next = prev + 1
+        console.log(`🎬 ApplicationsGrid - Affichage groupe ${next}/${applicationGroups.length}`)
+        if (next >= applicationGroups.length) {
+          console.log('✅ ApplicationsGrid - Animation terminée')
           clearInterval(timer)
           setIsTyping(false)
-          return prev
+          return applicationGroups.length
         }
-        return prev + 1
+        return next
       })
     }, 800) // 800ms entre chaque groupe
     
@@ -228,12 +234,13 @@ export default function LanguagesGrid({ language, pageId = "competences" }: Prop
       }
       setIsTyping(false)
     }
-  }, [languageGroups.length, animationsEnabled, setIsTyping])
+  }, [applicationGroups.length, animationsEnabled, setIsTyping])
 
   // Gérer le bouton d'accélération
   useEffect(() => {
-    if (shouldSkip && visibleGroupCount < languageGroups.length) {
-      setVisibleGroupCount(languageGroups.length)
+    if (shouldSkip && visibleGroupCount < applicationGroups.length) {
+      console.log('⚡ ApplicationsGrid - Accélération demandée')
+      setVisibleGroupCount(applicationGroups.length)
       setIsTyping(false)
       
       if (animationTimerRef.current) {
@@ -243,19 +250,20 @@ export default function LanguagesGrid({ language, pageId = "competences" }: Prop
       
       useChatStore.setState({ shouldSkip: false })
     }
-  }, [shouldSkip, visibleGroupCount, languageGroups.length, setIsTyping])
+  }, [shouldSkip, visibleGroupCount, applicationGroups.length, setIsTyping])
 
   // Gérer le changement d'état des animations
   useEffect(() => {
-    if (!animationsEnabled && visibleGroupCount < languageGroups.length) {
-      setVisibleGroupCount(languageGroups.length)
+    if (!animationsEnabled && visibleGroupCount < applicationGroups.length) {
+      console.log('⚡ ApplicationsGrid - Animations désactivées en cours, affichage complet')
+      setVisibleGroupCount(applicationGroups.length)
       setIsTyping(false)
       if (animationTimerRef.current) {
         clearInterval(animationTimerRef.current)
         animationTimerRef.current = null
       }
     }
-  }, [animationsEnabled, visibleGroupCount, languageGroups.length, setIsTyping])
+  }, [animationsEnabled, visibleGroupCount, applicationGroups.length, setIsTyping])
 
   // Scroller automatiquement pendant l'animation
   useEffect(() => {
@@ -345,26 +353,26 @@ export default function LanguagesGrid({ language, pageId = "competences" }: Prop
       })
     }
     
-    setHoveredLanguage(null)
+    setHoveredApplication(null)
     setIsPopupHovered(false)
   }
 
-  // Gérer l'entrée du hover sur un langage
-  const handleLanguageMouseEnter = (languageKey: string, groupIndex: number, cardElement: HTMLDivElement) => {
+  // Gérer l'entrée du hover sur une application
+  const handleApplicationMouseEnter = (applicationKey: string, groupIndex: number, cardElement: HTMLDivElement) => {
     if (hoverTimeoutRef.current) {
       clearTimeout(hoverTimeoutRef.current)
     }
-    setHoveredLanguage(languageKey)
+    setHoveredApplication(applicationKey)
     setHoveredGroupIndex(groupIndex)
     cardRef.current = cardElement
     setPopupPosition(calculatePopupPosition(cardElement))
   }
 
-  // Gérer la sortie du hover sur un langage
-  const handleLanguageMouseLeave = () => {
+  // Gérer la sortie du hover sur une application
+  const handleApplicationMouseLeave = () => {
     hoverTimeoutRef.current = setTimeout(() => {
       if (!isPopupHovered) {
-        setHoveredLanguage(null)
+        setHoveredApplication(null)
         setHoveredGroupIndex(null)
       }
     }, 100)
@@ -381,8 +389,50 @@ export default function LanguagesGrid({ language, pageId = "competences" }: Prop
   // Gérer la sortie du hover sur la popup
   const handlePopupMouseLeave = () => {
     setIsPopupHovered(false)
-    setHoveredLanguage(null)
+    setHoveredApplication(null)
     setHoveredGroupIndex(null)
+  }
+
+  console.log('🎨 ApplicationsGrid - Rendu avec:', {
+    groupsCount: applicationGroups.length,
+    visibleCount: visibleGroupCount,
+    hasError: !!loadingError
+  })
+
+  // Afficher une erreur si le chargement a échoué
+  if (loadingError) {
+    return (
+      <div className="w-full py-6">
+        <div className="mb-8 px-4">
+          <div className="flex items-start gap-2">
+            <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 border-2 border-sidebar">
+              <Image
+                src="/photoprofile.jpg"
+                alt="Bot"
+                width={32}
+                height={32}
+                className="w-full h-full object-cover"
+                unoptimized
+              />
+            </div>
+            
+            <div className="rounded-xl px-4 py-3 bg-bot-bubble text-primary shadow-custom-md max-w-3xl">
+              <div className="prose prose-bot-bubble max-w-none text-base md:text-xl">
+                <p className="text-red-600 font-bold">
+                  ❌ Erreur de chargement
+                </p>
+                <p className="text-sm">
+                  {loadingError}
+                </p>
+                <p className="text-sm mt-2">
+                  Vérifiez la console du navigateur (F12) pour plus de détails.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -405,17 +455,17 @@ export default function LanguagesGrid({ language, pageId = "competences" }: Prop
             <div className="prose prose-bot-bubble max-w-none text-base md:text-xl">
               <p>
                 {language === "fr" 
-                  ? "Voici les langages et technologies que je maîtrise, organisés par niveau de compétence :" 
-                  : "Here are the languages and technologies I master, organized by skill level:"}
+                  ? "Voici les applications et outils que j'ai utilisés, organisés par catégorie :" 
+                  : "Here are the applications and tools I've used, organized by category:"}
               </p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Groupes de langages */}
+      {/* Groupes d'applications */}
       <div className="space-y-8 px-4">
-        {languageGroups.map((group, groupIndex) => {
+        {applicationGroups.map((group, groupIndex) => {
           const isVisible = groupIndex < visibleGroupCount
           
           return (
@@ -449,7 +499,7 @@ export default function LanguagesGrid({ language, pageId = "competences" }: Prop
                     className="text-sm font-semibold px-3 py-1 rounded-full text-on-dark"
                     style={{ backgroundColor: group.color }}
                   >
-                    {group.languages.length}
+                    {group.applications.length}
                   </span>
                 </div>
                 
@@ -461,17 +511,17 @@ export default function LanguagesGrid({ language, pageId = "competences" }: Prop
                 </p>
               </div>
 
-              {/* Grille des langages */}
+              {/* Grille des applications */}
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                {group.languages.map((lang, langIndex) => {
-                  const isHovered = hoveredLanguage === `${group.name}-${lang.langage}`
-                  const commentaire = language === "fr" ? lang.commentaire_fr : lang.commentaire_en
+                {group.applications.map((app, appIndex) => {
+                  const isHovered = hoveredApplication === `${group.name}-${app.application}`
+                  const commentaire = language === "fr" ? app.commentaire_fr : app.commentaire_en
                   const hasDescription = commentaire.length > 0
-                  const hasRelatedQuestions = lang.id_associe.length > 0
+                  const hasRelatedQuestions = app.id_associe.length > 0
                   
                   return (
                     <div
-                      key={langIndex}
+                      key={appIndex}
                       className="relative"
                       style={{ 
                         overflow: 'visible'
@@ -483,8 +533,8 @@ export default function LanguagesGrid({ language, pageId = "competences" }: Prop
                             cardRef.current = el
                           }
                         }}
-                        onMouseEnter={(e) => handleLanguageMouseEnter(`${group.name}-${lang.langage}`, groupIndex, e.currentTarget)}
-                        onMouseLeave={handleLanguageMouseLeave}
+                        onMouseEnter={(e) => handleApplicationMouseEnter(`${group.name}-${app.application}`, groupIndex, e.currentTarget)}
+                        onMouseLeave={handleApplicationMouseLeave}
                         className={`relative bg-bot-bubble rounded-xl p-4 shadow-custom-md cursor-pointer transition-all duration-300 border-2 ${
                           isHovered 
                             ? 'shadow-custom-xl scale-105' 
@@ -494,11 +544,11 @@ export default function LanguagesGrid({ language, pageId = "competences" }: Prop
                           borderColor: isHovered ? group.color : 'transparent'
                         }}
                       >
-                        {/* Image du langage */}
+                        {/* Image de l'application */}
                         <div className="w-16 h-16 mx-auto mb-3 flex items-center justify-center">
                           <Image
-                            src={`/icones/${lang.images}`}
-                            alt={lang.langage}
+                            src={`/icones/${app.images}`}
+                            alt={app.application}
                             width={64}
                             height={64}
                             className="w-full h-full object-contain"
@@ -506,9 +556,9 @@ export default function LanguagesGrid({ language, pageId = "competences" }: Prop
                           />
                         </div>
                         
-                        {/* Nom du langage */}
+                        {/* Nom de l'application */}
                         <h4 className="text-center text-sm md:text-base font-semibold text-primary line-clamp-2">
-                          {lang.langage}
+                          {app.application}
                         </h4>
 
                         {/* Indicateur si hover disponible */}
@@ -551,7 +601,7 @@ export default function LanguagesGrid({ language, pageId = "competences" }: Prop
                               </p>
                               
                               <div className="space-y-2 max-h-48 overflow-y-auto">
-                                {lang.id_associe.map((qId, qIndex) => {
+                                {app.id_associe.map((qId, qIndex) => {
                                   const question = getQuestionById(qId)
                                   if (!question) return null
                                   
@@ -594,12 +644,12 @@ export default function LanguagesGrid({ language, pageId = "competences" }: Prop
       </div>
 
       {/* Note de bas de page */}
-      {visibleGroupCount >= languageGroups.length && languageGroups.length > 0 && (
+      {visibleGroupCount >= applicationGroups.length && applicationGroups.length > 0 && (
         <div className="mt-8 px-4 space-y-6 animate-fade-in">
           <p className="text-center text-base md:text-lg text-muted italic">
             {language === "fr" 
-              ? "Survolez un langage pour voir sa description et les questions liées" 
-              : "Hover over a language to see its description and related questions"}
+              ? "Survolez une application pour voir sa description et les questions liées" 
+              : "Hover over an application to see its description and related questions"}
           </p>
 
           {/* Questions associées finales */}
@@ -609,7 +659,7 @@ export default function LanguagesGrid({ language, pageId = "competences" }: Prop
             </p>
             
             <div className="flex flex-wrap justify-center gap-3">
-              {["applications", "competences"].map(questionId => {
+              {["languages", "competences"].map(questionId => {
                 const question = getQuestionById(questionId)
                 if (!question) return null
                 

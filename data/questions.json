@@ -536,6 +536,8 @@
 },
 {
   "id": "applications",
+  "type": "interactive",
+  "component": "ApplicationsGrid",
   "title_fr": "Quelles applications as-tu eu l'occasion d'utiliser ?",
   "title_en": "What applications have you had the opportunity to use?",
   "tags_fr": [
@@ -562,7 +564,9 @@
     "VirtualBox",
     "Postman",
     "data",
-    "collaboration"
+    "collaboration",
+    "outils",
+    "logiciels"
   ],
   "tags_en": [
     "Excel",
@@ -588,7 +592,9 @@
     "VirtualBox",
     "Postman",
     "data",
-    "collaboration"
+    "collaboration",
+    "tools",
+    "software"
   ],
   "id_associe": ["languages", "competences"]
 },
