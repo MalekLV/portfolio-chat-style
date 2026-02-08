@@ -1,7 +1,7 @@
 // components/Sidebar.tsx
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import Image from "next/image"
@@ -18,11 +18,17 @@ export default function Sidebar() {
   const [showAnimationTooltip, setShowAnimationTooltip] = useState(false)
   const [showCVTooltip, setShowCVTooltip] = useState(false)
   const [showGitHubTooltip, setShowGitHubTooltip] = useState(false)
+  const [isClient, setIsClient] = useState(false)
 
   const animationsEnabled = useSettingsStore(s => s.animationsEnabled)
   const toggleAnimations = useSettingsStore(s => s.toggleAnimations)
 
   const language = useLanguageStore(s => s.language)
+  
+  // Éviter les erreurs d'hydration en attendant le montage côté client
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
   
   const links = [
     { href: "/", label: t("sidebar.home") },
@@ -44,6 +50,18 @@ export default function Sidebar() {
 
   function handleGitHubClick() {
     window.open("https://github.com/MalekLV", "_blank")
+  }
+
+  // Afficher un placeholder pendant l'hydration
+  if (!isClient) {
+    return (
+      <aside className="w-80 bg-sidebar p-4 hidden md:flex md:flex-col shadow-custom-md">
+        <h1 className="mb-6 font-bold text-2xl text-sidebar">Portfolio</h1>
+        <nav className="space-y-1 flex-1">
+          {/* Placeholder vide pendant l'hydration */}
+        </nav>
+      </aside>
+    )
   }
 
   return (

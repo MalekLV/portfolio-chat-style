@@ -13,6 +13,7 @@ type FormationItem = {
   title: string
   subtitle: string
   questionId: string
+  logoImage: string // Logo de l'établissement
   relatedQuestions: string[]
 }
 
@@ -59,14 +60,11 @@ export default function FormationTimeline({ language, pageId = "formation" }: Pr
       const heights = formationRefs.current.map((ref, index) => {
         if (!ref) return 240
         const baseHeight = ref.offsetHeight
-        // Ne plus ajouter d'espace supplémentaire pour le hover
-        // Les questions liées seront en overlay (z-index supérieur)
         return baseHeight + 60
       })
       setFormationHeights(heights)
     }
     
-    // Mesurer à chaque changement
     measureHeights()
     
     window.addEventListener('resize', measureHeights)
@@ -89,23 +87,19 @@ export default function FormationTimeline({ language, pageId = "formation" }: Pr
         console.log('📄 Contenu CSV chargé, longueur:', csvText.length)
         console.log('📄 Premières lignes:', csvText.substring(0, 200))
         
-        // Parser le CSV (séparé par tabulations)
-        // Gérer les fins de ligne Windows (\r\n) et Unix (\n)
         const lines = csvText.split(/\r?\n/).filter(line => line.trim().length > 0)
         console.log('📋 Nombre de lignes:', lines.length)
         
-        // Ignorer la ligne d'en-tête
         const dataLines = lines.slice(1)
         console.log('📊 Nombre de lignes de données:', dataLines.length)
         
         const parsedFormations: FormationItem[] = []
         
         for (const line of dataLines) {
-          // Séparer par tabulations et nettoyer chaque colonne
           const columns = line.split('\t').map(col => col.trim())
           console.log('🔢 Colonnes trouvées:', columns.length, 'pour la ligne:', line.substring(0, 50))
           
-          if (columns.length < 8) {
+          if (columns.length < 9) {
             console.warn('⚠️ Ligne ignorée (pas assez de colonnes):', columns.length, line)
             continue
           }
@@ -118,22 +112,19 @@ export default function FormationTimeline({ language, pageId = "formation" }: Pr
             fr_sous_titre,
             en_annee,
             en_titre,
-            en_sous_titre
+            en_sous_titre,
+            images
           ] = columns
           
-          // Utiliser les colonnes selon la langue
           const year = language === "fr" ? fr_annee : en_annee
           const title = language === "fr" ? fr_titre : en_titre
           const subtitle = language === "fr" ? fr_sous_titre : en_sous_titre
           
-          // Parser les questions liées
           let relatedQuestions: string[] = []
           
           if (id_formation && id_formation.length > 0) {
-            // Ajouter la question principale
             relatedQuestions.push(id_formation)
             
-            // Ajouter les questions associées (séparées par des virgules dans le CSV)
             if (id_associe_raw && id_associe_raw.length > 0) {
               const associatedIds = id_associe_raw.split(',').map(id => id.trim()).filter(id => id.length > 0)
               relatedQuestions.push(...associatedIds)
@@ -146,6 +137,7 @@ export default function FormationTimeline({ language, pageId = "formation" }: Pr
               title,
               subtitle: subtitle || "",
               questionId: id_formation,
+              logoImage: images || "",
               relatedQuestions
             }
             console.log('✅ Formation ajoutée:', formation)
@@ -171,27 +163,24 @@ export default function FormationTimeline({ language, pageId = "formation" }: Pr
     console.log('🎬 Animation: formations.length =', formations.length)
     if (formations.length === 0) return
     
-    // Indiquer qu'une animation est en cours (pour le bouton d'accélération)
     setIsTyping(true)
     
-    // Si les animations sont désactivées, afficher tout immédiatement
     if (!animationsEnabled) {
       setVisibleCount(formations.length)
       setIsTyping(false)
       return
     }
     
-    // Sinon, animation progressive
     const timer = setInterval(() => {
       setVisibleCount(prev => {
         if (prev >= formations.length) {
           clearInterval(timer)
-          setIsTyping(false)  // Animation terminée
+          setIsTyping(false)
           return prev
         }
         return prev + 1
       })
-    }, 1000) // 1 seconde par formation
+    }, 1000)
     
     animationTimerRef.current = timer
     
@@ -204,28 +193,24 @@ export default function FormationTimeline({ language, pageId = "formation" }: Pr
     }
   }, [formations.length, animationsEnabled, setIsTyping])
 
-  // Gérer le bouton d'accélération (skipTyping)
+  // Gérer le bouton d'accélération
   useEffect(() => {
     if (shouldSkip && visibleCount < formations.length) {
-      // Afficher toutes les formations immédiatement
       setVisibleCount(formations.length)
       setIsTyping(false)
       
-      // Arrêter le timer
       if (animationTimerRef.current) {
         clearInterval(animationTimerRef.current)
         animationTimerRef.current = null
       }
       
-      // Reset du shouldSkip
       useChatStore.setState({ shouldSkip: false })
     }
   }, [shouldSkip, visibleCount, formations.length, setIsTyping])
 
-  // Gérer le changement d'état des animations (bouton sidebar)
+  // Gérer le changement d'état des animations
   useEffect(() => {
     if (!animationsEnabled && visibleCount < formations.length) {
-      // Si animations désactivées et animation en cours, afficher tout
       setVisibleCount(formations.length)
       setIsTyping(false)
       if (animationTimerRef.current) {
@@ -239,7 +224,6 @@ export default function FormationTimeline({ language, pageId = "formation" }: Pr
   useEffect(() => {
     if (visibleCount === 0) return
     
-    // Attendre un peu que le DOM soit mis à jour
     const scrollTimer = setTimeout(() => {
       const scrollableParent = document.querySelector('.flex-1.overflow-y-auto')
       if (scrollableParent) {
@@ -247,10 +231,8 @@ export default function FormationTimeline({ language, pageId = "formation" }: Pr
         const scrollHeight = scrollableParent.scrollHeight
         const clientHeight = scrollableParent.clientHeight
         
-        // Calculer la nouvelle position de scroll
         const targetScroll = scrollTop + 250
         
-        // Scroller si on n'est pas déjà en bas
         if (scrollTop + clientHeight < scrollHeight) {
           scrollableParent.scrollTo({
             top: Math.min(targetScroll, scrollHeight - clientHeight),
@@ -272,7 +254,6 @@ export default function FormationTimeline({ language, pageId = "formation" }: Pr
     
     const questionTitle = getQuestionTitle(question, language)
     
-    // Utiliser le pageId correct depuis les props, pas "formation"
     const currentPageId = typeof window !== 'undefined' 
       ? window.location.pathname.split('/')[1] || 'home'
       : 'home'
@@ -283,7 +264,6 @@ export default function FormationTimeline({ language, pageId = "formation" }: Pr
       questionId: formation.questionId
     })
     
-    // Vérifier si c'est une question interactive
     if (question.type === "interactive" && question.component) {
       addMessage(currentPageId, {
         role: "bot",
@@ -315,7 +295,6 @@ export default function FormationTimeline({ language, pageId = "formation" }: Pr
     
     const questionTitle = getQuestionTitle(question, language)
     
-    // Utiliser le pageId correct depuis les props, pas "formation"
     const currentPageId = typeof window !== 'undefined' 
       ? window.location.pathname.split('/')[1] || 'home'
       : 'home'
@@ -444,7 +423,7 @@ export default function FormationTimeline({ language, pageId = "formation" }: Pr
                   top: `${yPosition}px`,
                   width: '100%',
                   transition: isVisible ? `opacity 0.5s ease ${animationsEnabled ? `${index * 100}ms` : '0ms'}, transform 0.5s ease ${animationsEnabled ? `${index * 100}ms` : '0ms'}` : 'none',
-                  zIndex: isHovered ? 100 : 1 // Z-index instantané sans transition
+                  zIndex: isHovered ? 100 : 1
                 }}
               >
                 {/* Point sur la timeline - centré sur la ligne */}
@@ -482,69 +461,89 @@ export default function FormationTimeline({ language, pageId = "formation" }: Pr
                     onMouseEnter={() => setHoveredIndex(index)}
                     onMouseLeave={() => setHoveredIndex(null)}
                   >
-                  {/* Année */}
-                  <div 
-                    className={`text-base md:text-lg font-bold text-accent mb-2 ${
-                      isMobile ? 'text-left' : isLeft ? 'text-right' : 'text-left'
-                    }`}
-                  >
-                    {formation.year}
-                  </div>
-
-                  {/* Carte principale */}
-                  <div
-                    onClick={() => handleFormationClick(formation)}
-                    className={`bg-bot-bubble rounded-xl p-5 shadow-custom-md cursor-pointer transition-all duration-300 ${
-                      isHovered 
-                        ? 'shadow-custom-xl scale-105 border-2 border-accent' 
-                        : 'border-2 border-transparent hover:shadow-custom-lg'
-                    }`}
-                  >
-                    <h3 className="text-xl md:text-2xl font-bold text-primary mb-2">
-                      {formation.title}
-                    </h3>
-                    
-                    {formation.subtitle && (
-                      <p className="text-base md:text-lg text-secondary">
-                        {formation.subtitle}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Questions liées (popup au hover) */}
-                  {isHovered && formation.relatedQuestions.length > 0 && (
+                    {/* Année */}
                     <div 
-                      id={`popup-${index}`}
-                      className="relative mt-3 w-full bg-main rounded-xl p-4 shadow-custom-xl border border-accent border-opacity-30"
-                      style={{
-                        maxHeight: '250px',
-                        overflowY: 'auto'
-                      }}
+                      className={`text-base md:text-lg font-bold text-accent mb-2 ${
+                        isMobile ? 'text-left' : isLeft ? 'text-right' : 'text-left'
+                      }`}
                     >
-                      <p className="text-sm font-bold text-primary mb-3 uppercase tracking-wide">
-                        {language === "fr" ? "Questions liées" : "Related questions"}
-                      </p>
-                      
-                      <div className="space-y-2">
-                        {formation.relatedQuestions.map((qId, qIndex) => {
-                          const question = getQuestionById(qId)
-                          if (!question) return null
-                          
-                          const questionTitle = getQuestionTitle(question, language)
-                          
-                          return (
-                            <button
-                              key={qIndex}
-                              onClick={(e) => handleRelatedQuestionClick(qId, e)}
-                              className="w-full text-left text-sm md:text-base px-4 py-2.5 rounded-lg border-2 border-suggestion text-suggestion font-semibold hover-suggestion transition-all shadow-custom-sm hover:shadow-custom-md bg-transparent"
-                            >
-                              {questionTitle}
-                            </button>
-                          )
-                        })}
-                      </div>
+                      {formation.year}
                     </div>
-                  )}
+
+                    {/* Carte principale */}
+                    <div
+                      onClick={() => handleFormationClick(formation)}
+                      className={`bg-bot-bubble rounded-xl p-5 shadow-custom-md cursor-pointer transition-all duration-300 ${
+                        isHovered 
+                          ? 'shadow-custom-xl scale-105 border-2 border-accent' 
+                          : 'border-2 border-transparent hover:shadow-custom-lg'
+                      }`}
+                    >
+                      <h3 className="text-xl md:text-2xl font-bold text-primary mb-3">
+                        {formation.title}
+                      </h3>
+                      
+                      {/* Logo de l'établissement + Sous-titre */}
+                      {(formation.logoImage || formation.subtitle) && (
+                        <div className="flex items-center gap-3">
+                          {/* Logo de l'établissement */}
+                          {formation.logoImage && (
+                            <div className="w-12 h-12 flex-shrink-0">
+                              <Image
+                                src={`/${formation.logoImage}`}
+                                alt={formation.subtitle}
+                                width={48}
+                                height={48}
+                                className="w-full h-full object-contain"
+                                unoptimized
+                              />
+                            </div>
+                          )}
+                          
+                          {/* Sous-titre */}
+                          {formation.subtitle && (
+                            <p className="text-base md:text-lg text-secondary flex-1 font-semibold">
+                              {formation.subtitle}
+                            </p>
+                          )}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Questions liées (popup au hover) */}
+                    {isHovered && formation.relatedQuestions.length > 0 && (
+                      <div 
+                        id={`popup-${index}`}
+                        className="relative mt-3 w-full bg-main rounded-xl p-4 shadow-custom-xl border border-accent border-opacity-30"
+                        style={{
+                          maxHeight: '250px',
+                          overflowY: 'auto'
+                        }}
+                      >
+                        <p className="text-sm font-bold text-primary mb-3 uppercase tracking-wide">
+                          {language === "fr" ? "Questions liées" : "Related questions"}
+                        </p>
+                        
+                        <div className="space-y-2">
+                          {formation.relatedQuestions.map((qId, qIndex) => {
+                            const question = getQuestionById(qId)
+                            if (!question) return null
+                            
+                            const questionTitle = getQuestionTitle(question, language)
+                            
+                            return (
+                              <button
+                                key={qIndex}
+                                onClick={(e) => handleRelatedQuestionClick(qId, e)}
+                                className="w-full text-left text-sm md:text-base px-4 py-2.5 rounded-lg border-2 border-suggestion text-suggestion font-semibold hover-suggestion transition-all shadow-custom-sm hover:shadow-custom-md bg-transparent"
+                              >
+                                {questionTitle}
+                              </button>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

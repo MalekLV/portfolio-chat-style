@@ -13,9 +13,9 @@ type ExperienceItem = {
   title: string
   subtitle: string
   questionId: string
-  logoImage: string // Logo de l'entreprise
-  images: string[] // Liste des noms de fichiers d'icônes de langages/logiciels
-  imageNames: string[] // Liste des noms à afficher au hover (dans la langue appropriée)
+  logoImage: string
+  images: string[]
+  imageNames: string[]
 }
 
 type Props = {
@@ -347,7 +347,7 @@ export default function ExperiencesTimeline({ language, pageId = "experiences" }
   }
 
   return (
-    <div className="w-full py-6" ref={containerRef}>
+    <div className="w-full py-6" ref={containerRef} style={{ overflow: 'visible' }}>
       {/* Introduction */}
       <div className="mb-8 px-4">
         <div className="flex items-start gap-2">
@@ -378,6 +378,7 @@ export default function ExperiencesTimeline({ language, pageId = "experiences" }
       <div 
         ref={timelineRef}
         className="relative w-full px-4"
+        style={{ overflow: 'visible' }}
       >
         {/* Ligne verticale */}
         <div 
@@ -404,7 +405,7 @@ export default function ExperiencesTimeline({ language, pageId = "experiences" }
         )}
 
         {/* Expériences */}
-        <div className="pt-4">
+        <div className="pt-4" style={{ overflow: 'visible' }}>
           {experiences.map((experience, index) => {
             const isVisible = index < visibleCount
             const isLeft = !isMobile && index % 2 === 0
@@ -422,7 +423,8 @@ export default function ExperiencesTimeline({ language, pageId = "experiences" }
                   top: `${yPosition}px`,
                   width: '100%',
                   transition: isVisible ? `opacity 0.5s ease ${animationsEnabled ? `${index * 100}ms` : '0ms'}, transform 0.5s ease ${animationsEnabled ? `${index * 100}ms` : '0ms'}` : 'none',
-                  zIndex: isHovered ? 100 : 1
+                  zIndex: isHovered ? 100 : 1,
+                  overflow: 'visible'
                 }}
               >
                 {/* Point sur la timeline */}
@@ -452,7 +454,8 @@ export default function ExperiencesTimeline({ language, pageId = "experiences" }
                   style={{ 
                     top: '-10px',
                     left: isMobile ? 'calc(1.5rem + 12px + 1.5rem)' : (isLeft ? 'auto' : 'calc(50% + 2rem)'),
-                    right: isMobile ? 'auto' : (isLeft ? 'calc(50% + 2rem)' : 'auto')
+                    right: isMobile ? 'auto' : (isLeft ? 'calc(50% + 2rem)' : 'auto'),
+                    overflow: 'visible'
                   }}
                 >
                   <div
@@ -471,11 +474,12 @@ export default function ExperiencesTimeline({ language, pageId = "experiences" }
                     {/* Carte principale */}
                     <div
                       onClick={() => handleExperienceClick(experience)}
-                      className={`bg-bot-bubble rounded-xl overflow-hidden shadow-custom-md cursor-pointer transition-all duration-300 ${
+                      className={`bg-bot-bubble rounded-xl shadow-custom-md cursor-pointer transition-all duration-300 ${
                         isHovered 
                           ? 'shadow-custom-xl scale-105 border-2 border-accent' 
                           : 'border-2 border-transparent hover:shadow-custom-lg'
                       }`}
+                      style={{ overflow: 'visible' }}
                     >
                       {/* Contenu principal avec padding */}
                       <div className="p-5">
@@ -514,10 +518,14 @@ export default function ExperiencesTimeline({ language, pageId = "experiences" }
                       {/* Section des icônes avec fond différent - Affichée seulement si présentes */}
                       {experience.images.length > 0 && (
                         <div 
-                          className="px-5 py-4 border-t border-accent border-opacity-20"
-                          style={{ backgroundColor: 'rgba(193, 181, 164, 0.35)' }}
+                          className="px-5 py-4 border-t border-accent border-opacity-20 relative rounded-b-xl"
                         >
-                          <div className="flex flex-wrap justify-center gap-3">
+                          {/* Fond coloré sans affecter l'overflow */}
+                          <div 
+                            className="absolute inset-0 rounded-b-xl pointer-events-none"
+                            style={{ backgroundColor: 'rgba(193, 181, 164, 0.35)' }}
+                          />
+                          <div className="relative flex flex-wrap justify-center gap-3">
                             {experience.images.map((imageName, imgIndex) => {
                               // Utiliser le nom personnalisé si disponible, sinon fallback sur le nom du fichier
                               const displayName = experience.imageNames[imgIndex] || imageName.replace('.png', '')
@@ -525,8 +533,7 @@ export default function ExperiencesTimeline({ language, pageId = "experiences" }
                               return (
                                 <div 
                                   key={imgIndex}
-                                  className="w-12 h-12 hover:scale-110 transition-transform"
-                                  title={displayName}
+                                  className="relative w-12 h-12 hover:scale-110 transition-transform group"
                                 >
                                   <Image
                                     src={`/icones/${imageName}`}
@@ -536,6 +543,12 @@ export default function ExperiencesTimeline({ language, pageId = "experiences" }
                                     className="w-full h-full object-contain"
                                     unoptimized
                                   />
+                                  {/* Tooltip stylisé pour le nom du langage */}
+                                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-accent text-on-dark text-xs rounded whitespace-nowrap shadow-custom-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
+                                    style={{ zIndex: 9999 }}
+                                  >
+                                    {displayName}
+                                  </div>
                                 </div>
                               )
                             })}

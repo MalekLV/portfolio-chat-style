@@ -7,11 +7,11 @@ import { useLanguageStore } from "../../lib/languageStore"
 // Import dynamique des composants interactifs
 // Cela permet de charger uniquement les composants nécessaires
 const componentMap: Record<string, any> = {
-  "LanguagesGrid": dynamic(() => import("./LanguagesGrid")),
   "FormationTimeline": dynamic(() => import("./FormationTimeline")),
   "ExperiencesTimeline": dynamic(() => import("./ExperiencesTimeline")),
+  "ProjectsGrid": dynamic(() => import("./ProjectsGrid")),
   // Ajoutez vos autres composants ici
-  // "TimelineParcours": dynamic(() => import("./TimelineParcours")),
+  // "LanguagesGrid": dynamic(() => import("./LanguagesGrid")),
   // "CompetencesRadar": dynamic(() => import("./CompetencesRadar")),
 }
 

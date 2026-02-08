@@ -349,6 +349,8 @@
 },
 {
   "id": "projets",
+  "type": "interactive",
+  "component": "ProjectsGrid",
   "title_fr": "Quels projets as-tu réalisés ?",
   "title_en": "What projects have you completed?",
   "tags_fr": [

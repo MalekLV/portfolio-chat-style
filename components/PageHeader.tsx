@@ -1,7 +1,7 @@
 // components/PageHeader.tsx
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useLanguageStore } from "../lib/languageStore"
 import LanguageChangeModal from "./LanguageChangeModal"
 
@@ -11,6 +11,12 @@ export default function PageHeader() {
   const [showTooltip, setShowTooltip] = useState(false)
   const [showLanguageModal, setShowLanguageModal] = useState(false)
   const [pendingLanguage, setPendingLanguage] = useState<"fr" | "en" | null>(null)
+  const [isClient, setIsClient] = useState(false)
+
+  // Éviter les erreurs d'hydration
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   const handleLanguageClick = (newLanguage: "fr" | "en") => {
     if (newLanguage !== language) {
@@ -24,6 +30,20 @@ export default function PageHeader() {
       useLanguageStore.getState().setLanguage(pendingLanguage)
       setPendingLanguage(null)
     }
+  }
+
+  // Placeholder pendant l'hydration
+  if (!isClient) {
+    return (
+      <header className="hidden md:flex flex-col items-center pt-4 pb-3 bg-main relative fade-to-bottom">
+        <h1 className="font-bold text-3xl mb-3 text-header-title">
+          Le Velly Malek
+        </h1>
+        <div className="relative">
+          {/* Placeholder vide pendant l'hydration */}
+        </div>
+      </header>
+    )
   }
 
   return (

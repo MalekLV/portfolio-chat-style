@@ -1,7 +1,7 @@
 // components/MobileHeader.tsx
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useUIStore } from "../lib/uiStore"
 import { useLanguageStore } from "../lib/languageStore"
 import LanguageChangeModal from "./LanguageChangeModal"
@@ -13,6 +13,12 @@ export default function MobileHeader() {
   const t = useLanguageStore(s => s.t)
   const [showLanguageModal, setShowLanguageModal] = useState(false)
   const [pendingLanguage, setPendingLanguage] = useState<"fr" | "en" | null>(null)
+  const [isClient, setIsClient] = useState(false)
+
+  // Éviter les erreurs d'hydration
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   const handleLanguageClick = (newLanguage: "fr" | "en") => {
     if (newLanguage !== language) {
@@ -26,6 +32,18 @@ export default function MobileHeader() {
       useLanguageStore.getState().setLanguage(pendingLanguage)
       setPendingLanguage(null)
     }
+  }
+
+  // Placeholder pendant l'hydration
+  if (!isClient) {
+    return (
+      <header className="md:hidden bg-sidebar px-4 py-3 flex items-center justify-between shadow-custom-sm">
+        <h1 className="font-bold text-xl text-sidebar">Le Velly Malek</h1>
+        <div className="flex items-center gap-3">
+          {/* Placeholder vide pendant l'hydration */}
+        </div>
+      </header>
+    )
   }
 
   return (

@@ -1,7 +1,7 @@
 // components/MobileSidebar.tsx
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { motion } from "framer-motion"
@@ -18,11 +18,17 @@ export default function MobileSidebar() {
   const pathname = usePathname()
   const t = useLanguageStore(s => s.t)
   const [showContactModal, setShowContactModal] = useState(false)
+  const [isClient, setIsClient] = useState(false)
 
   const animationsEnabled = useSettingsStore(s => s.animationsEnabled)
   const toggleAnimations = useSettingsStore(s => s.toggleAnimations)
 
   const language = useLanguageStore(s => s.language)
+  
+  // Éviter les erreurs d'hydration
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
   
   const links = [
     { href: "/", label: t("sidebar.home") },
@@ -49,6 +55,25 @@ export default function MobileSidebar() {
 
   function handleGitHubClick() {
     window.open("https://github.com/MalekLV", "_blank")
+  }
+
+  // Placeholder pendant l'hydration
+  if (!isClient) {
+    return (
+      <motion.aside
+        initial={{ x: "-100%" }}
+        animate={{ x: open ? 0 : "-100%" }}
+        transition={{ duration: 0.25 }}
+        className="fixed top-0 left-0 h-full w-72 bg-sidebar p-4 z-50 md:hidden flex flex-col shadow-custom-lg"
+      >
+        <div className="mb-6">
+          <h2 className="text-2xl font-bold text-sidebar">Portfolio</h2>
+        </div>
+        <nav className="space-y-1 flex-1">
+          {/* Placeholder vide pendant l'hydration */}
+        </nav>
+      </motion.aside>
+    )
   }
 
   return (

@@ -4,7 +4,7 @@
 
 export { default as InteractiveComponent } from "./InteractiveComponent"
 
-// Exemples de composants à implémenter :
-// export { default as LanguagesGrid } from "./LanguagesGrid"
-// export { default as TimelineParcours } from "./TimelineParcours"
-// export { default as CompetencesRadar } from "./CompetencesRadar"
+// Composants interactifs disponibles
+export { default as FormationTimeline } from "./FormationTimeline"
+export { default as ExperiencesTimeline } from "./ExperiencesTimeline"
+export { default as ProjectsGrid } from "./ProjectsGrid"

@@ -35,17 +35,33 @@ export default function ProjetsPage() {
 
       addMessage(pageId, {
         role: "user",
-        content: questionTitle
-      })
-
-      const res = await fetch(`/api/content?id=${pageId}&lang=${language}`)
-      const markdown = await res.text()
-
-      addMessage(pageId, {
-        role: "bot",
-        content: markdown,
+        content: questionTitle,
         questionId: pageId
       })
+
+      // Vérifier si c'est une question interactive
+      if (question.type === "interactive" && question.component) {
+        // Ajouter directement le composant interactif
+        addMessage(pageId, {
+          role: "bot",
+          content: "",
+          questionId: pageId,
+          type: "interactive",
+          componentName: question.component,
+          data: {}
+        })
+      } else {
+        // Question textuelle classique
+        const res = await fetch(`/api/content?id=${pageId}&lang=${language}`)
+        const markdown = await res.text()
+
+        addMessage(pageId, {
+          role: "bot",
+          content: markdown,
+          questionId: pageId,
+          type: "text"
+        })
+      }
     }
 
     initConversation()
