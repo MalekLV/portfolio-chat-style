@@ -1,22 +1,22 @@
-langage	commentaire	images	groupe	id_associe
-SQL		sql.png	maitre	stageCHU, BUT tlse, projet immobilier, projet site volley, projet IA séries, BUT mtp, BAC
-PL/SQL		plsql.png	maitre	stageCHU, BUT tlse, projet immobilier
-Excel	Excel avancé (Power Query, Tableaux croisés dynamiques, fonctions avancés, mise en forme conditionnelle)	excel.png	maitre	alternanceGOC, projet OpenFF, BUT tlse, projet immobilier
-Visual Basic for Applications	Language interne à Excel, permettant de réaliser des automatisations (macros) avancés et des outils de formulaire	vba.png	maitre	alternanceGOC
-Python	Notamment pour le développement de modèle d’IA avec les bibliothèques Scikit-learn (Machine Learning), TensorFlow et PyTorch (Deep Learning) ainsi que Keras (Réseaux de neurones)	python.png	connaissance	projet IA séries, BUT tlse, BAC
-Java	Programmation orientée objet et autre techniques, tests avec JUnit, interfaces graphiques avec JavaFX 	java.png	connaissance	projet immobilier, projet Trains, BUT tlse, BUT mtp
-PHP	Notamment pour la réalisation d’API 	php.png	connaissance	projet site volley, BUT tlse
-Power Automate	Avec le langage Power Fx pour expressions et automatisations 	powerautomate.png	connaissance	alternanceGOC
-NoSQL	Notamment les langages de requêtes MQL (MongoDB),et Cypher (graphes sous Neo4j)	nosql.png	connaissance	BUT tlse
-HTML		html.png	web	projet site volley, fonctionnement, BUT tlse, BUT mtp, BAC
-CSS		css.png	web	projet site volley, fonctionnement, BUT tlse, BUT mtp, BAC
-JavaScript		js.png	web	fonctionnement, BUT tlse
-TypeScript	Langage utilisé pour le développement de ce site 	typescript.png	web	fonctionnement
-React.js	Langage utilisé pour le développement de ce site 	reactjs.png	web	fonctionnement
-Next.js	Langage utilisé pour le développement de ce site 	nextjs.png	web	fonctionnement
-Tailwind CSS	Langage utilisé pour le développement de ce site 	tailwindcss.png	web	fonctionnement
-Linux	Langage utilisé dans le terminal sous Linux	linux.png	notion	BUT tlse, BUT mtp
-C		c.png	notion	BUT tlse, BUT mtp
-CSV		csv.png	fichier	alternanceGOC, projet OpenFF, BUT tlse, projet immobilier
-JSON		json.png	fichier	BUT tlse
-XML		xml.png	fichier	BUT tlse
+langage	commentaire_fr	commentaire_en	images	groupe	id_associe
+SQL	Requêtes SQL avancées et conception de bases de données	Advanced SQL queries and database design	sql.png	maitre	stageCHU, BUT tlse, projet immobilier, projet site volley, projet IA séries, BUT mtp, BAC
+PL/SQL	PL/SQL Oracle pour procédures stockées et triggers	Oracle PL/SQL for stored procedures and triggers	plsql.png	maitre	stageCHU, BUT tlse, projet immobilier
+Excel	Excel avancé (Power Query, tableaux croisés dynamiques, fonctions avancées, mise en forme conditionnelle)	Advanced Excel (Power Query, Pivot Tables, advanced functions, conditional formatting)	excel.png	maitre	alternanceGOC, projet OpenFF, BUT tlse, projet immobilier
+Visual Basic for Applications	Langage interne à Excel pour automatisations (macros) avancées et outils de formulaire	Internal Excel language for advanced automations (macros) and form tools	vba.png	maitre	alternanceGOC
+Python	Notamment pour le développement de modèles d'IA avec Scikit-learn (Machine Learning), TensorFlow et PyTorch (Deep Learning), ainsi que Keras (réseaux de neurones)	Especially for AI model development with Scikit-learn (Machine Learning), TensorFlow and PyTorch (Deep Learning), and Keras (Neural Networks)	python.png	connaissance	projet IA séries, BUT tlse, BAC
+Java	Programmation orientée objet et autres techniques, tests avec JUnit, interfaces graphiques avec JavaFX	Object-oriented programming and other techniques, testing with JUnit, GUI with JavaFX	java.png	connaissance	projet immobilier, projet Trains, BUT tlse, BUT mtp
+PHP	Notamment pour la réalisation d'API REST	Especially for REST API development	php.png	connaissance	projet site volley, BUT tlse
+Power Automate	Avec le langage Power Fx pour expressions et automatisations avancées	With Power Fx language for expressions and advanced automations	powerautomate.png	connaissance	alternanceGOC
+NoSQL	Notamment les langages de requêtes MQL (MongoDB) et Cypher (graphes avec Neo4j)	Especially query languages MQL (MongoDB) and Cypher (graphs with Neo4j)	nosql.png	connaissance	BUT tlse
+HTML	Langage de balisage pour structurer le contenu web	Markup language for web structure	html.png	web	projet site volley, fonctionnement, BUT tlse, BUT mtp, BAC
+CSS	Langage de style pour la mise en forme et le design web	Styling language for web design	css.png	web	projet site volley, fonctionnement, BUT tlse, BUT mtp, BAC
+JavaScript	Langage de programmation pour l'interactivité web	Programming language for web interactivity	js.png	web	fonctionnement, BUT tlse
+TypeScript	Langage utilisé pour le développement de ce site (JavaScript typé)	Language used for this website development (typed JavaScript)	typescript.png	web	fonctionnement
+React.js	Bibliothèque JavaScript utilisée pour le développement de ce site	JavaScript library used for this website development	reactjs.png	web	fonctionnement
+Next.js	Framework React utilisé pour le développement de ce site	React framework used for this website development	nextjs.png	web	fonctionnement
+Tailwind CSS	Framework CSS utilisé pour le développement de ce site	CSS framework used for this website development	tailwindcss.png	web	fonctionnement
+Linux	Commandes utilisées dans le terminal Linux	Commands used in Linux terminal	linux.png	notion	BUT tlse, BUT mtp
+C	Langage de programmation de base pour l'algorithmique	Basic programming language for algorithms	c.png	notion	BUT tlse, BUT mtp
+CSV	Format de fichier à valeurs séparées par des virgules	Comma-separated values file format	csv.png	fichier	alternanceGOC, projet OpenFF, BUT tlse, projet immobilier
+JSON	Format de données JavaScript Object Notation	JavaScript Object Notation data format	json.png	fichier	BUT tlse
+XML	Format de données Extensible Markup Language	Extensible Markup Language data format	xml.png	fichier	BUT tlse

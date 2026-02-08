@@ -321,7 +321,7 @@
     "data",
     "AGED"
   ],
-  "id_associe": ["BAC", "BUT mtp", "BUT tlse", "ambition"]
+  "id_associe": []
 },
 {
   "id": "BAC",
@@ -387,7 +387,7 @@
     "visualization",
     "analysis"
   ],
-  "id_associe": ["projet IA séries","projet OpenFF","projet site volley","projet immobilier","projet Trains","fonctionnement","experiences"]
+  "id_associe": []
 },
 {
   "id": "experiences",
@@ -429,7 +429,7 @@
     "swimming",
     "experiences"
   ],
-  "id_associe": ["alternanceGOC", "stageCHU","jobGrandBleu","ambition"]
+  "id_associe": []
 },
 {
   "id": "competences",
