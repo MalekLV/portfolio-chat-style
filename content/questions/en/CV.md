@@ -1,4 +1,4 @@
-Here is my **CV**, last updated in June 2025:  
+Here is my **CV**, last updated in February 2026:  
 
 [View and download my CV](./LE-VELLY_Malek_CV.pdf)
 
