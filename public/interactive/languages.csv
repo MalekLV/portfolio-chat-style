@@ -1,5 +1,5 @@
 langage	commentaire_fr	commentaire_en	images	groupe	id_associe
-SQL	Requêtes SQL avancées et conception de bases de données	Advanced SQL queries and database design	sql.png	maitre	stageCHU, BUT tlse, projet immobilier, projet site volley, projet IA séries, BUT mtp, BAC
+SQL	Requêtes SQL avancées, conception de bases de données et administration (gestion des rôles, acccès et monitoring)	Advanced SQL queries and database design	sql.png	maitre	stageCHU, BUT tlse, projet immobilier, projet site volley, projet IA séries, BUT mtp, BAC
 PL/SQL	PL/SQL Oracle pour procédures stockées et triggers	Oracle PL/SQL for stored procedures and triggers	plsql.png	maitre	stageCHU, BUT tlse, projet immobilier
 Excel	Excel avancé (Power Query, tableaux croisés dynamiques, fonctions avancées, mise en forme conditionnelle)	Advanced Excel (Power Query, Pivot Tables, advanced functions, conditional formatting)	excel.png	maitre	alternanceGOC, projet OpenFF, BUT tlse, projet immobilier
 Visual Basic for Applications	Langage interne à Excel pour automatisations (macros) avancées et outils de formulaire	Internal Excel language for advanced automations (macros) and form tools	vba.png	maitre	alternanceGOC

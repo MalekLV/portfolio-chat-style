@@ -12,8 +12,8 @@ const componentMap: Record<string, any> = {
   "ProjectsGrid": dynamic(() => import("./ProjectsGrid")),
   "LanguagesGrid": dynamic(() => import("./LanguagesGrid")),
   "ApplicationsGrid": dynamic(() => import("./ApplicationsGrid")),
+  "CompetencesInteractive": dynamic(() => import("./CompetencesInteractive")),
   // Ajoutez vos autres composants ici
-  // "CompetencesRadar": dynamic(() => import("./CompetencesRadar")),
 }
 
 type Props = {

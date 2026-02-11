@@ -19,6 +19,10 @@ type ChatStore = {
   setIsTyping: (value: boolean) => void
   skipTyping: () => void
   shouldSkip: boolean
+  
+  // Flag pour bloquer le scroll pendant le toggle des composants interactifs
+  isInteractiveToggling: boolean
+  setIsInteractiveToggling: (value: boolean) => void
 }
 
 // Fonction helper pour générer des IDs uniques
@@ -70,5 +74,9 @@ export const useChatStore = create<ChatStore>((set) => ({
   isTyping: false,
   shouldSkip: false,
   setIsTyping: (value) => set({ isTyping: value }),
-  skipTyping: () => set({ shouldSkip: true })
+  skipTyping: () => set({ shouldSkip: true }),
+  
+  // Toggle interactif
+  isInteractiveToggling: false,
+  setIsInteractiveToggling: (value) => set({ isInteractiveToggling: value })
 }))

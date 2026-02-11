@@ -1,6 +1,6 @@
 Je m’appelle **Malek Le Velly** et je recherche une **alternance pour un Master** dans le domaine de la **donnée**.
 %
-Diplomé d’un **BUT Informatique spécialisé en data**, j'effectue actuellement ma troisième année en alternance chez **Groupama d’Oc**, où j’occupe un poste de **Chef de projet – Data Analyst**. Cette expérience me permis de travailler sur des problématiques concrètes d’exploitation, d’analyse et de valorisation des données en environnement professionnel.
+Diplomé d’un **BUT Informatique spécialisé en data**, j'effectue actuellement ma troisième année en alternance chez **Groupama d’Oc**, où j’occupe un poste de **Chef de projet – Data Analyst**. Cette expérience me permais de travailler sur des problématiques concrètes d’exploitation, d’analyse et de valorisation des données en environnement professionnel.
 %
 J’ai également réalisé un **stage au CHU de Montpellier**, au sein de l’unité de thérapie cellulaire, orienté sur l’exploitation et la migration de données sensibles.
 %

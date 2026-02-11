@@ -1,7 +1,12 @@
-My first year of BSc in Computer Science at IUT Montpellier (2022-2023) was a foundational year for my technical training.
-
-I learned the **basics of programming** (Java, Python), **data structures**, **relational databases** (SQL), and **web fundamentals** (HTML, CSS, JavaScript).
-
-This year was also marked by several practical projects that allowed me to apply the theoretical knowledge acquired in class. I particularly developed my **teamwork** and **project management** skills.
-
-The end-of-year internship at CHU Montpellier was an enriching professional experience that exposed me to real-world issues of sensitive data migration.
+I completed my first year of a **BUT in Computer Science** at the IUT of **Montpellier** (2022–2023).  
+%
+This year allowed me to discover the **fundamentals of computer science**:  
+- **Object-oriented programming** in **Java** and **C**  
+- Basics of **web development** (**HTML**, **CSS**, **JavaScript**)  
+- **Relational databases** and **SQL**  
+%
+I also worked on **applied mathematics** (graph theory, probabilities, statistics, matrices), as well as concepts in **communication**, **law**, **accounting**, and **project management**.  
+%
+Many **projects** also structured the year, including the adaptation of the board game **Trains** into a Java application.  
+%0  
+I enjoyed the **data science** courses so much that I decided to change my BUT in the second year in order to follow a **specialized track** at the IUT of Toulouse.

@@ -1,12 +1,22 @@
-Mes deux dernières années de BUT Informatique à l'IUT de Toulouse Paul Sabatier (2023-2025) ont été marquées par une **spécialisation en Administration, Gestion et Exploitation des Données (AGED)**.
-
-Cette spécialisation m'a permis d'approfondir mes compétences en :
-- **Gestion de bases de données** (Oracle, PL/SQL, SQL avancé)
-- **Analyse et traitement de données** (Python, Excel avancé, VBA)
-- **ETL et pipelines de données** (Talend, KNIME)
-- **Visualisation de données** (Power BI, tableaux de bord)
-- **Administration système et réseau**
-
-La **troisième année en alternance** chez Groupama d'Oc a été particulièrement formatrice. Elle m'a permis de mettre en pratique mes compétences techniques dans un environnement professionnel exigeant, tout en développant mon autonomie et ma capacité à gérer des projets de A à Z.
-
-Les projets académiques réalisés durant ces deux années, notamment le projet de gestion immobilière et le jeu Trains, m'ont également permis de consolider mes acquis en programmation orientée objet et en gestion de projet agile.
+J’ai réalisé mes deux dernières années de **BUT Informatique** à l’IUT **Toulouse Paul Sabatier** (2023-2025), avec une spécialisation orientée **Données** (Administration, Gestion, Exploitation) et **IA** (Intelligence Artificielle).  
+%
+Cette formation m’a permis d’approfondir mes compétences en :  
+- **Administration de bases de données** (SQL, Oracle, PL/SQL)  
+- **Analyse et traitement de données** (Python, Excel avancé)  
+- **ETL et pipelines de données** (Talend, KNIME)  
+- **Visualisation de données** (Power BI, Python, Chart.js)  
+- **Modélisation IA en Python** (Machine Learning, Deep Learning, réseaux de neurones)  
+- **Manipulation de données NoSQL** (CSV, XML, JSON, TXT avec regex)  
+%
+J’ai également renforcé mes compétences en développement d’applications et de sites web sécurisés :  
+- **Java avancé** (structure MVC, JavaFX, JUnit)  
+- **Développement web** (HTML, CSS, JavaScript, PHP, API REST)  
+%
+Enfin, j’ai acquis des compétences transversales :  
+- **Mathématiques appliquées** (statistiques, prédiction, cryptographie)  
+- **Droit du numérique** et **comptabilité**  
+- **Communication**, anglais, management et travail en équipe  
+- **Gestion de projet** (Agile, Scrum, Kanban)  
+Ces deux années m’ont surtout permis de conduire de nombreux projets concrets.  
+%0  
+Je me suis aussi professionnalisé grâce à un **stage au CHU de Montpellier** en 2 ème année et une **alternance chez Groupama d’Oc** durant la 3ème année comme **analyste de données et chef de projet**.

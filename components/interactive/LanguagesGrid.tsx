@@ -7,7 +7,7 @@ import { getQuestionById, getQuestionTitle } from "../../lib/questionHelper"
 import { useLanguageStore } from "../../lib/languageStore"
 import { useSettingsStore } from "../../lib/settingsStore"
 import Image from "next/image"
-import { BookOpen } from "lucide-react"
+import { BookOpen, ChevronDown, ChevronUp } from "lucide-react"
 
 type LanguageItem = {
   langage: string
@@ -84,6 +84,21 @@ const GROUP_CONFIG: Record<string, Omit<LanguageGroup, "languages">> = {
   }
 }
 
+const SIDEBAR_WIDTH = 320
+const MIN_CARD_WIDTH = 200 // Largeur minimum d'une carte pour que le texte reste lisible
+
+// Fonction pour calculer le nombre de colonnes selon la largeur RÉELLE du container
+// RÈGLE : Chaque carte doit faire AU MOINS 200px de large pour que le texte reste lisible
+const getColumnsCount = (containerWidth: number): number => {
+  // Calculer le nombre maximum de colonnes possibles avec 200px minimum par carte
+  // On enlève un peu d'espace pour les gaps entre les cartes
+  const effectiveWidth = containerWidth - 32 // Padding horizontal du container
+  const maxColumns = Math.floor(effectiveWidth / MIN_CARD_WIDTH)
+  
+  // Garantir au moins 2 colonnes, maximum 5
+  return Math.max(2, Math.min(5, maxColumns))
+}
+
 export default function LanguagesGrid({ language, pageId = "competences" }: Props) {
   const [languageGroups, setLanguageGroups] = useState<LanguageGroup[]>([])
   const [visibleGroupCount, setVisibleGroupCount] = useState(0)
@@ -91,15 +106,34 @@ export default function LanguagesGrid({ language, pageId = "competences" }: Prop
   const [isPopupHovered, setIsPopupHovered] = useState(false)
   const [hoveredGroupIndex, setHoveredGroupIndex] = useState<number | null>(null)
   const [popupPosition, setPopupPosition] = useState<{ left?: string, right?: string, transform?: string }>({})
+  const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set(['maitre', 'connaissance', 'web', 'notion', 'fichier']))
+  const [containerWidth, setContainerWidth] = useState(0)
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const cardRef = useRef<HTMLDivElement | null>(null)
+  const containerRef = useRef<HTMLDivElement | null>(null)
   
   const addMessage = useChatStore(s => s.addMessage)
   const animationsEnabled = useSettingsStore(s => s.animationsEnabled)
   const setIsTyping = useChatStore(s => s.setIsTyping)
   const shouldSkip = useChatStore(s => s.shouldSkip)
+  const setIsInteractiveToggling = useChatStore(s => s.setIsInteractiveToggling)
+  const isInteractiveToggling = useChatStore(s => s.isInteractiveToggling)
   const t = useLanguageStore(s => s.t)
   const animationTimerRef = useRef<NodeJS.Timeout | null>(null)
+
+  // Mesurer la largeur du conteneur (pas de l'écran)
+  useEffect(() => {
+    const updateWidth = () => {
+      if (containerRef.current) {
+        const width = containerRef.current.offsetWidth
+        setContainerWidth(width)
+      }
+    }
+
+    updateWidth()
+    window.addEventListener('resize', updateWidth)
+    return () => window.removeEventListener('resize', updateWidth)
+  }, [])
 
   // Nettoyer le timeout au démontage
   useEffect(() => {
@@ -114,31 +148,22 @@ export default function LanguagesGrid({ language, pageId = "competences" }: Prop
   useEffect(() => {
     async function loadLanguages() {
       try {
-        console.log('🔍 Début du chargement du CSV des langages...')
         const res = await fetch('/interactive/languages.csv')
-        console.log('📡 Réponse fetch:', res.status, res.statusText)
         
         if (!res.ok) {
           throw new Error(`Erreur HTTP: ${res.status}`)
         }
         
         const csvText = await res.text()
-        console.log('📄 Contenu CSV chargé, longueur:', csvText.length)
-        
         const lines = csvText.split(/\r?\n/).filter(line => line.trim().length > 0)
-        console.log('📋 Nombre de lignes:', lines.length)
-        
         const dataLines = lines.slice(1) // Ignorer l'en-tête
-        console.log('📊 Nombre de lignes de données:', dataLines.length)
         
         const parsedLanguages: LanguageItem[] = []
         
         for (const line of dataLines) {
           const columns = line.split('\t').map(col => col.trim())
-          console.log('🔢 Colonnes trouvées:', columns.length, 'pour la ligne:', line.substring(0, 50))
           
           if (columns.length < 6) {
-            console.warn('⚠️ Ligne ignorée (pas assez de colonnes):', columns.length, line)
             continue
           }
           
@@ -150,22 +175,16 @@ export default function LanguagesGrid({ language, pageId = "competences" }: Prop
           }
           
           if (langage && images && groupe) {
-            const languageItem = {
+            parsedLanguages.push({
               langage,
               commentaire_fr: commentaire_fr || "",
               commentaire_en: commentaire_en || "",
               images,
               groupe,
               id_associe
-            }
-            console.log('✅ Langage ajouté:', languageItem)
-            parsedLanguages.push(languageItem)
-          } else {
-            console.warn('⚠️ Langage ignoré (manque langage, images ou groupe):', { langage, images, groupe })
+            })
           }
         }
-        
-        console.log('🎯 Total langages chargés:', parsedLanguages.length)
         
         // Organiser par groupes
         const groups: LanguageGroup[] = []
@@ -185,7 +204,6 @@ export default function LanguagesGrid({ language, pageId = "competences" }: Prop
           }
         })
         
-        console.log('📦 Groupes créés:', groups.length)
         setLanguageGroups(groups)
       } catch (error) {
         console.error("❌ Erreur lors du chargement des langages:", error)
@@ -197,27 +215,49 @@ export default function LanguagesGrid({ language, pageId = "competences" }: Prop
 
   // Animation progressive des groupes
   useEffect(() => {
-    console.log('🎬 Animation: languageGroups.length =', languageGroups.length)
     if (languageGroups.length === 0) return
-    
-    setIsTyping(true)
     
     if (!animationsEnabled) {
       setVisibleGroupCount(languageGroups.length)
-      setIsTyping(false)
+      setTimeout(() => setIsTyping(false), 0)
       return
     }
+    
+    setTimeout(() => setIsTyping(true), 0)
     
     const timer = setInterval(() => {
       setVisibleGroupCount(prev => {
         if (prev >= languageGroups.length) {
           clearInterval(timer)
-          setIsTyping(false)
+          setTimeout(() => setIsTyping(false), 0)
           return prev
         }
-        return prev + 1
+        const next = prev + 1
+        
+        // Scroll uniquement pendant l'animation initiale
+        setTimeout(() => {
+          const scrollableParent = document.querySelector('.flex-1.overflow-y-auto') as HTMLElement
+          if (!scrollableParent || !containerRef.current) return
+          const containerW = containerRef.current.offsetWidth
+          const currentGroup = languageGroups[next - 1]
+          if (!currentGroup) return
+          const columnsCount = getColumnsCount(containerW)
+          const rowsCount = Math.ceil(currentGroup.languages.length / columnsCount)
+          const scrollAmount = Math.min(rowsCount * 160 + 100, 500)
+          const scrollTop = scrollableParent.scrollTop
+          const scrollHeight = scrollableParent.scrollHeight
+          const clientHeight = scrollableParent.clientHeight
+          if (scrollTop + clientHeight < scrollHeight) {
+            scrollableParent.scrollTo({
+              top: Math.min(scrollTop + scrollAmount, scrollHeight - clientHeight),
+              behavior: 'smooth'
+            })
+          }
+        }, 50)
+        
+        return next
       })
-    }, 800) // 800ms entre chaque groupe
+    }, 800)
     
     animationTimerRef.current = timer
     
@@ -226,7 +266,7 @@ export default function LanguagesGrid({ language, pageId = "competences" }: Prop
         clearInterval(animationTimerRef.current)
         animationTimerRef.current = null
       }
-      setIsTyping(false)
+      setTimeout(() => setIsTyping(false), 0)
     }
   }, [languageGroups.length, animationsEnabled, setIsTyping])
 
@@ -234,7 +274,7 @@ export default function LanguagesGrid({ language, pageId = "competences" }: Prop
   useEffect(() => {
     if (shouldSkip && visibleGroupCount < languageGroups.length) {
       setVisibleGroupCount(languageGroups.length)
-      setIsTyping(false)
+      setTimeout(() => setIsTyping(false), 0)
       
       if (animationTimerRef.current) {
         clearInterval(animationTimerRef.current)
@@ -249,7 +289,7 @@ export default function LanguagesGrid({ language, pageId = "competences" }: Prop
   useEffect(() => {
     if (!animationsEnabled && visibleGroupCount < languageGroups.length) {
       setVisibleGroupCount(languageGroups.length)
-      setIsTyping(false)
+      setTimeout(() => setIsTyping(false), 0)
       if (animationTimerRef.current) {
         clearInterval(animationTimerRef.current)
         animationTimerRef.current = null
@@ -257,47 +297,64 @@ export default function LanguagesGrid({ language, pageId = "competences" }: Prop
     }
   }, [animationsEnabled, visibleGroupCount, languageGroups.length, setIsTyping])
 
-  // Scroller automatiquement pendant l'animation
-  useEffect(() => {
-    if (visibleGroupCount === 0) return
+  const toggleGroupExpansion = (groupName: string, e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
     
-    const scrollTimer = setTimeout(() => {
-      const scrollableParent = document.querySelector('.flex-1.overflow-y-auto')
-      if (scrollableParent) {
-        const scrollTop = scrollableParent.scrollTop
-        const scrollHeight = scrollableParent.scrollHeight
-        const clientHeight = scrollableParent.clientHeight
-        
-        const targetScroll = scrollTop + 200
-        
-        if (scrollTop + clientHeight < scrollHeight) {
-          scrollableParent.scrollTo({
-            top: Math.min(targetScroll, scrollHeight - clientHeight),
-            behavior: 'smooth'
-          })
-        }
+    // Activer le flag GLOBAL pour bloquer le scroll de ChatWindow
+    setIsInteractiveToggling(true)
+    
+    // Sauvegarder la position actuelle AVANT le toggle
+    const scrollableParent = document.querySelector('.flex-1.overflow-y-auto') as HTMLElement
+    if (!scrollableParent) return
+    
+    const currentScrollTop = scrollableParent.scrollTop
+    
+    // Bloquer temporairement le scroll en ajoutant une classe CSS
+    scrollableParent.style.overflow = 'hidden'
+    
+    setExpandedGroups(prev => {
+      const newSet = new Set(prev)
+      if (newSet.has(groupName)) {
+        newSet.delete(groupName)
+      } else {
+        newSet.add(groupName)
       }
-    }, 200)
+      return newSet
+    })
     
-    return () => clearTimeout(scrollTimer)
-  }, [visibleGroupCount])
+    // Double requestAnimationFrame pour être VRAIMENT sûr que le DOM est stable
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        // Forcer la position exacte
+        scrollableParent.scrollTop = currentScrollTop
+        
+        // Débloquer le scroll après stabilisation
+        setTimeout(() => {
+          scrollableParent.style.overflow = ''
+          setIsInteractiveToggling(false)
+        }, 100)
+      })
+    })
+  }
 
-  // Calculer la position du popup en fonction de la position de la carte
+  // Calculer la position du popup en tenant compte de la Sidebar
   const calculatePopupPosition = (cardElement: HTMLElement) => {
     const rect = cardElement.getBoundingClientRect()
     const viewportWidth = window.innerWidth
-    const popupWidth = 320 // 80 * 4 = 320px (w-80)
+    const popupWidth = 320
     
-    const spaceOnLeft = rect.left
+    const isMobile = window.innerWidth < 768
+    const spaceOnLeft = isMobile ? rect.left : rect.left - SIDEBAR_WIDTH
     const spaceOnRight = viewportWidth - rect.right
     
-    // Si la popup centrée dépasserait à droite
-    if (rect.left + rect.width / 2 + popupWidth / 2 > viewportWidth) {
-      return { right: '0', left: 'auto', transform: 'none' }
-    }
-    // Si la popup centrée dépasserait à gauche
-    else if (rect.left + rect.width / 2 - popupWidth / 2 < 0) {
+    // Si pas assez d'espace à gauche (en tenant compte de la sidebar)
+    if (spaceOnLeft < popupWidth / 2) {
       return { left: '0', right: 'auto', transform: 'none' }
+    }
+    // Si pas assez d'espace à droite
+    else if (spaceOnRight < popupWidth / 2) {
+      return { right: '0', left: 'auto', transform: 'none' }
     }
     // Sinon, centrer normalement
     else {
@@ -386,7 +443,7 @@ export default function LanguagesGrid({ language, pageId = "competences" }: Prop
   }
 
   return (
-    <div className="w-full py-6">
+    <div className="w-full py-6" ref={containerRef}>
       {/* Introduction */}
       <div className="mb-8 px-4">
         <div className="flex items-start gap-2">
@@ -417,6 +474,7 @@ export default function LanguagesGrid({ language, pageId = "competences" }: Prop
       <div className="space-y-8 px-4">
         {languageGroups.map((group, groupIndex) => {
           const isVisible = groupIndex < visibleGroupCount
+          const isExpanded = expandedGroups.has(group.name)
           
           return (
             <div
@@ -432,162 +490,186 @@ export default function LanguagesGrid({ language, pageId = "competences" }: Prop
             >
               {/* En-tête du groupe */}
               <div className="mb-4">
-                <div 
-                  className="inline-flex items-center gap-3 px-4 py-2 rounded-full border-2 shadow-custom-md"
-                  style={{ 
-                    borderColor: group.color,
-                    backgroundColor: group.bgColor
-                  }}
+                <button
+                  onClick={(e) => toggleGroupExpansion(group.name, e)}
+                  className="flex items-center gap-3 hover:opacity-80 transition-opacity"
                 >
-                  <h3 
-                    className="text-xl md:text-2xl font-bold"
+                  <div 
+                    className="inline-flex items-center gap-3 px-4 py-2 rounded-full border-2 shadow-custom-md"
+                    style={{ 
+                      borderColor: group.color,
+                      backgroundColor: group.bgColor
+                    }}
+                  >
+                    <h3 
+                      className="text-lg md:text-xl lg:text-2xl font-bold whitespace-nowrap"
+                      style={{ color: group.color }}
+                    >
+                      {language === "fr" ? group.titleFr : group.titleEn}
+                    </h3>
+                    <span 
+                      className="text-sm font-semibold px-3 py-1 rounded-full text-on-dark"
+                      style={{ backgroundColor: group.color }}
+                    >
+                      {group.languages.length}
+                    </span>
+                  </div>
+                  
+                  <div 
+                    className="p-2 rounded-full transition-all"
+                    style={{ 
+                      backgroundColor: group.bgColor,
+                      color: group.color
+                    }}
+                  >
+                    {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                  </div>
+                </button>
+                
+                {isExpanded && (
+                  <p 
+                    className="mt-2 text-sm md:text-base lg:text-lg italic"
                     style={{ color: group.color }}
                   >
-                    {language === "fr" ? group.titleFr : group.titleEn}
-                  </h3>
-                  <span 
-                    className="text-sm font-semibold px-3 py-1 rounded-full text-on-dark"
-                    style={{ backgroundColor: group.color }}
-                  >
-                    {group.languages.length}
-                  </span>
-                </div>
-                
-                <p 
-                  className="mt-2 text-base md:text-lg italic"
-                  style={{ color: group.color }}
-                >
-                  {language === "fr" ? group.descriptionFr : group.descriptionEn}
-                </p>
+                    {language === "fr" ? group.descriptionFr : group.descriptionEn}
+                  </p>
+                )}
               </div>
 
               {/* Grille des langages */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                {group.languages.map((lang, langIndex) => {
-                  const isHovered = hoveredLanguage === `${group.name}-${lang.langage}`
-                  const commentaire = language === "fr" ? lang.commentaire_fr : lang.commentaire_en
-                  const hasDescription = commentaire.length > 0
-                  const hasRelatedQuestions = lang.id_associe.length > 0
-                  
-                  return (
-                    <div
-                      key={langIndex}
-                      className="relative"
-                      style={{ 
-                        overflow: 'visible'
-                      }}
-                    >
+              {isExpanded && (
+                <div 
+                  className="grid gap-3 md:gap-4"
+                  style={{
+                    gridTemplateColumns: `repeat(${getColumnsCount(containerWidth)}, minmax(0, 1fr))`
+                  }}
+                >
+                  {group.languages.map((lang, langIndex) => {
+                    const isHovered = hoveredLanguage === `${group.name}-${lang.langage}`
+                    const commentaire = language === "fr" ? lang.commentaire_fr : lang.commentaire_en
+                    const hasDescription = commentaire.length > 0
+                    const hasRelatedQuestions = lang.id_associe.length > 0
+                    
+                    return (
                       <div
-                        ref={(el) => {
-                          if (el && isHovered) {
-                            cardRef.current = el
-                          }
-                        }}
-                        onMouseEnter={(e) => handleLanguageMouseEnter(`${group.name}-${lang.langage}`, groupIndex, e.currentTarget)}
-                        onMouseLeave={handleLanguageMouseLeave}
-                        className={`relative bg-bot-bubble rounded-xl p-4 shadow-custom-md cursor-pointer transition-all duration-300 border-2 ${
-                          isHovered 
-                            ? 'shadow-custom-xl scale-105' 
-                            : 'border-transparent hover:shadow-custom-lg'
-                        }`}
-                        style={{
-                          borderColor: isHovered ? group.color : 'transparent'
+                        key={langIndex}
+                        className="relative"
+                        style={{ 
+                          overflow: 'visible'
                         }}
                       >
-                        {/* Image du langage */}
-                        <div className="w-16 h-16 mx-auto mb-3 flex items-center justify-center">
-                          <Image
-                            src={`/icones/${lang.images}`}
-                            alt={lang.langage}
-                            width={64}
-                            height={64}
-                            className="w-full h-full object-contain"
-                            unoptimized
-                          />
-                        </div>
-                        
-                        {/* Nom du langage */}
-                        <h4 className="text-center text-sm md:text-base font-semibold text-primary line-clamp-2">
-                          {lang.langage}
-                        </h4>
+                        <div
+                          ref={(el) => {
+                            if (el && isHovered) {
+                              cardRef.current = el
+                            }
+                          }}
+                          onMouseEnter={(e) => handleLanguageMouseEnter(`${group.name}-${lang.langage}`, groupIndex, e.currentTarget)}
+                          onMouseLeave={handleLanguageMouseLeave}
+                          className={`relative bg-bot-bubble rounded-xl p-3 md:p-4 shadow-custom-md cursor-pointer transition-all duration-300 border-2 ${
+                            isHovered 
+                              ? 'shadow-custom-xl scale-105' 
+                              : 'border-transparent hover:shadow-custom-lg'
+                          }`}
+                          style={{
+                            borderColor: isHovered ? group.color : 'transparent'
+                          }}
+                        >
+                          {/* Image du langage */}
+                          <div className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-2 md:mb-3 flex items-center justify-center">
+                            <Image
+                              src={`/icones/${lang.images}`}
+                              alt={lang.langage}
+                              width={64}
+                              height={64}
+                              className="w-full h-full object-contain"
+                              unoptimized
+                            />
+                          </div>
+                          
+                          {/* Nom du langage */}
+                          <h4 className="text-center text-xs md:text-sm lg:text-base font-semibold text-primary line-clamp-2">
+                            {lang.langage}
+                          </h4>
 
-                        {/* Indicateur si hover disponible */}
-                        {(hasDescription || hasRelatedQuestions) && (
+                          {/* Indicateur si hover disponible */}
+                          {(hasDescription || hasRelatedQuestions) && (
+                            <div 
+                              className="absolute top-2 right-2 w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center text-on-dark text-xs font-bold"
+                              style={{ backgroundColor: group.color }}
+                            >
+                              <BookOpen size={12} className="md:w-3.5 md:h-3.5" />
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Popup au hover */}
+                        {isHovered && (hasDescription || hasRelatedQuestions) && (
                           <div 
-                            className="absolute top-2 right-2 w-6 h-6 rounded-full flex items-center justify-center text-on-dark text-xs font-bold"
-                            style={{ backgroundColor: group.color }}
+                            onMouseEnter={handlePopupMouseEnter}
+                            onMouseLeave={handlePopupMouseLeave}
+                            className="absolute mt-2 w-80 bg-main rounded-xl p-4 shadow-custom-xl border-2"
+                            style={{ 
+                              borderColor: group.color,
+                              ...popupPosition,
+                              zIndex: 9999
+                            }}
                           >
-                            <BookOpen size={14} />
+                            {/* Description */}
+                            {hasDescription && (
+                              <div className="mb-3">
+                                <p className="text-sm md:text-base text-primary">
+                                  {commentaire}
+                                </p>
+                              </div>
+                            )}
+
+                            {/* Questions liées */}
+                            {hasRelatedQuestions && (
+                              <div>
+                                <p className="text-xs font-bold text-primary mb-2 uppercase tracking-wide">
+                                  {language === "fr" ? "Questions liées" : "Related questions"}
+                                </p>
+                                
+                                <div className="space-y-2 max-h-48 overflow-y-auto">
+                                  {lang.id_associe.map((qId, qIndex) => {
+                                    const question = getQuestionById(qId)
+                                    if (!question) return null
+                                    
+                                    const questionTitle = getQuestionTitle(question, language)
+                                    
+                                    return (
+                                      <button
+                                        key={qIndex}
+                                        onClick={(e) => handleRelatedQuestionClick(qId, e)}
+                                        className="w-full text-left text-xs md:text-sm px-3 py-2 rounded-lg border-2 font-semibold transition-all shadow-custom-sm hover:shadow-custom-md bg-transparent"
+                                        style={{
+                                          borderColor: group.color,
+                                          color: group.color
+                                        }}
+                                        onMouseEnter={(e) => {
+                                          e.currentTarget.style.backgroundColor = group.color
+                                          e.currentTarget.style.color = 'white'
+                                        }}
+                                        onMouseLeave={(e) => {
+                                          e.currentTarget.style.backgroundColor = 'transparent'
+                                          e.currentTarget.style.color = group.color
+                                        }}
+                                      >
+                                        {questionTitle}
+                                      </button>
+                                    )
+                                  })}
+                                </div>
+                              </div>
+                            )}
                           </div>
                         )}
                       </div>
-
-                      {/* Popup au hover */}
-                      {isHovered && (hasDescription || hasRelatedQuestions) && (
-                        <div 
-                          onMouseEnter={handlePopupMouseEnter}
-                          onMouseLeave={handlePopupMouseLeave}
-                          className="absolute mt-2 w-80 bg-main rounded-xl p-4 shadow-custom-xl border-2"
-                          style={{ 
-                            borderColor: group.color,
-                            ...popupPosition,
-                            zIndex: 9999
-                          }}
-                        >
-                          {/* Description */}
-                          {hasDescription && (
-                            <div className="mb-3">
-                              <p className="text-sm md:text-base text-primary">
-                                {commentaire}
-                              </p>
-                            </div>
-                          )}
-
-                          {/* Questions liées */}
-                          {hasRelatedQuestions && (
-                            <div>
-                              <p className="text-xs font-bold text-primary mb-2 uppercase tracking-wide">
-                                {language === "fr" ? "Questions liées" : "Related questions"}
-                              </p>
-                              
-                              <div className="space-y-2 max-h-48 overflow-y-auto">
-                                {lang.id_associe.map((qId, qIndex) => {
-                                  const question = getQuestionById(qId)
-                                  if (!question) return null
-                                  
-                                  const questionTitle = getQuestionTitle(question, language)
-                                  
-                                  return (
-                                    <button
-                                      key={qIndex}
-                                      onClick={(e) => handleRelatedQuestionClick(qId, e)}
-                                      className="w-full text-left text-xs md:text-sm px-3 py-2 rounded-lg border-2 font-semibold transition-all shadow-custom-sm hover:shadow-custom-md bg-transparent"
-                                      style={{
-                                        borderColor: group.color,
-                                        color: group.color
-                                      }}
-                                      onMouseEnter={(e) => {
-                                        e.currentTarget.style.backgroundColor = group.color
-                                        e.currentTarget.style.color = 'white'
-                                      }}
-                                      onMouseLeave={(e) => {
-                                        e.currentTarget.style.backgroundColor = 'transparent'
-                                        e.currentTarget.style.color = group.color
-                                      }}
-                                    >
-                                      {questionTitle}
-                                    </button>
-                                  )
-                                })}
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  )
-                })}
-              </div>
+                    )
+                  })}
+                </div>
+              )}
             </div>
           )
         })}

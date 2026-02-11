@@ -38,14 +38,28 @@ export default function CompetencesPage() {
         content: questionTitle
       })
 
-      const res = await fetch(`/api/content?id=${pageId}&lang=${language}`)
-      const markdown = await res.text()
+      // Vérifier si la question est de type interactive
+      if (question.type === "interactive" && question.component) {
+        // Charger le composant interactif directement
+        addMessage(pageId, {
+          role: "bot",
+          content: "",
+          questionId: pageId,
+          type: "interactive",
+          componentName: question.component,
+          data: {}
+        })
+      } else {
+        // Fallback sur le contenu Markdown
+        const res = await fetch(`/api/content?id=${pageId}&lang=${language}`)
+        const markdown = await res.text()
 
-      addMessage(pageId, {
-        role: "bot",
-        content: markdown,
-        questionId: pageId
-      })
+        addMessage(pageId, {
+          role: "bot",
+          content: markdown,
+          questionId: pageId
+        })
+      }
     }
 
     initConversation()

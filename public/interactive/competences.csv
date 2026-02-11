@@ -1,0 +1,25 @@
+fr_recto	fr_verso	en_recto	en_verso	groupe	icone	id_associe
+ETL & Pipelines	Création de pipelines de données, extraction, nettoyage et contrôle qualité	ETL & Pipelines	Data pipeline creation, extraction, cleaning and quality control	data	🔄	stageCHU, alternanceGOC, projet OpenFF, site projet volley, site immobilier, BUT tlse
+Modélisation	Conception et rétroconception de bases de données (UML, MCD/MLD)	Modeling	Database design and reverse engineering (UML, ERD)	data	📐	stageCHU, projet OpenFF, BUT tlse
+Optimisation BDD	Optimisation et automatisation de bases de données relationnelles et NoSQL	Database Optimization	Relational and NoSQL database optimization and automation	data	⚡	projet OpenFF, BUT tlse
+Administration BDD	Gestion des utilisateurs, rôles, accès, monitoring et maintenance des bases de données	Database Administration	User, role, access management, monitoring and database maintenance	data	🔐	BUT tlse
+Analyse & Stats	Analyse de données, calcul de statistiques avancées et création de tableaux de bord interactifs	Analysis & Stats	Data analysis, advanced statistics and interactive dashboard creation	data	📊	alternanceGOC, projet OpenFF, BUT tlse
+IA & Machine Learning	Création de modèles d'IA (Machine Learning, Deep Learning, Réseaux de neurones)	AI & Machine Learning	AI model creation (Machine Learning, Deep Learning, Neural Networks)	data	🤖	projet IA séries, BUT tlse, projet OpenFF
+Applications Web	Développement d'applications et sites web sécurisés et communicants	Web Applications	Development of secure and communicating web applications and websites	dev	💻	projet site volley, projet immobilier, fonctionnement, projet Trains, BUT tlse, BUT mtp
+POO & MVC	Programmation orientée objet et procédurale, architecture MVC	OOP & MVC	Object-oriented and procedural programming, MVC architecture	dev	🏗️	projet immobilier, projet Trains, BUT tlse, BUT mtp
+API & Services Web	Conception et développement d'API REST, manipulation de JSON	API & Web Services	REST API design and development, JSON handling	dev	🌐	projet site volley, BUT tlse
+Performance & Sécurité	Optimisation des performances, garantie de fiabilité et sécurité des applications	Performance & Security	Performance optimization, reliability and application security assurance	dev	🛡️	alternanceGOC, stageCHU, projet site volley, BUT tlse
+Documentation	Rédaction de documentation technique claire et accessible	Documentation	Writing clear and accessible technical documentation	dev	📝	alternanceGOC, projets, BUT tlse
+Tests & Qualité	Tests unitaires, tests d'intégration et assurance qualité (JUnit pour Java notamment)	Testing & Quality	Unit testing, integration testing and quality assurance (JUnit for Java)	dev	✅	projet immobilier, projets, BUT tlse
+Gestion de versions	Utilisation de Git pour versionner et collaborer sur les projets	Version Control	Using Git for project versioning and collaboration	dev	🔀	projets, BUT tlse, BUT mtp
+Analyse des besoins	Analyse et formalisation des besoins métier et techniques	Requirements Analysis	Business and technical requirements analysis and formalization	soft	🎯	alternanceGOC, projet OpenFF, projets, BUT tlse
+Gestion de projets Agile	Méthodes Agile : Scrum, Kanban, suivi et organisation	Agile Project Management	Agile methods: Scrum, Kanban, tracking and organization	soft	📋	projet immobilier, BUT tlse
+Initiative & Autonomie	Curiosité, autonomie et esprit d'initiative dans les projets	Initiative & Autonomy	Curiosity, autonomy and initiative in projects	soft	💡	alternanceGOC, stageCHU, fonctionnement
+Adaptabilité	Adaptation rapide, patience et persévérance face aux défis	Adaptability	Quick adaptation, patience and perseverance when facing challenges	soft	🔄	alternanceGOC, stageCHU, jobGrandBleu
+Communication	Communication efficace et vulgarisation technique auprès de différents publics	Communication	Effective communication and technical popularization to various audiences	soft	💬	alternanceGOC, stageCHU, BUT tlse
+Travail d'équipe	Collaboration en équipe, partage de connaissances et entraide	Teamwork	Team collaboration, knowledge sharing and mutual support	soft	🤝	projets, jobGrandBleu, projet immobilier, projets
+Résolution de problèmes	Analyse et résolution méthodique de problèmes complexes	Problem Solving	Methodical analysis and resolution of complex problems	soft	🧩	alternanceGOC, stageCHU, projets
+Conformité RGPD	Connaissance des lois et règles sur la protection des données (RGPD)	GDPR Compliance	Knowledge of data protection laws and regulations (GDPR)	soft	⚖️	BUT tlse
+Français	Langue maternelle	French	Native language	langues	🇫🇷	
+Anglais	Niveau B2 (intermédiaire avancé), très bonne compréhension orale et écrite	English	B2 level (upper intermediate), very good written and oral comprehension	langues	🇬🇧	BUT tlse, BUT mtp, BAC
+Espagnol	Niveau A1 (débutant)	Spanish	A1 level (beginner)	langues	🇪🇸	BAC

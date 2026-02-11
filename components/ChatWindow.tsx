@@ -68,6 +68,11 @@ export default function ChatWindow({ pageId }: Props) {
   const isTyping = useChatStore(s => s.isTyping)
   const shouldSkip = useChatStore(s => s.shouldSkip)
   const animationsEnabled = useSettingsStore(s => s.animationsEnabled)
+  const isInteractiveToggling = useChatStore(s => s.isInteractiveToggling)
+  const isInteractiveTogglingRef = useRef(isInteractiveToggling)
+  useEffect(() => {
+    isInteractiveTogglingRef.current = isInteractiveToggling
+  }, [isInteractiveToggling])
 
   const skipDeleteConfirm = useChatStore(s => s.skipDeleteConfirm)
   const setSkipDeleteConfirm = useChatStore(s => s.setSkipDeleteConfirm)
@@ -111,9 +116,15 @@ export default function ChatWindow({ pageId }: Props) {
 
   useEffect(() => {
     if (scrollRef.current) {
+      // NE PAS scroller si un composant interactif est en train de toggler
+      // On utilise la ref pour lire la valeur sans en faire une dépendance
+      if (isInteractiveTogglingRef.current) {
+        return
+      }
+      
       // Sur mobile, laisser un espace pour que l'input reste visible
       const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
-      const offset = isMobile ? 150 : 0 // 150px d'espace sur mobile pour l'input
+      const offset = isMobile ? 150 : 0
       
       requestAnimationFrame(() => {
         if (scrollRef.current) {
