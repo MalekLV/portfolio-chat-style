@@ -46,9 +46,9 @@ export default function Sidebar() {
 
   function handleCVClick() {
     if (language === "en") {
-      window.open("/LE-VELLY_Malek_CV_EN.pdf", "_blank")
+      window.open("/CV/LE-VELLY_Malek_CV_EN.pdf", "_blank")
     } else {
-      window.open("/LE-VELLY_Malek_CV_FR.pdf", "_blank")
+      window.open("/CV/LE-VELLY_Malek_CV_FR.pdf", "_blank")
     }
   }
 
