@@ -41,7 +41,7 @@ export default function Sidebar() {
 
   function handleLinkedInClick(e: React.MouseEvent) {
     e.stopPropagation()
-    if (language === "en") {
+    if (language === "fr") {
       window.open("https://www.linkedin.com/in/malek-le-velly/", "_blank")
     } else {
       window.open("https://www.linkedin.com/in/malek-le-velly/?locale=en-US", "_blank")

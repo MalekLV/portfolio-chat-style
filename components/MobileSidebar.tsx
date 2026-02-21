@@ -46,11 +46,19 @@ export default function MobileSidebar() {
 
   function handleLinkedInClick(e: React.MouseEvent) {
     e.stopPropagation()
-    window.open("https://www.linkedin.com/in/malek-le-velly/", "_blank")
+    if (language === "fr") {
+      window.open("https://www.linkedin.com/in/malek-le-velly/", "_blank")
+    } else {
+      window.open("https://www.linkedin.com/in/malek-le-velly/?locale=en-US", "_blank")
+    }
   }
 
   function handleCVClick() {
-    window.open("/LE-VELLY_Malek_CV.pdf", "_blank")
+    if (language === "en") {
+      window.open("/CV/LE-VELLY_Malek_CV_EN.pdf", "_blank")
+    } else {
+      window.open("/CV/LE-VELLY_Malek_CV_FR.pdf", "_blank")
+    }
   }
 
   function handleGitHubClick() {
