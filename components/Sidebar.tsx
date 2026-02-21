@@ -45,7 +45,11 @@ export default function Sidebar() {
   }
 
   function handleCVClick() {
-    window.open("/LE-VELLY_Malek_CV.pdf", "_blank")
+    if (language === "en") {
+      window.open("/LE-VELLY_Malek_CV_EN.pdf", "_blank")
+    } else {
+      window.open("/LE-VELLY_Malek_CV_FR.pdf", "_blank")
+    }
   }
 
   function handleGitHubClick() {
